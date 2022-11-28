@@ -1,15 +1,27 @@
-#welcome {
-    padding-top: 5px;
-    font-size: 1.2rem;
+#title {
+    font-size: 5.1rem;
+    font-family: 'JetBrains Mono';
+    margin-top: 150px;
+}
+#info{
+   margin-left: 250px;
+   margin-top: 100px;
+   color: gray;
+   
 }
 
-#title {
-    font-size: 2.5rem;
+h2 {
+   font-size: 3.2rem;
+   margin-bottom: 25px;
+}
+
+h4 {
+   font-size: 2.1rem;
 }
 
  
  .form-signin {
-    max-width: 330px;
+    max-width: 550px;
     padding: 15px;
     margin: 0 auto;
     color: #017572;
@@ -25,13 +37,14 @@
  }
  
  .form-signin .form-control {
+   margin-top: 100px;
     position: relative;
-    height: auto;
+    height: 100px;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
     padding: 10px;
-    font-size: 16px;
+    font-size: 2rem;
  }
  
  .form-signin .form-control:focus {
@@ -46,13 +59,13 @@
  }
  
  .form-signin input[type="password"] {
-    margin-bottom: 10px;
+    margin-bottom: 120px;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
     border-color:#017572;
  }
  
- h2{
-    text-align: center;
-    color: #017572;
+ #submit {
+   font-size: 2.5rem;
+   padding: 10px 140px;
  }

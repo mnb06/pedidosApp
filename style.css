@@ -1,3 +1,19 @@
 body{
     font-family: 'JetBrains Mono', monospace;
 }
+
+#title {
+    margin-top: 30px;
+}
+
+#logo {
+    max-width: 300px;
+    margin-top: -20px;
+}
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+  }

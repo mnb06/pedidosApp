@@ -13,7 +13,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100;0,300;0,400;1,100;1,300;1,400&display=swap" rel="stylesheet">
-    <link href="login/login.css" rel="stylesheet">
 </head>
 <body>
     <!-- Barra de bienvenida -->
@@ -25,12 +24,12 @@
     <div class="container-fluid align-items-center text-center">
         <!-- Titulo de la app -->
         <div class="row">
-            <h1 id="title" class="my-5">pedidosApp</h1>
+            <h1 id="title">pedidosApp</h1>
         </div>
 
         <!-- Logo -->
         <div class="row">
-            <img src="resources/logo.png" alt="logo img">
+            <img src="resources/logo.png" alt="logo img" id="logo" class="center">
         </div>
             
 
