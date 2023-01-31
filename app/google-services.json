@@ -1,0 +1,98 @@
+{
+  "project_info": {
+    "project_number": "354126513877",
+    "firebase_url": "https://pedidosapp-bf036-default-rtdb.firebaseio.com",
+    "project_id": "pedidosapp-bf036",
+    "storage_bucket": "pedidosapp-bf036.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:354126513877:android:b5d80d032aff8fdf30445c",
+        "android_client_info": {
+          "package_name": "com.example.pedidosapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "354126513877-ktplppnputuog80fsm6l5gmg8pvr0nqt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLAAZAbTtEjTyCV9amvf8ovoDEqv1crvo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "354126513877-ktplppnputuog80fsm6l5gmg8pvr0nqt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:354126513877:android:7b0a5583b3ee359230445c",
+        "android_client_info": {
+          "package_name": "com.mnb.pedidosApp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "354126513877-ktplppnputuog80fsm6l5gmg8pvr0nqt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLAAZAbTtEjTyCV9amvf8ovoDEqv1crvo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "354126513877-ktplppnputuog80fsm6l5gmg8pvr0nqt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:354126513877:android:009b579f8e74d17230445c",
+        "android_client_info": {
+          "package_name": "com.mnb.pedidosapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "354126513877-ktplppnputuog80fsm6l5gmg8pvr0nqt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLAAZAbTtEjTyCV9amvf8ovoDEqv1crvo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "354126513877-ktplppnputuog80fsm6l5gmg8pvr0nqt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
