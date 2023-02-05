@@ -18,7 +18,31 @@
     <string name="modifciar">Modificar</string>
     <string name="eliminar">Eliminar</string>
     <string name="listar">Listar</string>
+    <string name="cancelarB">Cancelar</string>
 
+    <!-- clientCreation Strings (B boton, T texto) -->
+
+    <string name="agregarClienteT">Agregar Nuevo Cliente</string>
+
+    <!-- articulosCreacion Strings (B boton, T texto, H hint) -->
+
+    <string name="agregarArticuloT">Agregar Nuevo Artículo</string>
+
+    <!-- Form crear textos -->
+
+    <string name="nombreT">Nombre: </string>
+    <string name="encargadoT">Encargado: </string>
+    <string name="direccionT">Dirección:</string>
+
+    <!-- Hints -->
+    <string name="nombreH">Insertar nombre</string>
+    <string name="encargadoH">Insertar encargado</string>
+    <string name="direccionH">Insertar dirección</string>
+
+    <!-- Titulos Pestañas -->
+
+    <string name="clientesT">Clientes</string>
+    <string name="articulosT">Artículos</string>
 
     <string name="title_activity_inicio">Inicio</string>
 

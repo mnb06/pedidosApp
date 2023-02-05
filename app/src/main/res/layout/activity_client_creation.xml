@@ -9,7 +9,20 @@
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="250dp" />
+        android:layout_height="102dp" />
+
+    <TextView
+        android:id="@+id/agregarClienteT"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/agregarClienteT"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="34sp" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="102dp" />
 
     <TableLayout
         android:layout_width="match_parent"
@@ -20,38 +33,44 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/textView4"
-                android:layout_width="match_parent"
+                android:id="@+id/nombreT"
+                android:layout_width="139dp"
                 android:layout_height="match_parent"
-                android:text="Nombre" />
+                android:gravity="center"
+                android:text="@string/nombreT"
+                android:textColor="#000000"
+                android:textSize="20sp" />
 
             <EditText
                 android:id="@+id/clientName"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:ems="10"
-                android:inputType="textPersonName"
-                android:text="Name" />
+                android:hint="@string/nombreH"
+                android:inputType="textPersonName" />
 
         </TableRow>
 
         <TableRow
-            android:layout_width="match_parent"
+            android:layout_width="401dp"
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/textView5"
+                android:id="@+id/encargadoT"
                 android:layout_width="164dp"
                 android:layout_height="match_parent"
-                android:text="Encargado" />
+                android:gravity="center"
+                android:text="@string/encargadoT"
+                android:textColor="#000000"
+                android:textSize="20sp" />
 
             <EditText
                 android:id="@+id/clientEncargado"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:ems="10"
-                android:inputType="textPersonName"
-                android:text="Name" />
+                android:hint="@string/encargadoH"
+                android:inputType="textPersonName" />
         </TableRow>
 
         <TableRow
@@ -59,26 +78,45 @@
             android:layout_height="59dp">
 
             <TextView
-                android:id="@+id/textView6"
+                android:id="@+id/direccionT"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Direccion" />
+                android:gravity="center"
+                android:text="@string/direccionT"
+                android:textColor="#000000"
+                android:textSize="20sp" />
 
             <EditText
                 android:id="@+id/clientDireccion"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:ems="10"
-                android:inputType="textPersonName"
-                android:text="Name" />
+                android:hint="@string/direccionH"
+                android:inputType="textPersonName" />
+
         </TableRow>
 
     </TableLayout>
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="29dp" />
 
     <Button
         android:id="@+id/clientUpload"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/crear" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="20dp" />
+
+    <Button
+        android:id="@+id/cancelarB"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="volverInicio"
+        android:text="@string/cancelarB" />
 
 </LinearLayout>

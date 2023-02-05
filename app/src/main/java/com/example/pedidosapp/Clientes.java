@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.example.pedidosapp.clientes.Adapter;
 import com.example.pedidosapp.clientes.Client;
@@ -53,7 +52,7 @@ public class Clientes extends Fragment {
         delete = view.findViewById(R.id.clientDelete);
 
         // Lista dinamica
-        recyclerView = view.findViewById(R.id.listViewClient);
+        recyclerView = view.findViewById(R.id.listViewClientes);
 
         // Database instance
         database = FirebaseDatabase.getInstance().getReference("Clientes");
