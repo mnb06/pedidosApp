@@ -9,11 +9,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.example.pedidosapp.Articulos;
-import com.example.pedidosapp.Clientes;
-import com.example.pedidosapp.Pedidos;
+import com.example.pedidosapp.tabs.Articulos;
+import com.example.pedidosapp.tabs.Clientes;
+import com.example.pedidosapp.tabs.Pedidos;
 import com.example.pedidosapp.R;
-import com.example.pedidosapp.Resumen;
+import com.example.pedidosapp.tabs.Resumen;
 
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to

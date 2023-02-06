@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context=".clientes.ClientCreation">
+    android:layout_gravity="center"
+    android:padding="10dp">
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="250dp" />
 
     <TableLayout
         android:layout_width="match_parent"
@@ -21,9 +18,10 @@
 
             <TextView
                 android:id="@+id/textView4"
-                android:layout_width="match_parent"
+                android:layout_width="152dp"
                 android:layout_height="match_parent"
-                android:text="Nombre" />
+                android:text="Nombre:"
+                android:textSize="18sp"/>
 
             <EditText
                 android:id="@+id/clientName"
@@ -31,7 +29,7 @@
                 android:layout_height="match_parent"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="Name" />
+ />
 
         </TableRow>
 
@@ -41,17 +39,17 @@
 
             <TextView
                 android:id="@+id/textView5"
-                android:layout_width="164dp"
+                android:layout_width="181dp"
                 android:layout_height="match_parent"
-                android:text="Encargado" />
+                android:text="Encargado:"
+                android:textSize="18sp"/>
 
             <EditText
                 android:id="@+id/clientEncargado"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:ems="10"
-                android:inputType="textPersonName"
-                android:text="Name" />
+                android:inputType="textPersonName" />
         </TableRow>
 
         <TableRow
@@ -62,15 +60,15 @@
                 android:id="@+id/textView6"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Direccion" />
+                android:text="Direccion:"
+                android:textSize="18sp"/>
 
             <EditText
                 android:id="@+id/clientDireccion"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:ems="10"
-                android:inputType="textPersonName"
-                android:text="Name" />
+                android:inputType="textPersonName" />
         </TableRow>
 
     </TableLayout>
@@ -80,5 +78,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/crear" />
+
+
+    <Button
+        android:id="@+id/clientCancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/cancelar" />
 
 </LinearLayout>

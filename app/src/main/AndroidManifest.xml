@@ -14,13 +14,16 @@
         android:theme="@style/Theme.PedidosApp"
         tools:targetApi="31">
         <activity
+            android:name=".clientsLogic.ClientDelete"
+            android:exported="false" />
+        <activity
             android:name=".ClientList"
             android:exported="false" />
         <activity
             android:name=".client_modify"
             android:exported="false" />
         <activity
-            android:name=".clientes.ClientCreation"
+            android:name=".clientsLogic.ClientCreation"
             android:exported="false" />
         <activity
             android:name=".Inicio"
