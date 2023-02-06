@@ -22,13 +22,11 @@
             android:textColor="#000000"
             android:textSize="34sp" />
 
-        <ListView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/listViewArticulos"
-            android:layout_width="387dp"
-            android:layout_height="400dp"
-            android:layout_gravity="center|center_horizontal" >
-
-        </ListView>
+            android:layout_width="390dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
 
         <Space
             android:layout_width="wrap_content"
@@ -40,6 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:clickable="true"
+            android:onClick="irAgregarArticulo"
             android:src="@android:drawable/ic_input_add" />
 
         <Space

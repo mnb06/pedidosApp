@@ -11,9 +11,7 @@ import com.example.pedidosapp.R;
 import java.util.ArrayList;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
-
     Context context;
-
     ArrayList<Client> list;
 
     // Constructor

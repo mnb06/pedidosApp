@@ -27,14 +27,13 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class Articulos extends Fragment {
+
     private FloatingActionButton create;
     private FloatingActionButton delete;
-
     RecyclerView recyclerView;
     DatabaseReference database;
     Adapter adapter;
     ArrayList<Articulo> list;
-
     @SuppressLint("MissingInflatedId")
     @Nullable
     @Override
@@ -59,6 +58,7 @@ public class Articulos extends Fragment {
         list = new ArrayList<>();
         adapter = new Adapter(getContext(), list);
         recyclerView.setAdapter(adapter);
+
         database.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -69,8 +69,10 @@ public class Articulos extends Fragment {
                 }
                 adapter.notifyDataSetChanged();
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
 
@@ -88,4 +90,5 @@ public class Articulos extends Fragment {
 
         return view;
     }
+
 }

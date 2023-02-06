@@ -26,20 +26,14 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-
 public class Clientes extends Fragment {
 
     private FloatingActionButton create;
     private FloatingActionButton delete;
-
     RecyclerView recyclerView;
     DatabaseReference database;
     Adapter adapter;
     ArrayList<Client> list;
-
-
-
-
     @SuppressLint("MissingInflatedId")
     @Nullable
     @Override
@@ -83,8 +77,6 @@ public class Clientes extends Fragment {
 
             }
         });
-
-
 
         // Asignaciones a los botones
         create.setOnClickListener(new View.OnClickListener() {

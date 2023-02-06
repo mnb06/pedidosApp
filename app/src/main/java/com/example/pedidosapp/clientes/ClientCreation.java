@@ -19,10 +19,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ClientCreation extends AppCompatActivity {
-
     private Button upload;
     private EditText nombre, encargado, direccion;
 
+    private FirebaseDatabase database;
     DatabaseReference mRootReference;
 
     @SuppressLint("MissingInflatedId")
@@ -67,7 +67,7 @@ public class ClientCreation extends AppCompatActivity {
         Map<String, Object> datosClientes = new HashMap<>();
 
         // Insercion de los datos en el hash
-        datosClientes .put("nombre", name);
+        datosClientes.put("nombre", name);
         datosClientes.put("encargado", employee);
         datosClientes.put("direccion", direction);
 

@@ -11,42 +11,41 @@ import com.example.pedidosapp.R;
 import java.util.ArrayList;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
-        Context context;
-        ArrayList<Articulo> list;
+    Context context;
+    ArrayList<Articulo> list;
 
         // Constructor
-        public Adapter(Context context, ArrayList<Articulo> list) {
-            this.context = context;
-            this.list = list;
+     public Adapter(Context context, ArrayList<Articulo> list) {
+          this.context = context;
+          this.list = list;
         }
 
-        @NonNull
-        @Override
-        public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View v = LayoutInflater.from(context).inflate(R.layout.item, parent, false);
-            return new MyViewHolder(v);
+     @NonNull
+     @Override
+     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+          View v = LayoutInflater.from(context).inflate(R.layout.item, parent, false);
+          return new MyViewHolder(v);
         }
 
-        @Override
-        public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+     @Override
+     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
-            Articulo articulo = list.get(position);
-            holder.nombre.setText(articulo.getNombre());
+         Articulo articulo = list.get(position);
+         holder.nombre.setText(articulo.getNombre());
 
         }
 
-        @Override
-        public int getItemCount() {
+     @Override
+     public int getItemCount() {
             return list.size();
         }
 
-        public static class MyViewHolder extends RecyclerView.ViewHolder{
+     public static class MyViewHolder extends RecyclerView.ViewHolder{
+         TextView nombre;
+         public MyViewHolder(@NonNull View itemView) {
+             super(itemView);
 
-            TextView nombre;
-            public MyViewHolder(@NonNull View itemView) {
-                super(itemView);
-
-                nombre = itemView.findViewById(R.id.nombreArticulo);
+             nombre = itemView.findViewById(R.id.nombreArticulo);
             }
         }
    }
