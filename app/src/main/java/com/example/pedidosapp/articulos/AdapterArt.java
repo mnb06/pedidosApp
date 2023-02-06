@@ -5,17 +5,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.pedidosapp.R;
 import java.util.ArrayList;
 
-public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
+public class AdapterArt extends RecyclerView.Adapter<AdapterArt.MyViewHolder> {
     Context context;
     ArrayList<Articulo> list;
 
         // Constructor
-     public Adapter(Context context, ArrayList<Articulo> list) {
+     public AdapterArt(Context context, ArrayList<Articulo> list) {
           this.context = context;
           this.list = list;
         }
@@ -31,8 +33,14 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
      public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
          Articulo articulo = list.get(position);
-         holder.nombre.setText(articulo.getNombre());
 
+         //Aca tira error, como el articulo todavia no se cargo lo toma como puntero nulo. Temporariamente puse un toast
+         try{
+             holder.nombre.setText(articulo.getNombre());
+         }catch(Exception e){
+             Toast.makeText(context.getApplicationContext(), "No hay artículos cargados.",
+                     Toast.LENGTH_SHORT).show();
+         }
         }
 
      @Override

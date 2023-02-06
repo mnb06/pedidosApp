@@ -9,10 +9,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.pedidosapp.Inicio;
 import com.example.pedidosapp.R;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -25,6 +31,8 @@ public class articulosCreacion extends AppCompatActivity {
 
     private FirebaseDatabase database;
     DatabaseReference mRootReference;
+    DatabaseReference myRef;
+    FirebaseAuth auth;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -50,22 +58,32 @@ public class articulosCreacion extends AppCompatActivity {
     }
 
     private void uploadData(String name) {
+
         // Hash donde se almacenan los datos a subir
         Map<String, Object> datosArticulos = new HashMap<>();
 
         // Insercion de los datos en el hash
         datosArticulos.put("nombre", name);
 
-        // Se crea un hijo (similar a una tabla) y se ingresan los valores
+        // Inserta
         mRootReference.child("Articulos").push().setValue(datosArticulos);
 
-        // Notificacion Toast para mostrar si el cliente fue cargado
+        //Avisa exito y regresa
+
         Toast.makeText(getApplicationContext(), "Artículo cargado exitosamente.",
-                Toast.LENGTH_LONG).show();
+                        Toast.LENGTH_LONG).show();
+        Intent i = new Intent(this, Inicio.class);
+        startActivity(i);
     }
+
 
     public void volverInicio(View view){
         Intent i = new Intent(this, Inicio.class);
         startActivity(i);
     }
 }
+
+
+
+
+

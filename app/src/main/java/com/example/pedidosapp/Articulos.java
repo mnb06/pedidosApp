@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 
 import com.example.pedidosapp.articulos.Articulo;
 import com.example.pedidosapp.articulos.articulosCreacion;
-import com.example.pedidosapp.articulos.Adapter;
+import com.example.pedidosapp.articulos.AdapterArt;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,7 +32,7 @@ public class Articulos extends Fragment {
     private FloatingActionButton delete;
     RecyclerView recyclerView;
     DatabaseReference database;
-    Adapter adapter;
+    AdapterArt adapter;
     ArrayList<Articulo> list;
     @SuppressLint("MissingInflatedId")
     @Nullable
@@ -56,7 +56,7 @@ public class Articulos extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         list = new ArrayList<>();
-        adapter = new Adapter(getContext(), list);
+        adapter = new AdapterArt(getContext(), list);
         recyclerView.setAdapter(adapter);
 
         database.addValueEventListener(new ValueEventListener() {
