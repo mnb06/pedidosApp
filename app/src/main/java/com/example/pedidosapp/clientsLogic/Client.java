@@ -1,4 +1,4 @@
-package com.example.pedidosapp.clientes;
+package com.example.pedidosapp.clientsLogic;
 
 public class Client {
 

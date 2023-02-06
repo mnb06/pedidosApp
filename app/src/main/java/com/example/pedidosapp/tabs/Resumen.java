@@ -1,4 +1,4 @@
-package com.example.pedidosapp;
+package com.example.pedidosapp.tabs;
 
 import android.os.Bundle;
 
@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.pedidosapp.R;
 
 
 public class Resumen extends Fragment {

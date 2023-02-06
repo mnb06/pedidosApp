@@ -1,4 +1,4 @@
-package com.example.pedidosapp;
+package com.example.pedidosapp.tabs;
 
 import android.os.Bundle;
 
@@ -10,14 +10,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.pedidosapp.R;
 
-public class Articulos extends Fragment {
+
+public class Pedidos extends Fragment {
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,@Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_articulos, container, false);
+        return inflater.inflate(R.layout.fragment_pedidos, container, false);
     }
 }
