@@ -43,7 +43,11 @@ public class ClientEdit extends AppCompatActivity {
         nombre.setText(id);
 
         encargado = findViewById(R.id.clientEncargado);
+        encargado.setText(intent.getStringExtra("encargado"));
+
         direccion = findViewById(R.id.clientDireccion);
+        direccion.setText(intent.getStringExtra("direccion"));
+
         upload = findViewById(R.id.clientUpload);
         cancel = findViewById(R.id.clientCancel);
         upload.setOnClickListener(new View.OnClickListener() {

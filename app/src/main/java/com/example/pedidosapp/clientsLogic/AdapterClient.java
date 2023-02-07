@@ -66,6 +66,8 @@ public class AdapterClient extends RecyclerView.Adapter<AdapterClient.MyViewHold
             public void onClick(View view) {
                 Intent intent = new Intent(context, ClientEdit.class);
                 intent.putExtra("name", client.getNombre());
+                intent.putExtra("encargado", client.getEncargado());
+                intent.putExtra("direccion", client.getDireccion());
                 context.startActivity(intent);
             }
         });
