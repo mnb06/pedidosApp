@@ -1,4 +1,4 @@
-package com.example.pedidosapp;
+package com.example.pedidosapp.clientsLogic;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.pedidosapp.R;
 import com.example.pedidosapp.tabs.Clientes;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -25,7 +26,6 @@ public class ClientEdit extends AppCompatActivity {
     private TextView nombre;
 
     static DatabaseReference mRootReference;
-
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +52,6 @@ public class ClientEdit extends AppCompatActivity {
                 uploadClient(id);
             }
         });
-
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,7 +89,7 @@ public class ClientEdit extends AppCompatActivity {
         mRootReference.child("Clientes").child(nombre).setValue(datosClientes);
 
         // Notificacion Toast para mostrar si el cliente fue cargado
-        Toast.makeText(getApplicationContext(), "Cliente cargado exitosamente.",
+        Toast.makeText(getApplicationContext(), "Cliente editado exitosamente.",
                 Toast.LENGTH_LONG).show();
         Clientes.list.clear();
         finish();

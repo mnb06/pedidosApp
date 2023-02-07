@@ -1,45 +1,26 @@
 package com.example.pedidosapp.clientsLogic;
 
-import static android.content.Context.LAYOUT_INFLATER_SERVICE;
-
-import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.pedidosapp.ClientEdit;
-import com.example.pedidosapp.Inicio;
 import com.example.pedidosapp.R;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
-import com.example.pedidosapp.tabs.Clientes;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 
-public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
+public class AdapterClient extends RecyclerView.Adapter<AdapterClient.MyViewHolder> {
 
     Context context;
     DatabaseReference databaseReference;
@@ -47,7 +28,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
     ArrayList<Client> list;
 
     // Constructor
-    public Adapter(Context context, ArrayList<Client> list) {
+    public AdapterClient(Context context, ArrayList<Client> list) {
         this.context = context;
         this.list = list;
     }
