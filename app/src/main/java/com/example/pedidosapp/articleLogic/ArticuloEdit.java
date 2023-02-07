@@ -37,13 +37,19 @@ public class ArticuloEdit extends AppCompatActivity {
 
         Intent intent = getIntent();
         String id = intent.getStringExtra("name");
+        String s = intent.getStringExtra("stock");
+        String sM = intent.getStringExtra("stockMin");
 
         //Enlace de UI
         nombre = findViewById(R.id.artName);
         nombre.setText(id);
 
         stock = findViewById(R.id.artStock);
+        stock.setText(s);
+
         stockMin = findViewById(R.id.artStockMin);
+        stockMin.setText(sM);
+
         upload = findViewById(R.id.artUpload);
         cancel = findViewById(R.id.artCancel);
 
@@ -51,7 +57,6 @@ public class ArticuloEdit extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-
                 uploadArticle(id);
             }
         });

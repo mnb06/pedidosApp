@@ -26,6 +26,7 @@ public class ClientEdit extends AppCompatActivity {
     private TextView nombre;
 
     static DatabaseReference mRootReference;
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {

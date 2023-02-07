@@ -16,7 +16,6 @@ import com.example.pedidosapp.R;
 
 import java.util.ArrayList;
 
-import com.example.pedidosapp.clientsLogic.Client;
 import com.example.pedidosapp.clientsLogic.ClientEdit;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -68,6 +67,8 @@ public class AdapterArt extends RecyclerView.Adapter<AdapterArt.MyViewHolder> {
             public void onClick(View view) {
                 Intent intent = new Intent(context, ArticuloEdit.class);
                 intent.putExtra("name", articulo.getNombre());
+                intent.putExtra("stock", articulo.getStock());
+                intent.putExtra("stockMin", articulo.getStockMin());
                 context.startActivity(intent);
             }
         });
