@@ -14,13 +14,13 @@
         android:theme="@style/Theme.PedidosApp"
         tools:targetApi="31">
         <activity
-            android:name=".ClientEdit"
+            android:name=".articleLogic.ArticuloEdit"
             android:exported="false" />
         <activity
-            android:name=".ClientList"
+            android:name=".articleLogic.ArticuloCreation"
             android:exported="false" />
         <activity
-            android:name=".client_modify"
+            android:name=".clientsLogic.ClientEdit"
             android:exported="false" />
         <activity
             android:name=".clientsLogic.ClientCreation"

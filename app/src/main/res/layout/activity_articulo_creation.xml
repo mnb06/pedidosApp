@@ -14,22 +14,22 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/textView4"
-                android:layout_width="181dp"
+                android:layout_width="152dp"
                 android:layout_height="match_parent"
                 android:text="Nombre:"
                 android:textSize="18sp"/>
 
-            <TextView
-                android:id="@+id/clientName"
+            <EditText
+                android:id="@+id/artName"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:ems="10"
-                android:textSize="26sp"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                />
 
         </TableRow>
 
@@ -41,15 +41,15 @@
                 android:id="@+id/textView5"
                 android:layout_width="181dp"
                 android:layout_height="match_parent"
-                android:text="Encargado:"
+                android:text="Stock:"
                 android:textSize="18sp"/>
 
             <EditText
-                android:id="@+id/clientEncargado"
+                android:id="@+id/artStock"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:ems="10"
-                android:inputType="textPersonName" />
+                android:inputType="number" />
         </TableRow>
 
         <TableRow
@@ -60,29 +60,29 @@
                 android:id="@+id/textView6"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Direccion:"
+                android:text="Stock Minimo:"
                 android:textSize="18sp"/>
 
             <EditText
-                android:id="@+id/clientDireccion"
+                android:id="@+id/artStockMin"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:ems="10"
-                android:inputType="textPersonName" />
+                android:inputType="number"/>
         </TableRow>
 
     </TableLayout>
 
     <Button
-        android:id="@+id/clientUpload"
+        android:id="@+id/artUpload"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/green"
-        android:text="@string/editar" />
+        android:text="@string/crear" />
 
 
     <Button
-        android:id="@+id/clientCancel"
+        android:id="@+id/artCancel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/blue"

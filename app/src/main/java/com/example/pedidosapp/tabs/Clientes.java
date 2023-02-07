@@ -19,7 +19,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.pedidosapp.R;
-import com.example.pedidosapp.clientsLogic.Adapter;
+import com.example.pedidosapp.clientsLogic.AdapterClient;
 import com.example.pedidosapp.clientsLogic.Client;
 import com.example.pedidosapp.clientsLogic.ClientCreation;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -29,8 +29,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.ref.Reference;
 import java.util.ArrayList;
+import java.util.Objects;
 
 
 public class Clientes extends Fragment {
@@ -45,7 +45,7 @@ public class Clientes extends Fragment {
     Dialog createDialog;
     RecyclerView recyclerView;
     DatabaseReference database;
-    Adapter adapter;
+    AdapterClient adapterClient;
     public static ArrayList<Client> list;
 
 
@@ -59,8 +59,7 @@ public class Clientes extends Fragment {
 
         // Conexion con UI
         create = view.findViewById(R.id.clientCreate);
-        delete = view.findViewById(R.id.clientDelete);
-        edit = view.findViewById(R.id.clientEdit);
+
 
 
         // Refresh Swipe
@@ -68,7 +67,7 @@ public class Clientes extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                adapter.notifyDataSetChanged();
+                adapterClient.notifyDataSetChanged();
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -85,8 +84,8 @@ public class Clientes extends Fragment {
 
 
         list = new ArrayList<>();
-        adapter = new Adapter(getContext(), list);
-        recyclerView.setAdapter(adapter);
+        adapterClient = new AdapterClient(getContext(), list);
+        recyclerView.setAdapter(adapterClient);
 
 
         createDialog = new Dialog(getContext());
@@ -101,7 +100,7 @@ public class Clientes extends Fragment {
                     Client client = dataSnapshot.getValue(Client.class);
                     list.add(client);
                 }
-                adapter.notifyDataSetChanged();
+                adapterClient.notifyDataSetChanged();
 
             }
             @Override

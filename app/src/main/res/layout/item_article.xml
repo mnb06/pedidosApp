@@ -29,7 +29,7 @@
                     android:textStyle="bold"/>
 
             <TextView
-                android:id="@+id/clientName"
+                android:id="@+id/artName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="nombre"
@@ -45,15 +45,15 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Encargado: "
+                android:text="Stock: "
                 android:textSize="26sp"
                 android:textStyle="bold"/>
 
             <TextView
-                android:id="@+id/clientEncargado"
+                android:id="@+id/artStock"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="encargado"
+                android:text="stock"
                 android:textSize="23sp"/>
         </LinearLayout>
 
@@ -66,15 +66,16 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Direccion: "
+                android:text="Stock Minimo: "
+
                 android:textSize="26sp"
                 android:textStyle="bold"/>
 
             <TextView
-                android:id="@+id/clientDireccion"
+                android:id="@+id/artStockMin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="direccion"
+                android:text="stock min"
                 android:textSize="23sp"/>
 
         </LinearLayout>
@@ -84,7 +85,7 @@
             android:layout_height="match_parent">
 
             <Button
-                android:id="@+id/clientDelete"
+                android:id="@+id/artDelete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="40dp"
@@ -94,15 +95,15 @@
                 app:layout_constraintStart_toStartOf="parent" />
 
             <Button
-                android:id="@+id/clientEdit"
+                android:id="@+id/artEdit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Editar"
                 android:backgroundTint="@color/orange"
+                android:text="Editar"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.433"
-                app:layout_constraintStart_toEndOf="@+id/clientDelete" />
+                app:layout_constraintStart_toEndOf="@+id/artDelete" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
