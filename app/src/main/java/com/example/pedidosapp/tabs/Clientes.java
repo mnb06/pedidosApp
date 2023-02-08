@@ -93,6 +93,7 @@ public class Clientes extends Fragment {
 
 
         database.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
