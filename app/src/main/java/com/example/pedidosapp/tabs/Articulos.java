@@ -33,7 +33,6 @@ import java.util.ArrayList;
 public class Articulos extends Fragment {
 
 
-    private FloatingActionButton create;
     private Button edit,delete, upload;
 
     private TextView options;
@@ -55,7 +54,7 @@ public class Articulos extends Fragment {
         View view = inflater.inflate(R.layout.fragment_articulos, container, false);
 
         // Conexion con UI
-        create = view.findViewById(R.id.artCreate);
+        FloatingActionButton create = view.findViewById(R.id.artCreate);
 
 
         // Refresh Swipe
