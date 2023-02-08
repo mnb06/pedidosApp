@@ -45,7 +45,6 @@ public class ClientCreation extends AppCompatActivity {
 
         mRootReference = FirebaseDatabase.getInstance().getReference();
 
-
     }
 
     public void uploadClient(){

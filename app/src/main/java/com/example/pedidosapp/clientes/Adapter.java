@@ -44,7 +44,9 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
-        TextView nombre, encargado, direccion;
+        public TextView nombre;
+        TextView encargado;
+        TextView direccion;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 

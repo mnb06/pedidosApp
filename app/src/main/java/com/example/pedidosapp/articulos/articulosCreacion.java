@@ -31,51 +31,46 @@ public class articulosCreacion extends AppCompatActivity {
 
     private FirebaseDatabase database;
     DatabaseReference mRootReference;
-    DatabaseReference myRef;
-    FirebaseAuth auth;
 
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_articulos_creacion);
+        //Enlace de UI
         upload = findViewById(R.id.articuloUpload);
         nombre = findViewById(R.id.nombreArticulo);
+
         upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 uploadArticulo();
             }
         });
-
         mRootReference = FirebaseDatabase.getInstance().getReference();
     }
-
-    public void uploadArticulo(){
+    public void uploadArticulo() {
         String name = nombre.getText().toString();
+
         // Llamada al metodo que sube los datos a la db
         uploadData(name);
     }
-
     private void uploadData(String name) {
-
         // Hash donde se almacenan los datos a subir
         Map<String, Object> datosArticulos = new HashMap<>();
 
         // Insercion de los datos en el hash
         datosArticulos.put("nombre", name);
 
-        // Inserta
+        // Se crea un hijo (similar a una tabla) y se ingresan los valores
         mRootReference.child("Articulos").push().setValue(datosArticulos);
 
-        //Avisa exito y regresa
-
+        // Notificacion Toast para mostrar si el cliente fue cargado
         Toast.makeText(getApplicationContext(), "Artículo cargado exitosamente.",
-                        Toast.LENGTH_LONG).show();
+                Toast.LENGTH_LONG).show();
         Intent i = new Intent(this, Inicio.class);
         startActivity(i);
     }
-
 
     public void volverInicio(View view){
         Intent i = new Intent(this, Inicio.class);

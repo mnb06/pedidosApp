@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.pedidosapp.articulos.Articulo;
 import com.example.pedidosapp.articulos.articulosCreacion;
@@ -37,7 +38,7 @@ public class Articulos extends Fragment {
     @SuppressLint("MissingInflatedId")
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater,@Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_articulos, container, false);
 
@@ -55,6 +56,7 @@ public class Articulos extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+
         list = new ArrayList<>();
         adapter = new AdapterArt(getContext(), list);
         recyclerView.setAdapter(adapter);
@@ -68,6 +70,7 @@ public class Articulos extends Fragment {
                     list.add(articulo);
                 }
                 adapter.notifyDataSetChanged();
+
             }
 
             @Override
@@ -90,5 +93,5 @@ public class Articulos extends Fragment {
 
         return view;
     }
-
 }
+
