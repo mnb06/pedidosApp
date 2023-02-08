@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:padding="10dp">
+
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Cliente:"
+                android:textSize="18sp"
+                android:gravity="center"/>
+
+            <Spinner
+                android:id="@+id/pedidoCliente"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Fecha:"
+                android:textSize="18sp"
+                android:gravity="center"/>
+
+
+            <TextView
+                android:id="@+id/fechaElegida"
+                android:layout_width="112dp"
+                android:layout_height="match_parent"
+                android:text=""
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/pedidoFecha"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/purple_500"
+                android:ems="10"
+                android:text="Elegir" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Articulos:"
+                android:textSize="18sp"
+                android:gravity="center"/>
+
+            <EditText
+                android:id="@+id/pedidoArticulo"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:ems="10"
+                android:inputType="text"/>
+        </TableRow>
+
+    </TableLayout>
+
+    <Button
+        android:id="@+id/pedidoUpload"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/green"
+        android:text="@string/crear" />
+
+
+    <Button
+        android:id="@+id/pedidoCancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/blue"
+        android:text="@string/cancelar" />
+
+</LinearLayout>
