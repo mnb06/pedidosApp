@@ -70,13 +70,12 @@ public class PedidoCreation extends AppCompatActivity {
                 int day = calendar.get(Calendar.DAY_OF_MONTH);
                 int month = calendar.get(Calendar.MONTH);
                 int year = calendar.get(Calendar.YEAR);
-
                 dpd = new DatePickerDialog(PedidoCreation.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int d, int m, int y) {
-                        fechaElegida.setText(d + "/" + (m+1) + "/" + y);
+                        fechaElegida.setText(y + "/" + (m+1) + "/" + d);
                     }
-                } , day, month, year);
+                } ,year,month,day);
                 dpd.show();
             }
         });
