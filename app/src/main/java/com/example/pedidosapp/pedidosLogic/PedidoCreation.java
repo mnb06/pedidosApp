@@ -4,21 +4,16 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.pedidosapp.R;
-import com.example.pedidosapp.articleLogic.Articulo;
-import com.example.pedidosapp.clientsLogic.Client;
-import com.example.pedidosapp.tabs.Clientes;
 import com.example.pedidosapp.tabs.Pedidos;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -26,11 +21,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.time.LocalDate;
-import java.time.Year;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,7 +65,8 @@ public class PedidoCreation extends AppCompatActivity {
                 dpd = new DatePickerDialog(PedidoCreation.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int d, int m, int y) {
-                        fechaElegida.setText(y + "/" + (m+1) + "/" + d);
+                        String fecha = y + "-" + (m+1) + "-" + d;
+                        fechaElegida.setText(fecha);
                     }
                 } ,year,month,day);
                 dpd.show();
@@ -108,7 +101,7 @@ public class PedidoCreation extends AppCompatActivity {
         //datosPedido.put("Articulos", direction);
 
         // Se crea un hijo (similar a una tabla) y se ingresan los valores
-        String id = client;
+        String id = client + fecha;
         ref.child("Pedidos").child(id).setValue(datosPedido);
 
         // Notificacion Toast para mostrar si el pedido fue cargado

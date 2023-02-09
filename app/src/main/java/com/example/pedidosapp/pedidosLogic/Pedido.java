@@ -8,18 +8,18 @@ import java.util.List;
 
 public class Pedido {
 
-    private String cliente;
+    private Client cliente;
     private List<Articulo> listArticulos;
     private Date fecha;
 
     public Pedido() {
     }
 
-    public String getCliente() {
+    public Client getCliente() {
         return cliente;
     }
 
-    public void setCliente(String cliente) {
+    public void setCliente(Client cliente) {
         this.cliente = cliente;
     }
 

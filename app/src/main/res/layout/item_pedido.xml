@@ -21,15 +21,15 @@
             android:layout_gravity="center_vertical"
             android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Cliente: "
-                    android:textSize="26sp"
-                    android:textStyle="bold"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cliente: "
+                android:textSize="26sp"
+                android:textStyle="bold"/>
 
             <TextView
-                android:id="@+id/pedidoCliente"
+                android:id="@+id/pedidoClient"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="cliente"
