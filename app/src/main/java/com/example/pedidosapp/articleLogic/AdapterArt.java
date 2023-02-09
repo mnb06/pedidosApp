@@ -16,7 +16,6 @@ import com.example.pedidosapp.R;
 
 import java.util.ArrayList;
 
-import com.example.pedidosapp.clientsLogic.ClientEdit;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
