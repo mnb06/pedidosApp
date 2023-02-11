@@ -23,7 +23,6 @@ import java.util.ArrayList;
 public class AdapterPedido extends RecyclerView.Adapter<AdapterPedido.MyViewHolder> {
 
     Context context;
-    DatabaseReference databaseReference;
 
     ArrayList<Pedido> list;
 

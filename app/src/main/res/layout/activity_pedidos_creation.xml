@@ -75,26 +75,32 @@
                 android:textSize="18sp"
                 android:gravity="center"/>
 
-            <Spinner
-                android:id="@+id/pedidoArticulo"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
 
-            <Button
-                android:id="@+id/addArticulo"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/purple_500"
-                android:ems="10"
-                android:text="Agregar" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/listViewArticulosSeleccionados"
+                android:layout_width="match_parent" />
+
         </TableRow>
 
     </TableLayout>
 
     <Button
+        android:id="@+id/addArticulo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:backgroundTint="@color/purple_500"
+        android:text="Agregar articulo" />
+
+    <Button
         android:id="@+id/pedidoUpload"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:backgroundTint="@color/green"
         android:text="@string/crear" />
 
@@ -102,7 +108,7 @@
     <Button
         android:id="@+id/pedidoCancel"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:backgroundTint="@color/blue"
         android:text="@string/cancelar" />
 

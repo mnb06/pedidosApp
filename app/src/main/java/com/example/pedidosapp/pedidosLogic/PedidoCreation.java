@@ -2,8 +2,10 @@ package com.example.pedidosapp.pedidosLogic;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -14,6 +16,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.pedidosapp.R;
+import com.example.pedidosapp.articleLogic.Articulo;
+import com.example.pedidosapp.articleLogic.ArticuloEdit;
+import com.example.pedidosapp.pedidosLogic.articles.AddArticle;
 import com.example.pedidosapp.tabs.Pedidos;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -29,13 +34,17 @@ import java.util.Map;
 
 public class PedidoCreation extends AppCompatActivity {
 
-    Spinner cliente, articulo;
+    Spinner cliente;
     Button fecha, upload, cancel, add;
     TextView fechaElegida;
     Calendar calendar;
 
     DatePickerDialog dpd;
     DatabaseReference ref;
+
+    RecyclerView listView;
+
+    ArrayList<Articulo> articles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +53,10 @@ public class PedidoCreation extends AppCompatActivity {
 
         // Conexion UI
         cliente = findViewById(R.id.pedidoCliente);
-        articulo = findViewById(R.id.pedidoArticulo);
         fecha = findViewById(R.id.pedidoFecha);
+        listView = findViewById(R.id.listViewArticulosSeleccionados);
         fechaElegida = findViewById(R.id.fechaElegida);
+        add = findViewById(R.id.addArticulo);
         upload = (Button) findViewById(R.id.pedidoUpload);
         cancel = (Button) findViewById(R.id.pedidoCancel);
         //add = (Button) findViewById(R.id.addArticulo);
@@ -54,7 +64,6 @@ public class PedidoCreation extends AppCompatActivity {
         // Instancia de la db
         ref = FirebaseDatabase.getInstance().getReference();
         loadSpinnerClientes();
-        loadSpinnerArticulos();
 
 
         fecha.setOnClickListener(new View.OnClickListener() {
@@ -73,6 +82,14 @@ public class PedidoCreation extends AppCompatActivity {
                     }
                 } ,year,month,day);
                 dpd.show();
+            }
+        });
+
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), AddArticle.class);
+                startActivity(intent);
             }
         });
 
@@ -154,25 +171,5 @@ public class PedidoCreation extends AppCompatActivity {
         });
     }
 
-    private void loadSpinnerArticulos() {
-        List<String> articulos = new ArrayList<>();
-        ref.child("Articulos").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()){
-                    for (DataSnapshot ds : snapshot.getChildren()){
-                        String nombre = (String) ds.child("nombre").getValue();
-                        articulos.add(nombre);
-                    }
-                    ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(PedidoCreation.this, android.R.layout.simple_dropdown_item_1line, articulos);
-                    articulo.setAdapter(arrayAdapter);
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
-
 }
+
