@@ -10,7 +10,7 @@ public class Pedido {
 
     private Client cliente;
     private List<Articulo> listArticulos;
-    private Date fecha;
+    private String fecha;
 
     public Pedido() {
     }
@@ -31,11 +31,11 @@ public class Pedido {
         this.listArticulos = listArticulos;
     }
 
-    public Date getFecha() {
+    public String getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(String fecha) {
         this.fecha = fecha;
     }
 

@@ -43,8 +43,8 @@ public class AdapterPedido extends RecyclerView.Adapter<AdapterPedido.MyViewHold
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
         Pedido pedido = list.get(position);
-//        holder.cliente.setText(pedido.getCliente().getNombre());
-//        holder.fecha.setText(pedido.getFecha().toString());
+        holder.cliente.setText(pedido.getCliente());
+        holder.fecha.setText(pedido.getFecha());
         //holder.articulo.setText(pedido.getListArticulos());
         holder.setIsRecyclable(false);
 
@@ -54,7 +54,7 @@ public class AdapterPedido extends RecyclerView.Adapter<AdapterPedido.MyViewHold
             public void onClick(View view) {
                 FirebaseDatabase db = FirebaseDatabase.getInstance();
                 DatabaseReference ref = db.getReference("Pedidos");
-                ref.child(pedido.getCliente().getNombre()).setValue(null);
+                ref.child(pedido.getCliente()).setValue(null);
                 Toast.makeText(context.getApplicationContext(), "Eliminado satisfactoriamente.",
                         Toast.LENGTH_LONG).show();
                 list.clear();
@@ -66,8 +66,8 @@ public class AdapterPedido extends RecyclerView.Adapter<AdapterPedido.MyViewHold
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, PedidoEdit.class);
-                intent.putExtra("cliente", pedido.getCliente().getNombre());
-                intent.putExtra("fecha", pedido.getFecha().toString());
+                intent.putExtra("cliente", pedido.getCliente());
+                intent.putExtra("fecha", pedido.getFecha());
                 //intent.putExtra("articulos", client.getDireccion());
                 context.startActivity(intent);
             }
@@ -90,9 +90,9 @@ public class AdapterPedido extends RecyclerView.Adapter<AdapterPedido.MyViewHold
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
-//            cliente = itemView.findViewById(R.id.pedidoClient);
-//            fecha = itemView.findViewById(R.id.pedidoCliente);
-            articulo = itemView.findViewById(R.id.pedidoArticulo);
+            cliente = itemView.findViewById(R.id.pedidoCliente);
+            fecha = itemView.findViewById(R.id.pedidoFecha);
+            //articulo = itemView.findViewById(R.id.pedidoArticulo);
             delete = itemView.findViewById(R.id.pedidoDelete);
             edit = itemView.findViewById(R.id.pedidoEdit);
 
