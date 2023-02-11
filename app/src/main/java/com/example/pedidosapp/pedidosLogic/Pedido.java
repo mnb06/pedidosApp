@@ -1,34 +1,23 @@
 package com.example.pedidosapp.pedidosLogic;
 
 import com.example.pedidosapp.articleLogic.Articulo;
-import com.example.pedidosapp.clientsLogic.Client;
-
 import java.util.Date;
 import java.util.List;
 
 public class Pedido {
 
-    private Client cliente;
-    private List<Articulo> listArticulos;
-    private String fecha;
+    private String cliente, fecha;
+    //private List<Articulo> listArticulos;
 
     public Pedido() {
     }
 
-    public Client getCliente() {
+    public String getCliente() {
         return cliente;
     }
 
-    public void setCliente(Client cliente) {
+    public void setCliente(String cliente) {
         this.cliente = cliente;
-    }
-
-    public List<Articulo> getListArticulos() {
-        return listArticulos;
-    }
-
-    public void setListArticulos(List<Articulo> listArticulos) {
-        this.listArticulos = listArticulos;
     }
 
     public String getFecha() {
@@ -39,8 +28,5 @@ public class Pedido {
         this.fecha = fecha;
     }
 
-    public void addArticulo(Articulo articulo){
-        listArticulos.add(articulo);
-    }
 
 }

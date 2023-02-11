@@ -37,7 +37,6 @@ public class Articulos extends Fragment {
 
     private TextView options;
 
-    SwipeRefreshLayout swipeRefreshLayout;
     Dialog createDialog;
     RecyclerView recyclerView;
     DatabaseReference database;
@@ -56,16 +55,6 @@ public class Articulos extends Fragment {
         // Conexion con UI
         FloatingActionButton create = view.findViewById(R.id.artCreate);
 
-
-        // Refresh Swipe
-        swipeRefreshLayout = view.findViewById(R.id.artRefresh);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                adapterArt.notifyDataSetChanged();
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        });
 
         // Lista dinamica
         recyclerView = view.findViewById(R.id.listViewArt);

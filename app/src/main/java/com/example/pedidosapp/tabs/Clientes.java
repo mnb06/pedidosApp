@@ -40,7 +40,6 @@ public class Clientes extends Fragment {
 
     private TextView options;
 
-    SwipeRefreshLayout swipeRefreshLayout;
     Dialog createDialog;
     RecyclerView recyclerView;
     DatabaseReference database;
@@ -60,16 +59,6 @@ public class Clientes extends Fragment {
         create = view.findViewById(R.id.clientCreate);
 
 
-
-        // Refresh Swipe
-        swipeRefreshLayout = view.findViewById(R.id.clientRefresh);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                adapterClient.notifyDataSetChanged();
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        });
 
         // Lista dinamica
         recyclerView = view.findViewById(R.id.listViewClient);

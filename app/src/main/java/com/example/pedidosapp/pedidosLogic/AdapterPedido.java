@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pedidosapp.R;
+import com.example.pedidosapp.articleLogic.ArticuloEdit;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -35,44 +36,44 @@ public class AdapterPedido extends RecyclerView.Adapter<AdapterPedido.MyViewHold
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(context).inflate(R.layout.item_pedido, parent, false);
+        View v = LayoutInflater.from(context).inflate(R.layout.item_order, parent, false);
         return new MyViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
-        Pedido pedido = list.get(position);
-        holder.cliente.setText(pedido.getCliente());
-        holder.fecha.setText(pedido.getFecha());
-        //holder.articulo.setText(pedido.getListArticulos());
-        holder.setIsRecyclable(false);
+            Pedido pedido = list.get(position);
+            holder.cliente.setText(pedido.getCliente());
+            holder.fecha.setText(pedido.getFecha());
+            //holder.stockMin.setText(pe.getListArticulos());
+            holder.setIsRecyclable(false);
 
+            holder.delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    FirebaseDatabase db = FirebaseDatabase.getInstance();
+                    DatabaseReference ref = db.getReference("Pedidos");
+                    String id = pedido.getCliente() + pedido.getFecha();
+                    ref.child(id).setValue(null);
+                    Toast.makeText(context.getApplicationContext(), "Eliminado satisfactoriamente.",
+                            Toast.LENGTH_LONG).show();
+                    list.clear();
+                }
+            });
 
-        holder.delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FirebaseDatabase db = FirebaseDatabase.getInstance();
-                DatabaseReference ref = db.getReference("Pedidos");
-                ref.child(pedido.getCliente()).setValue(null);
-                Toast.makeText(context.getApplicationContext(), "Eliminado satisfactoriamente.",
-                        Toast.LENGTH_LONG).show();
-                list.clear();
-            }
-        });
+            holder.edit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, ArticuloEdit.class);
+                    intent.putExtra("cliente", pedido.getCliente());
+                    intent.putExtra("fecha", pedido.getFecha());
+                    //intent.putExtra("stockMin", pe.getStockMin());
+                    context.startActivity(intent);
+                }
+            });
+        }
 
-
-        holder.edit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, PedidoEdit.class);
-                intent.putExtra("cliente", pedido.getCliente());
-                intent.putExtra("fecha", pedido.getFecha());
-                //intent.putExtra("articulos", client.getDireccion());
-                context.startActivity(intent);
-            }
-        });
-    }
 
 
     @Override
@@ -85,19 +86,20 @@ public class AdapterPedido extends RecyclerView.Adapter<AdapterPedido.MyViewHold
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView cliente, fecha, articulo;
+        TextView cliente, fecha, articulos;
         Button delete, edit;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            cliente = itemView.findViewById(R.id.pedidoCliente);
-            fecha = itemView.findViewById(R.id.pedidoFecha);
-            //articulo = itemView.findViewById(R.id.pedidoArticulo);
-            delete = itemView.findViewById(R.id.pedidoDelete);
-            edit = itemView.findViewById(R.id.pedidoEdit);
+            cliente = itemView.findViewById(R.id.orderClient);
+            fecha = itemView.findViewById(R.id.orderDate);
+            //articulos = itemView.findViewById(R.id.artStockMin);
+            delete = itemView.findViewById(R.id.orderDelete);
+            edit = itemView.findViewById(R.id.orderEdit);
 
 
         }
     }
 }
+
 

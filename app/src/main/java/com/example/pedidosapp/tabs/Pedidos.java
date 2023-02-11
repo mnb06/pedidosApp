@@ -38,11 +38,11 @@ public class Pedidos extends Fragment {
 
     private TextView options;
 
-    SwipeRefreshLayout swipeRefreshLayout;
     Dialog createDialog;
     RecyclerView recyclerView;
     DatabaseReference database;
     AdapterPedido adapterPedido;
+
     public static ArrayList<Pedido> list;
 
 
@@ -58,17 +58,6 @@ public class Pedidos extends Fragment {
         // Conexion con UI
         FloatingActionButton create = view.findViewById(R.id.pedidoCreate);
 
-
-        // Refresh Swipe
-        swipeRefreshLayout = view.findViewById(R.id.pedidosRefresh);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @SuppressLint("NotifyDataSetChanged")
-            @Override
-            public void onRefresh() {
-                adapterPedido.notifyDataSetChanged();
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        });
 
         // Lista dinamica
         recyclerView = view.findViewById(R.id.listViewPedidos);
@@ -89,15 +78,17 @@ public class Pedidos extends Fragment {
         createDialog = new Dialog(getContext());
 
 
-
+        // Añade a la lista los elementos cargados en la bd
         database.addValueEventListener(new ValueEventListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
+                // Bucle que carga todos los pedidos en la lista
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()){
                     Pedido pedido = dataSnapshot.getValue(Pedido.class);
                     list.add(pedido);
+
                 }
                 adapterPedido.notifyDataSetChanged();
 
@@ -107,7 +98,7 @@ public class Pedidos extends Fragment {
         });
 
 
-        // Asignaciones a los botones
+        // Asignacion al boton create
         create.setOnClickListener(new View.OnClickListener() {
 
             // Llamada a la actividad para crear articulos
