@@ -21,18 +21,18 @@
             android:layout_gravity="center_vertical"
             android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Cliente: "
-                android:textSize="26sp"
-                android:textStyle="bold"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cliente: "
+                    android:textSize="26sp"
+                    android:textStyle="bold"/>
 
             <TextView
-                android:id="@+id/pedidoClient"
+                android:id="@+id/orderClient"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="cliente"
+                android:text="client"
                 android:textSize="23sp" />
         </LinearLayout>
 
@@ -50,10 +50,10 @@
                 android:textStyle="bold"/>
 
             <TextView
-                android:id="@+id/pedidoFecha"
+                android:id="@+id/orderDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="fecha"
+                android:text="date"
                 android:textSize="23sp"/>
         </LinearLayout>
 
@@ -71,10 +71,10 @@
                 android:textStyle="bold"/>
 
             <TextView
-                android:id="@+id/pedidoArticulo"
+                android:id="@+id/orderArticles"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="articulo"
+                android:text="direccion"
                 android:textSize="23sp"/>
 
         </LinearLayout>
@@ -84,7 +84,7 @@
             android:layout_height="match_parent">
 
             <Button
-                android:id="@+id/pedidoDelete"
+                android:id="@+id/orderDelete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="40dp"
@@ -94,7 +94,7 @@
                 app:layout_constraintStart_toStartOf="parent" />
 
             <Button
-                android:id="@+id/pedidoEdit"
+                android:id="@+id/orderEdit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Editar"
@@ -102,7 +102,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.433"
-                app:layout_constraintStart_toEndOf="@+id/pedidoDelete" />
+                app:layout_constraintStart_toEndOf="@+id/orderDelete" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
