@@ -35,7 +35,7 @@ public class AdapterPedido extends RecyclerView.Adapter<AdapterPedido.MyViewHold
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(context).inflate(R.layout.item_client, parent, false);
+        View v = LayoutInflater.from(context).inflate(R.layout.item_pedido, parent, false);
         return new MyViewHolder(v);
     }
 
@@ -44,7 +44,7 @@ public class AdapterPedido extends RecyclerView.Adapter<AdapterPedido.MyViewHold
 
         Pedido pedido = list.get(position);
         holder.cliente.setText(pedido.getCliente());
-        holder.fecha.setText(pedido.getFecha().toString());
+        holder.fecha.setText(pedido.getFecha());
         //holder.articulo.setText(pedido.getListArticulos());
         holder.setIsRecyclable(false);
 
@@ -67,7 +67,7 @@ public class AdapterPedido extends RecyclerView.Adapter<AdapterPedido.MyViewHold
             public void onClick(View view) {
                 Intent intent = new Intent(context, PedidoEdit.class);
                 intent.putExtra("cliente", pedido.getCliente());
-                intent.putExtra("fecha", pedido.getFecha().toString());
+                intent.putExtra("fecha", pedido.getFecha());
                 //intent.putExtra("articulos", client.getDireccion());
                 context.startActivity(intent);
             }
@@ -92,7 +92,7 @@ public class AdapterPedido extends RecyclerView.Adapter<AdapterPedido.MyViewHold
 
             cliente = itemView.findViewById(R.id.pedidoCliente);
             fecha = itemView.findViewById(R.id.pedidoFecha);
-            articulo = itemView.findViewById(R.id.pedidoArticulo);
+            //articulo = itemView.findViewById(R.id.pedidoArticulo);
             delete = itemView.findViewById(R.id.pedidoDelete);
             edit = itemView.findViewById(R.id.pedidoEdit);
 

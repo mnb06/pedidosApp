@@ -37,8 +37,8 @@ import java.util.Map;
 
 public class PedidoCreation extends AppCompatActivity {
 
-    Spinner cliente;
-    Button fecha, upload, cancel;
+    Spinner cliente, articulo;
+    Button fecha, upload, cancel, add;
     TextView fechaElegida;
     Calendar calendar;
 
@@ -52,14 +52,17 @@ public class PedidoCreation extends AppCompatActivity {
 
         // Conexion UI
         cliente = findViewById(R.id.pedidoCliente);
+        articulo = findViewById(R.id.pedidoArticulo);
         fecha = findViewById(R.id.pedidoFecha);
         fechaElegida = findViewById(R.id.fechaElegida);
         upload = (Button) findViewById(R.id.pedidoUpload);
         cancel = (Button) findViewById(R.id.pedidoCancel);
+        //add = (Button) findViewById(R.id.addArticulo);
 
         // Instancia de la db
         ref = FirebaseDatabase.getInstance().getReference();
         loadSpinner();
+        loadSpinnerArticulos();
 
 
         fecha.setOnClickListener(new View.OnClickListener() {
@@ -73,7 +76,8 @@ public class PedidoCreation extends AppCompatActivity {
                 dpd = new DatePickerDialog(PedidoCreation.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int d, int m, int y) {
-                        fechaElegida.setText(y + "/" + (m+1) + "/" + d);
+                        m++;
+                        fechaElegida.setText(y + "/" + m + "/" + d);
                     }
                 } ,year,month,day);
                 dpd.show();
@@ -95,8 +99,24 @@ public class PedidoCreation extends AppCompatActivity {
             }
         });
 
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
+        /* llamada al metodo para agregar articulos
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        */
 
     }
+
 
     private void uploadData(String client, String fecha) {
         // Hash donde se almacenan los datos a subir
@@ -141,4 +161,26 @@ public class PedidoCreation extends AppCompatActivity {
             }
         });
     }
+
+    private void loadSpinnerArticulos() {
+        List<String> articulos = new ArrayList<>();
+        ref.child("Articulos").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    for (DataSnapshot ds : snapshot.getChildren()){
+                        String nombre = ds.child("nombre").getValue().toString();
+                        articulos.add(nombre);
+                    }
+                    ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(PedidoCreation.this, android.R.layout.simple_dropdown_item_1line, articulos);
+                    articulo.setAdapter(arrayAdapter);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
 }

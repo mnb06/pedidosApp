@@ -39,12 +39,12 @@ public class Resumen extends Fragment {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int day) {
                 month ++;
-                String fechaSeleccionada = day + "-" + month + "-" + year;
+                String fechaSeleccionada = day + "/" + month + "/" + year;
                 fecha.setText(fechaSeleccionada);
             }
         });
 
-        
+
 
         return view;
     }
