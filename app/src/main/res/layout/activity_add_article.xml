@@ -15,16 +15,16 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/articleUpload"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="489dp"
+        android:id="@+id/pedidoUpload"
+        android:layout_width="241dp"
+        android:layout_height="63dp"
+
+        android:backgroundTint="@color/green"
+        android:text="Guardar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/addArticleList"
-        app:layout_constraintVertical_bias="0.0"
-        android:text="Cargar"/>
+        app:layout_constraintVertical_bias="0.579" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

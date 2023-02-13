@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -45,17 +45,26 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Stock:"
+                android:text="Cantidad:"
                 android:textSize="26sp"
                 android:textStyle="bold" />
 
             <EditText
+                android:layout_marginLeft="10dp"
                 android:id="@+id/articleStock"
                 android:layout_width="106dp"
                 android:layout_height="wrap_content"
                 android:text="1"
                 android:textAlignment="center"
                 android:textSize="23sp" />
+
+            <TextView
+                android:layout_marginLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="KG"
+                android:textStyle="bold"
+                android:textSize="20sp"/>
         </LinearLayout>
 
 

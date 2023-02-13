@@ -8,6 +8,11 @@ public class Articulo {
     public Articulo() {
     }
 
+    public Articulo(String nombre, String stock){
+        this.nombre = nombre;
+        this.stock = stock;
+    }
+
     public String getNombre() {
         return nombre;
     }
