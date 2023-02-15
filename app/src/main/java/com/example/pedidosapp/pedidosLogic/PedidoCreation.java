@@ -57,7 +57,7 @@ public class PedidoCreation extends AppCompatActivity {
         fecha = findViewById(R.id.pedidoFecha);
         fechaElegida = findViewById(R.id.fechaElegida);
         next = findViewById(R.id.pedidoNext);
-        upload = findViewById(R.id.pedidoUpload);
+        //upload = findViewById(R.id.pedidoUpload);
         cancel = findViewById(R.id.pedidoCancel);
 
 
@@ -78,7 +78,7 @@ public class PedidoCreation extends AppCompatActivity {
                     @SuppressLint("SetTextI18n")
                     @Override
                     public void onDateSet(DatePicker datePicker, int d, int m, int y) {
-                        fechaElegida.setText(y + "-" + m + "-" + d);
+                        fechaElegida.setText(y + "-" + (m+1) + "-" + d);
                     }
                 }, year, month, day);
                 dpd.show();

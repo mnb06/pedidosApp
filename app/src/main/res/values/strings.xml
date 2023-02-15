@@ -25,7 +25,7 @@
 
     <!-- Resumen-->
     <string name="pedidosCalendario">Pedidos del día: </string>
-    <string name="fecha">dd/mm/aaaa</string>
+    <string name="fecha">dd-mm-aaaa</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
