@@ -37,7 +37,6 @@ public class Articulos extends Fragment {
 
     private TextView options;
 
-    Dialog createDialog;
     RecyclerView recyclerView;
     DatabaseReference database;
     AdapterArt adapterArt;
@@ -71,8 +70,6 @@ public class Articulos extends Fragment {
         adapterArt = new AdapterArt(getContext(), list);
         recyclerView.setAdapter(adapterArt);
 
-
-        createDialog = new Dialog(getContext());
 
 
 

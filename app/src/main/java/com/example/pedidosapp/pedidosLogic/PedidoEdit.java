@@ -56,7 +56,8 @@ public class PedidoEdit extends AppCompatActivity {
         mRootReference = FirebaseDatabase.getInstance().getReference();
 
         Intent intent = getIntent();
-        String id = intent.getStringExtra("name");
+        String name = intent.getStringExtra("cliente");
+        String fe = intent.getStringExtra("fecha");
 
         // Conexion UI
         cliente = findViewById(R.id.pedidoCliente);
@@ -68,7 +69,7 @@ public class PedidoEdit extends AppCompatActivity {
         add = (Button) findViewById(R.id.addArticulo);
 
         // Instancia de la db
-        ref = FirebaseDatabase.getInstance().getReference();
+        ref = FirebaseDatabase.getInstance().getReference("Pedidos");
         loadSpinner();
         loadSpinnerArticulos();
 

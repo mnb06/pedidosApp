@@ -14,8 +14,11 @@
         android:theme="@style/Theme.PedidosApp"
         tools:targetApi="31">
         <activity
+            android:name=".pedidosLogic.PedidoDetail"
+            android:exported="false" />
+        <activity
             android:name=".pedidosLogic.articles.AddArticle"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".pedidosLogic.PedidoCreation"
             android:exported="false" />

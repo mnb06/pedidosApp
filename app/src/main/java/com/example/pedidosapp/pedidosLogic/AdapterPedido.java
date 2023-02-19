@@ -3,9 +3,11 @@ package com.example.pedidosapp.pedidosLogic;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,12 +50,25 @@ public class AdapterPedido extends RecyclerView.Adapter<AdapterPedido.MyViewHold
             //holder.stockMin.setText(pe.getListArticulos());
             holder.setIsRecyclable(false);
 
+
+            holder.view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, PedidoDetail.class);
+                    intent.putExtra("cliente", pedido.getCliente());
+                    intent.putExtra("fecha", pedido.getFecha());
+                    context.startActivity(intent);
+                }
+            });
+
+
+
             holder.delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     FirebaseDatabase db = FirebaseDatabase.getInstance();
                     DatabaseReference ref = db.getReference("Pedidos");
-                    String id = pedido.getCliente() + pedido.getFecha();
+                    String id = pedido.getCliente() + "_" + pedido.getFecha();
                     ref.child(id).setValue(null);
                     Toast.makeText(context.getApplicationContext(), "Eliminado satisfactoriamente.",
                             Toast.LENGTH_LONG).show();
@@ -64,15 +79,13 @@ public class AdapterPedido extends RecyclerView.Adapter<AdapterPedido.MyViewHold
             holder.edit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(context, ArticuloEdit.class);
+                    Intent intent = new Intent(context, PedidoEdit.class);
                     intent.putExtra("cliente", pedido.getCliente());
                     intent.putExtra("fecha", pedido.getFecha());
-                    //intent.putExtra("stockMin", pe.getStockMin());
                     context.startActivity(intent);
                 }
             });
         }
-
 
 
     @Override
@@ -86,13 +99,15 @@ public class AdapterPedido extends RecyclerView.Adapter<AdapterPedido.MyViewHold
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView cliente, fecha, articulos;
-        Button delete, edit;
+        Button view, complete, delete, edit;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
             cliente = itemView.findViewById(R.id.orderClient);
             fecha = itemView.findViewById(R.id.orderDate);
             //articulos = itemView.findViewById(R.id.artStockMin);
+            view = itemView.findViewById(R.id.viewArticles);
+            complete = itemView.findViewById(R.id.orderComplete);
             delete = itemView.findViewById(R.id.orderDelete);
             edit = itemView.findViewById(R.id.orderEdit);
 

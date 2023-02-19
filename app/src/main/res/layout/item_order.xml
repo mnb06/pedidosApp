@@ -70,26 +70,29 @@
                 android:textSize="26sp"
                 android:textStyle="bold"/>
 
-            <TextView
-                android:id="@+id/orderArticles"
-                android:layout_width="wrap_content"
+            <Button
+                android:id="@+id/viewArticles"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="direccion"
-                android:textSize="23sp"/>
+                android:text="Ver"
+                android:backgroundTint="@color/blue"
+                android:layout_marginLeft="5dp"/>
+
 
         </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp">
 
             <Button
                 android:id="@+id/orderDelete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:text="Eliminar"
+                android:layout_marginStart="136dp"
                 android:backgroundTint="@color/red"
+                android:text="Eliminar"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
@@ -103,6 +106,16 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.433"
                 app:layout_constraintStart_toEndOf="@+id/orderDelete" />
+
+            <Button
+                android:id="@+id/orderComplete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="11dp"
+                android:backgroundTint="@color/green"
+                android:text="Completar"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/orderDelete" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
