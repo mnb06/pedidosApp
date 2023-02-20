@@ -2,17 +2,12 @@ package com.example.pedidosapp.tabs;
 
 import static android.content.ContentValues.TAG;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,22 +17,38 @@ import android.widget.ArrayAdapter;
 import android.widget.CalendarView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 
 import com.example.pedidosapp.R;
 import com.example.pedidosapp.articleLogic.Articulo;
-import com.example.pedidosapp.clientsLogic.Client;
 import com.example.pedidosapp.pedidosLogic.Pedido;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.database.core.Context;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 
-import java.lang.reflect.Array;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
 
 
 public class Resumen extends Fragment {
@@ -52,7 +63,13 @@ public class Resumen extends Fragment {
     public static ArrayList<String> list;
     public static ArrayList<Pedido> listPedido;
 
-
+    //Gestion de permisos para el PDF
+    private final ActivityResultLauncher<String> requestPermissionLauncher = registerForActivityResult(
+            new ActivityResultContracts.RequestPermission(), aceptado -> {
+                if (aceptado) Toast.makeText(this.getContext(), "Permisos concedidos", Toast.LENGTH_SHORT).show();
+                else Toast.makeText(this.getContext(), "Permisos denegados", Toast.LENGTH_SHORT).show();
+            }
+    );
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -113,6 +130,8 @@ public class Resumen extends Fragment {
                                                     .setPositiveButton("Descargar PDF", new DialogInterface.OnClickListener() {
                                                         @Override
                                                         public void onClick(DialogInterface dialogInterface, int i) {
+                                                            verificarPermisos(view, ped, encargue);
+                                                            //crearPDF(ped, encargue);
                                                             dialogInterface.cancel();
                                                         }
                                                     })
@@ -149,6 +168,7 @@ public class Resumen extends Fragment {
         return view;
     }
 
+    //Crea la lista de articulos del pedido seleccionado
     private static String mostrarArticulos(@NonNull ArrayList<Articulo> lista) {
         String nombre;
         String cantidad;
@@ -159,6 +179,81 @@ public class Resumen extends Fragment {
             linea = linea + "\n" + nombre + " " + cantidad;
         }
         return linea;
+    }
+
+    //Metodo validador de permisos
+    private void verificarPermisos(View v, Pedido p, ArrayList<Articulo> art){
+        if(ContextCompat.checkSelfPermission(this.getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+            crearPDF(p, art);
+        }else if(ActivityCompat.shouldShowRequestPermissionRationale(this.getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+            Snackbar.make(v, "Permiso necesario para crear el archivo", Snackbar.LENGTH_INDEFINITE).setAction("OK", new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                }
+            });
+        }else{
+            requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+    }
+
+    //Creacion del PDF
+    private void crearPDF(Pedido p, ArrayList<Articulo> art){
+        try{
+            String carpeta = "/Pedidos";
+            String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + carpeta;
+            //String path = "/sdcard/download" + carpeta;
+
+            //Si no existe carpeta la crea
+            File dir = new File(path);
+            if (!dir.exists()) {
+                dir.mkdirs();
+                Toast.makeText(this.getContext(), "CARPETA CREADA", Toast.LENGTH_SHORT).show();
+            }
+
+            String nombrePDF = "Pedido de " + p.getCliente() + " (" + p.getFecha() + ").pdf";
+            File archivo = new File(dir, nombrePDF);
+            FileOutputStream fos = new FileOutputStream(archivo);
+
+            //Crea archivo
+            Document doc = new Document();
+            PdfWriter.getInstance(doc, fos);
+
+            //Estructura del documento
+            doc.open();
+
+            Paragraph titulo = new Paragraph(
+                    "Información del pedido\n\n\n\n",
+                    FontFactory.getFont("Calibri", 26, Font.BOLDITALIC, BaseColor.BLUE)
+            );
+            doc.add(titulo);
+
+            Paragraph info = new Paragraph(
+                    "Cliente: " + p.getCliente() + "\n" +
+                    "Fecha: " + p.getFecha() + "\n" +
+                    "Articulos: " +  "\n\n\n",
+                    FontFactory.getFont("Calibri", 20, Font.BOLD, BaseColor.BLACK)
+            );
+            doc.add(info);
+
+            PdfPTable articulos = new PdfPTable(2);
+            articulos.addCell("Nombre");
+            articulos.addCell("Cantidad");
+
+            for(int i = 0; i < art.size(); i++){
+                articulos.addCell(art.get(i).getNombre());
+                articulos.addCell(art.get(i).getCantidad());
+            }
+            doc.add(articulos);
+
+            doc.close();
+            Toast.makeText(this.getContext(), "Pedido descargado", Toast.LENGTH_LONG).show();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        }
     }
 }
 
