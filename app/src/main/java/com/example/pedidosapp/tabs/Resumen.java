@@ -95,12 +95,20 @@ public class Resumen extends Fragment {
                                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                     @Override
                                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                        ArrayList<Articulo> encargue;
-                                        if(!listPedido.isEmpty()){
+                                        ArrayList<Articulo> encargue = new ArrayList<>();
+                                        if (!listPedido.isEmpty()) {
+                                            Pedido ped = listPedido.get(i);
+                                            Iterable<DataSnapshot> articulos = dataSnapshot.child(ped.getCliente()+"_"+ped.getFecha()).child("Articulos").getChildren();
+                                            for (DataSnapshot ds : articulos) {
+                                                Articulo a = ds.getValue(Articulo.class);
+                                                Articulo art = new Articulo();
+                                                art.setCantidad(a.getCantidad());
+                                                art.setNombre(a.getNombre());
+                                                encargue.add(a);
+                                            }
                                             AlertDialog.Builder alerta = new AlertDialog.Builder(getContext());
-                                            encargue = listPedido.get(i).getListArticulos();
-                                            alerta.setMessage("Pedido de " + listPedido.get(i).getCliente() + " para la fecha " + listPedido.get(i).getFecha() + ": \n")
-                                                    //+ mostrarArticulos(encargue))
+                                            alerta.setMessage("Pedido de " + listPedido.get(i).getCliente() + " para la fecha " + listPedido.get(i).getFecha() + ": \n"
+                                                            + mostrarArticulos(encargue))
                                                     .setCancelable(false)
                                                     .setPositiveButton("Descargar PDF", new DialogInterface.OnClickListener() {
                                                         @Override
@@ -127,6 +135,7 @@ public class Resumen extends Fragment {
                         }
                         listView.setAdapter(adapter);
                     }
+
                     @Override
                     public void onCancelled(DatabaseError error) {
                         // Failed to read value
@@ -138,19 +147,19 @@ public class Resumen extends Fragment {
 
 
         return view;
-        }
+    }
 
-    private static String mostrarArticulos(@NonNull ArrayList<Articulo> lista){
+    private static String mostrarArticulos(@NonNull ArrayList<Articulo> lista) {
         String nombre;
         String cantidad;
         String linea = "";
-        for (Articulo art: lista) {
+        for (Articulo art : lista) {
             nombre = art.getNombre();
             cantidad = art.getCantidad();
-            linea = linea + "/n" + nombre + " " + cantidad;
+            linea = linea + "\n" + nombre + " " + cantidad;
         }
         return linea;
-  }
+    }
 }
 
 

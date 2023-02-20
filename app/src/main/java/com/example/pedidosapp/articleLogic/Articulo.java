@@ -1,5 +1,7 @@
 package com.example.pedidosapp.articleLogic;
 
+import java.util.ArrayList;
+
 public class Articulo {
 
     private String nombre;
@@ -24,7 +26,6 @@ public class Articulo {
         this.nombre = nombre;
         this.stock = stock;
     }
-
     public String getNombre() {
         return nombre;
     }
