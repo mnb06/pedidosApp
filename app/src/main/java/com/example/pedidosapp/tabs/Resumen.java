@@ -251,8 +251,10 @@ public class Resumen extends Fragment {
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+            Toast.makeText(this.getContext(), "Error en la descarga. Intente nuevamente", Toast.LENGTH_LONG).show();
         } catch (DocumentException e) {
             e.printStackTrace();
+            Toast.makeText(this.getContext(), "Error en la descarga. Intente nuevamente", Toast.LENGTH_LONG).show();
         }
     }
 }
