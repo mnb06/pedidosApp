@@ -37,7 +37,7 @@ public class AdapterDetail extends RecyclerView.Adapter<AdapterDetail.MyViewHold
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
         ArticuloDetail articulo = list.get(position);
-        holder.nombre.setText(articulo.getNombre() + " KG");
+        holder.nombre.setText(articulo.getNombre());
         holder.cant.setText(articulo.getCantidad() + " KG");
         holder.setIsRecyclable(false);
 
