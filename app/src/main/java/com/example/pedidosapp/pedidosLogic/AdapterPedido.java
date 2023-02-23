@@ -98,14 +98,13 @@ public class AdapterPedido extends RecyclerView.Adapter<AdapterPedido.MyViewHold
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView cliente, fecha, articulos;
+        TextView cliente, fecha;
         Button view, complete, delete, edit;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
             cliente = itemView.findViewById(R.id.orderClient);
             fecha = itemView.findViewById(R.id.orderDate);
-            //articulos = itemView.findViewById(R.id.artStockMin);
             view = itemView.findViewById(R.id.viewArticles);
             complete = itemView.findViewById(R.id.orderComplete);
             delete = itemView.findViewById(R.id.orderDelete);
