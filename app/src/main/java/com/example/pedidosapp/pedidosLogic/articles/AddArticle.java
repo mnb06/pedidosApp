@@ -63,6 +63,7 @@ public class AddArticle extends AppCompatActivity {
         // Database instance
         database = FirebaseDatabase.getInstance().getReference("Articulos");
         ref = FirebaseDatabase.getInstance().getReference("Pedidos");
+
         // Configuracion de la lista
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));

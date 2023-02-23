@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class Pedido implements Serializable {
 
     private String cliente, fecha;
-    private ArrayList<Articulo> listArticulos = null;
+    private ArrayList<Articulo> listArticulos;
 
 
     public Pedido() {
