@@ -6,76 +6,34 @@
     android:orientation="vertical"
     android:padding="10dp">
 
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="10dp">
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="Nuevo Cliente:"
-                android:textSize="18sp"
-                android:gravity="center"/>
-
-            <Spinner
-                android:id="@+id/pedidoCliente"
-                android:layout_width="106dp"
-                android:layout_height="match_parent" />
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/textView5"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="Nueva Fecha:"
-                android:textSize="18sp"
-                android:gravity="center"/>
-
-
-            <TextView
-                android:id="@+id/fechaElegida"
-                android:layout_width="112dp"
-                android:layout_height="match_parent"
-                android:text=""
-                android:textSize="18sp" />
-
-            <Button
-                android:id="@+id/pedidoFecha"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/purple_500"
-                android:ems="10"
-                android:text="Elegir" />
-
-        </TableRow>
-    </TableLayout>
-
     <Button
-        android:id="@+id/pedidoEditNext"
+        android:id="@+id/clientChange"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/green"
-        android:text="@string/siguiente"
-        android:padding="10dp"/>
-
+        android:text="Cambiar cliente"
+        android:gravity="center"
+        />
 
     <Button
-        android:id="@+id/pedidoCancel"
+        android:id="@+id/dateChange"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/blue"
-        android:text="@string/cancelar"
-        android:padding="10dp"/>
+        android:text="Cambiar fecha"
+        />
+
+    <Button
+        android:id="@+id/articlesChange"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cambiar articulos"
+        />
+
+    <Button
+        android:id="@+id/pedidoEditCancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cancelar"
+        android:backgroundTint="@color/red"
+        />
 
 </LinearLayout>
