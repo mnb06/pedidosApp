@@ -202,7 +202,6 @@ public class Resumen extends Fragment {
         try{
             String carpeta = "/Pedidos";
             String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + carpeta;
-            //String path = "/sdcard/download" + carpeta;
 
             //Si no existe carpeta la crea
             File dir = new File(path);

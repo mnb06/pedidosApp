@@ -3,8 +3,10 @@ package com.example.pedidosapp.pedidosLogic;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -36,113 +38,91 @@ import java.util.Map;
 
 public class PedidoEdit extends AppCompatActivity {
 
-    private Button fecha, upload, cancel, add;
-
-    Spinner cliente, articulo;
+    Spinner cliente;
+    private Button fecha, cancel, next;
     TextView fechaElegida;
     Calendar calendar;
     DatePickerDialog dpd;
+
+    FirebaseDatabase db;
     DatabaseReference ref;
-
-    Context context;
-
     static DatabaseReference mRootReference;
 
+    public static Pedido pedido;
+
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pedidos_edit);
 
+        db = FirebaseDatabase.getInstance();
         mRootReference = FirebaseDatabase.getInstance().getReference();
 
         Intent intent = getIntent();
         String name = intent.getStringExtra("cliente");
         String fe = intent.getStringExtra("fecha");
 
+        pedido = new Pedido();
+
         // Conexion UI
         cliente = findViewById(R.id.pedidoCliente);
-        articulo = findViewById(R.id.pedidoArticulo);
         fecha = findViewById(R.id.pedidoFecha);
         fechaElegida = findViewById(R.id.fechaElegida);
-        upload = (Button) findViewById(R.id.pedidoUpload);
         cancel = (Button) findViewById(R.id.pedidoCancel);
-        add = (Button) findViewById(R.id.addArticulo);
+        next = (Button) findViewById(R.id.pedidoEditNext);
+        ref = db.getReference();
 
         // Instancia de la db
-        ref = FirebaseDatabase.getInstance().getReference("Pedidos");
-        loadSpinner();
-        loadSpinnerArticulos();
 
+
+        DatabaseReference editar = db.getReference("Pedidos");
+        String id = name + "_" + fe;
+        editar.child(id).setValue(null);
+
+        loadSpinner();
+
+
+        fecha.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                calendar = Calendar.getInstance();
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+                int month = calendar.get(Calendar.MONTH);
+                int year = calendar.get(Calendar.YEAR);
+                dpd = new DatePickerDialog(PedidoEdit.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int d, int m, int y) {
+                        m++;
+                        String fechaSeleccionada = y + "-" + m + "-" + d;
+                        fechaElegida.setText(fechaSeleccionada);
+                    }
+                } ,year,month,day);
+                dpd.show();
+            }
+         });
+
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (cliente.getSelectedItem().toString().isEmpty() || fechaElegida.getText().toString().isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "Ingrese todos los campos.",
+                            Toast.LENGTH_LONG).show();
+                } else {
+                    Intent intent = new Intent(getApplicationContext(), AddArticle.class);
+                    intent.putExtra("cliente", cliente.getSelectedItem().toString());
+                    intent.putExtra("fecha", fechaElegida.getText().toString());
+                    startActivity(intent);
+
+                }
+            }
+        });
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
-
-    fecha.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-
-
-            calendar = Calendar.getInstance();
-            int day = calendar.get(Calendar.DAY_OF_MONTH);
-            int month = calendar.get(Calendar.MONTH);
-            int year = calendar.get(Calendar.YEAR);
-            dpd = new DatePickerDialog(PedidoEdit.this, new DatePickerDialog.OnDateSetListener() {
-                @Override
-                public void onDateSet(DatePicker datePicker, int d, int m, int y) {
-                    m++;
-                    String fechaSeleccionada = y + "/" + m + "/" + d;
-                    fechaElegida.setText(fechaSeleccionada);
-                }
-            } ,year,month,day);
-            dpd.show();
-        }
-
-
-    });
-
-        upload.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            String client = cliente.getSelectedItem().toString();
-            String fecha = fechaElegida.getText().toString();
-            if (client.isEmpty() || fecha.isEmpty()){
-                Toast.makeText(getApplicationContext(), "Ingrese todos los campos.",
-                        Toast.LENGTH_LONG).show();
-            }else {
-                // Llamada al metodo que sube los datos a la db
-                uploadData(client, fecha);
-            }
-        }
-    });
-
-        add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            }
-        });
-}
-
-    private void uploadData(String client, String fecha) {
-        // Hash donde se almacenan los datos a subir
-        Map<String, Object> datosPedido = new HashMap<>();
-
-        // Insercion de los datos en el hash
-        datosPedido .put("Cliente", client);
-        datosPedido.put("Fecha", fecha);
-        //datosPedido.put("Articulos", direction);
-
-        // Se crea un hijo (similar a una tabla) y se ingresan los valores
-        String id = client;
-        ref.child("Pedidos").child(id).setValue(datosPedido);
-
-        // Notificacion Toast para mostrar si el pedido fue cargado
-        Toast.makeText(getApplicationContext(), "Pedido cargado exitosamente.",
-                Toast.LENGTH_LONG).show();
-        Pedidos.list.clear();
-        finish();
     }
 
     private void loadSpinner() {
@@ -155,36 +135,14 @@ public class PedidoEdit extends AppCompatActivity {
                         String nombre = ds.child("nombre").getValue().toString();
                         clientes.add(nombre);
                     }
-
                     ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(PedidoEdit.this, android.R.layout.simple_dropdown_item_1line, clientes);
                     cliente.setAdapter(arrayAdapter);
                 }
     }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Toast.makeText(getApplicationContext(), "Error. Intente nuevamente", Toast.LENGTH_SHORT).show();
             }
         });
     }
-
-    private void loadSpinnerArticulos() {
-        List<String> articulos = new ArrayList<>();
-        ref.child("Articulos").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()){
-                    for (DataSnapshot ds : snapshot.getChildren()){
-                        String nombre = ds.child("nombre").getValue().toString();
-                        articulos.add(nombre);
-                    }
-                    ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(PedidoEdit.this, android.R.layout.simple_dropdown_item_1line, articulos);
-                    articulo.setAdapter(arrayAdapter);
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
-    }
-
 }
