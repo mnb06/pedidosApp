@@ -92,6 +92,7 @@ public class Pedidos extends Fragment {
                 }
                 adapterPedido.notifyDataSetChanged();
 
+               // return null;
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}

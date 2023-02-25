@@ -124,6 +124,7 @@ public class PedidoCreation extends AppCompatActivity {
                         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(PedidoCreation.this, android.R.layout.simple_dropdown_item_1line, clientes);
                         cliente.setAdapter(arrayAdapter);
                     }
+                    //return null;
                 }
 
                 @Override

@@ -82,7 +82,6 @@ public class Articulos extends Fragment {
                     list.add(articulo);
                 }
                 adapterArt.notifyDataSetChanged();
-
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}

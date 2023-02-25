@@ -63,6 +63,7 @@ public class PedidoDetail extends AppCompatActivity {
                 }
                 adapterDetail.notifyDataSetChanged();
 
+                //return null;
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}

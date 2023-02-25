@@ -76,6 +76,7 @@ public class Cliente extends AppCompatActivity {
                 }
                 //adapterDetail.notifyDataSetChanged();
 
+                //return null;
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}
@@ -152,6 +153,7 @@ public class Cliente extends AppCompatActivity {
                     ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(Cliente.this, android.R.layout.simple_dropdown_item_1line, clientes);
                     spinner.setAdapter(arrayAdapter);
                 }
+                //return null;
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {

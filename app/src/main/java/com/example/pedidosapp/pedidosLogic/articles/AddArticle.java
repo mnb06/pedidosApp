@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.pedidosapp.Inicio;
 import com.example.pedidosapp.R;
 import com.example.pedidosapp.articleLogic.Articulo;
 import com.example.pedidosapp.pedidosLogic.Pedido;
@@ -89,6 +90,7 @@ public class AddArticle extends AppCompatActivity {
                     list.add(articulo);
                 }
                 articlesAdapter.notifyDataSetChanged();
+                //return null;
             }
 
             @Override
@@ -122,6 +124,8 @@ public class AddArticle extends AppCompatActivity {
             // Se crea un hijo (similar a una tabla) y se ingresan los valores
             ref.child(id).setValue(datosPedido);
             Pedidos.list.clear();
+            Intent intent = new Intent(getApplicationContext(), Inicio.class);
+            startActivity(intent);
             finish();
         }
 

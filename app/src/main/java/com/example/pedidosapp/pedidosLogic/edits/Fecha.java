@@ -88,7 +88,6 @@ public class Fecha extends AppCompatActivity {
                     list.add(articulo);
                 }
                 //adapterDetail.notifyDataSetChanged();
-
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}

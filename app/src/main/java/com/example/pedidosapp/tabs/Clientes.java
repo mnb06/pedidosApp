@@ -91,6 +91,7 @@ public class Clientes extends Fragment {
                 }
                 adapterClient.notifyDataSetChanged();
 
+                //return null;
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}

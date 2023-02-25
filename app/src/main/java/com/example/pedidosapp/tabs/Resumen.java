@@ -131,7 +131,6 @@ public class Resumen extends Fragment {
                                                         @Override
                                                         public void onClick(DialogInterface dialogInterface, int i) {
                                                             verificarPermisos(view, ped, encargue);
-                                                            //crearPDF(ped, encargue);
                                                             dialogInterface.cancel();
                                                         }
                                                     })
@@ -153,6 +152,7 @@ public class Resumen extends Fragment {
                             list.add("No hay pedidos para la fecha");
                         }
                         listView.setAdapter(adapter);
+                        //return null;
                     }
 
                     @Override

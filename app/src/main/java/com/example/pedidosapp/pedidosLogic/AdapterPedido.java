@@ -1,6 +1,9 @@
 package com.example.pedidosapp.pedidosLogic;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -61,8 +64,6 @@ public class AdapterPedido extends RecyclerView.Adapter<AdapterPedido.MyViewHold
                 }
             });
 
-
-
             holder.delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -85,6 +86,18 @@ public class AdapterPedido extends RecyclerView.Adapter<AdapterPedido.MyViewHold
                     context.startActivity(intent);
                 }
             });
+
+            holder.complete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String path = "Pedidos/" + pedido.getCliente() + "_" + pedido.getFecha() + "/Articulos";
+                    Intent intent = new Intent(context, Completar.class);
+                    intent.putExtra("cliente", pedido.getCliente());
+                    intent.putExtra("fecha", pedido.getFecha());
+                    intent.putExtra("articulos", path);
+                    context.startActivity(intent);
+                }
+            });
         }
 
 
@@ -92,8 +105,6 @@ public class AdapterPedido extends RecyclerView.Adapter<AdapterPedido.MyViewHold
     public int getItemCount() {
         return list.size();
     }
-
-
 
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
@@ -109,10 +120,10 @@ public class AdapterPedido extends RecyclerView.Adapter<AdapterPedido.MyViewHold
             complete = itemView.findViewById(R.id.orderComplete);
             delete = itemView.findViewById(R.id.orderDelete);
             edit = itemView.findViewById(R.id.orderEdit);
-
-
         }
     }
+
+
 }
 
 
