@@ -39,7 +39,6 @@ public class PedidoCreation extends AppCompatActivity {
     Button fecha, upload, cancel, next;
     TextView fechaElegida;
     Calendar calendar;
-
     DatePickerDialog dpd;
     DatabaseReference ref;
 

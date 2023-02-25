@@ -4,21 +4,17 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.view.Gravity;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Spinner;
-import android.widget.Toast;
+import android.widget.DatePicker;
+import android.widget.TextView;
 
 import com.example.pedidosapp.R;
-import com.example.pedidosapp.articleLogic.Articulo;
 import com.example.pedidosapp.pedidosLogic.ArticuloDetail;
-import com.example.pedidosapp.pedidosLogic.Pedido;
+import com.example.pedidosapp.pedidosLogic.PedidoCreation;
 import com.example.pedidosapp.tabs.Pedidos;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,34 +23,35 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
-public class Cliente extends AppCompatActivity {
+public class Fecha extends AppCompatActivity {
 
-    Spinner spinner;
-    Button uploadClient;
+    Button uploadFecha, elegirFecha;
     DatabaseReference ref, ref2, ref3;
     ArrayList<ArticuloDetail> list;
+    TextView nuevaFecha;
+    Calendar calendar;
+    DatePickerDialog dpd;
 
-
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cliente);
+        setContentView(R.layout.activity_fecha);
 
         list = new ArrayList<>();
 
         Intent intent = getIntent();
         String pathArticulos = intent.getStringExtra("path");
-        String date = intent.getStringExtra("date");
+        String client = intent.getStringExtra("cliente");
 
         // Enlace UI
-        spinner = findViewById(R.id.pedidoEditCliente);
-        uploadClient = findViewById(R.id.pedidoEditClienteConfirm);
-
+        elegirFecha = findViewById(R.id.elegirFecha);
+        uploadFecha = findViewById(R.id.uploadFecha);
+        nuevaFecha = findViewById(R.id.nuevaFecha);
 
         String path = "Pedidos/" + intent.getStringExtra("cliente") + "_" + intent.getStringExtra("date");
 
@@ -63,8 +60,24 @@ public class Cliente extends AppCompatActivity {
         ref3 = FirebaseDatabase.getInstance().getReference();
 
 
-        loadSpinner();
+        elegirFecha.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                calendar = Calendar.getInstance();
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+                int month = calendar.get(Calendar.MONTH);
+                int year = calendar.get(Calendar.YEAR);
+                dpd = new DatePickerDialog(Fecha.this, new DatePickerDialog.OnDateSetListener() {
+                    @SuppressLint("SetTextI18n")
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int d, int m, int y) {
+                        nuevaFecha.setText(y + "-" + (m+1) + "-" + d);
+                    }
+                }, year, month, day);
+                dpd.show();
+            }
+        });
 
         ref2.addValueEventListener(new ValueEventListener() {
             @Override
@@ -81,40 +94,32 @@ public class Cliente extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {}
         });
 
-
-
-        uploadClient.setOnClickListener(new View.OnClickListener() {
+        uploadFecha.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String id = spinner.getSelectedItem() + "_" + date;
-                uploadData(spinner.getSelectedItem().toString(), date, id);
+                String id = client + "_" + nuevaFecha.getText().toString();
+                uploadData(client, nuevaFecha.getText().toString(), id);
                 for (ArticuloDetail articulo: list) {
                     uploadArticles(articulo,id);
-
                 }
                 deleteOldOrder(path);
             }
         });
-    }
 
+    }
 
     // Metodo para subir el cliente y fecha
     private void uploadData(String client, String fecha, String id) {
-
         // Hash donde se almacenan los datos a subir
         Map<String, Object> datosPedido = new HashMap<>();
-
         // Insercion de los datos en el hash
         datosPedido.put("cliente", client);
         datosPedido.put("fecha", fecha);
-
         // Se crea un hijo (similar a una tabla) y se ingresan los valores
         ref.child("Pedidos").child(id).setValue(datosPedido);
         Pedidos.list.clear();
         finish();
     }
-
-
 
 
     // Metodo para subir los articulos al nuevo pedido
@@ -130,33 +135,9 @@ public class Cliente extends AppCompatActivity {
     }
 
 
-    private void deleteOldOrder(String path){
-
+    private void deleteOldOrder(String path) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         ref.child(path).setValue(null);
         list.clear();
-    }
-
-
-    // Carga los clientes en el spinner
-    private void loadSpinner() {
-        List<String> clientes = new ArrayList<>();
-        ref.child("Clientes").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()){
-                    for (DataSnapshot ds : snapshot.getChildren()){
-                        String nombre = ds.child("nombre").getValue().toString();
-                        clientes.add(nombre);
-                    }
-                    ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(Cliente.this, android.R.layout.simple_dropdown_item_1line, clientes);
-                    spinner.setAdapter(arrayAdapter);
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getApplicationContext(), "Error. Intente nuevamente", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 }

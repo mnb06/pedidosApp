@@ -4,20 +4,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 
-import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.example.pedidosapp.R;
 import com.example.pedidosapp.pedidosLogic.edits.Cliente;
+import com.example.pedidosapp.pedidosLogic.edits.Fecha;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.Calendar;
 
 public class PedidoEdit extends AppCompatActivity {
 
@@ -25,6 +21,7 @@ public class PedidoEdit extends AppCompatActivity {
 
     FirebaseDatabase db;
     DatabaseReference ref;
+
     static DatabaseReference mRootReference;
 
     public static Pedido pedido;
@@ -59,6 +56,17 @@ public class PedidoEdit extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(PedidoEdit.this, Cliente.class);
+                intent.putExtra("date", date);
+                intent.putExtra("path", path);
+                intent.putExtra("cliente", client);
+                startActivity(intent);
+            }
+        });
+
+        dateChange.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PedidoEdit.this, Fecha.class);
                 intent.putExtra("date", date);
                 intent.putExtra("path", path);
                 intent.putExtra("cliente", client);
