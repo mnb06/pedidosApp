@@ -45,6 +45,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.ListIterator;
 
 public class Completar extends AppCompatActivity {
 
@@ -72,9 +73,8 @@ public class Completar extends AppCompatActivity {
         String date = intent.getStringExtra("fecha");
         String path = intent.getStringExtra("path");
 
-        ref1 = FirebaseDatabase.getInstance().getReference("Pedidos");
+        ref1 = FirebaseDatabase.getInstance().getReference();
         ref2 = FirebaseDatabase.getInstance().getReference();
-        //ref3 = FirebaseDatabase.getInstance().getReference();
 
         //Conexion UI
 
@@ -93,7 +93,7 @@ public class Completar extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot datosPedido) {
                 ArrayList<Articulo> encargue = new ArrayList<>();
-                Iterable<DataSnapshot> articulos = datosPedido.child(pedido.getCliente() + "_" + pedido.getFecha()).child("Articulos").getChildren();
+                Iterable<DataSnapshot> articulos = datosPedido.child("Pedidos").child(pedido.getCliente() + "_" + pedido.getFecha()).child("Articulos").getChildren();
                 for (DataSnapshot ds : articulos) {
                     Articulo a = ds.getValue(Articulo.class);
                     Articulo art = new Articulo();
@@ -251,12 +251,12 @@ public class Completar extends AppCompatActivity {
 
                     public void onClick(DialogInterface dialogInterface, int i) {
                        String path = pedido.getCliente() + "_" + pedido.getFecha();
-                       //Carga articulos
-                       ref1.addValueEventListener(new ValueEventListener() {
+                        ref2.addValueEventListener(new ValueEventListener() {
+                            //Carga articulos del pedido
                            @Override
-                           public void onDataChange(@NonNull DataSnapshot datosPedido) {
+                           public void onDataChange(@NonNull DataSnapshot datosDB) {
                                ArrayList<Articulo> encargue = new ArrayList<>();
-                               Iterable<DataSnapshot> articulos = datosPedido.child(pedido.getCliente() + "_" + pedido.getFecha()).child("Articulos").getChildren();
+                               Iterable<DataSnapshot> articulos = datosDB.child("Pedidos").child(path).child("Articulos").getChildren();
                                for (DataSnapshot ds : articulos) {
                                    Articulo a = ds.getValue(Articulo.class);
                                    Articulo art = new Articulo();
@@ -265,39 +265,45 @@ public class Completar extends AppCompatActivity {
                                    encargue.add(a);
                                }
 
-                           //Resta stock
-                           ref2.addValueEventListener(new ValueEventListener() {
-                               @Override
-                               public void onDataChange(@NonNull DataSnapshot articulosCargados) {
-                                   for (Articulo art: encargue) {
-                                       Iterable<DataSnapshot> cargados = articulosCargados.child("Articulos").getChildren();
-                                       for (DataSnapshot ds: cargados){
-                                       Articulo a = ds.getValue(Articulo.class);
-                                       if(art.getNombre().equals(a.getNombre())){
-                                           int cantidad = Integer.parseInt(art.getCantidad());
-                                           int stock = Integer.parseInt(a.getStock());
-                                           stock = stock - cantidad;
-                                           ref2.child("Articulos").child(art.getNombre()).child("stock").setValue(String.valueOf(stock));
-                                          }
-                                       }
+                               //Carga articulos de la db
+                               ArrayList<Articulo> almacenados = new ArrayList<>();
+                               Iterable<DataSnapshot> articulosAlmacenados = datosDB.child("Articulos").getChildren();
+                               for (DataSnapshot ds : articulosAlmacenados) {
+                                   Articulo a = ds.getValue(Articulo.class);
+                                   Articulo art = new Articulo();
+                                   art.setCantidad(a.getCantidad());
+                                   art.setNombre(a.getNombre());
+                                   almacenados.add(a);
                                    }
-                                   deleteCompletedOrder(path);
-                               }
-                               @Override
-                               public void onCancelled(@NonNull DatabaseError error) {
 
-                               }
-                           });
+                            //Resta stock vinculando lo cargado en el encargue con lo almacenado en la db
+
+                               for (int i = 0; i < almacenados.size(); i++) {
+                                   for(int j = 0; j < encargue.size(); j++){
+                                      if(almacenados.get(i).getNombre().equals(encargue.get(j).getNombre())) {
+                                          int cantidad = Integer.parseInt(encargue.get(j).getCantidad());
+                                          int stock = Integer.parseInt(almacenados.get(i).getStock());
+                                          if (stock < cantidad) {
+                                              Toast.makeText(Completar.this, "Falta stock de " + almacenados.get(i).getNombre() + " para completar el pedido", Toast.LENGTH_SHORT).show();
+                                          } else {
+                                              stock = stock - cantidad;
+                                              ref2.child("Articulos").child(almacenados.get(i).getNombre()).child("stock").setValue(String.valueOf(stock));
+                                              deleteCompletedOrder(path);
+                                          }
+                                      }
+                                   }
+                                }
                            }
                            @Override
                            public void onCancelled(@NonNull DatabaseError error) {
 
                            }
-                       });
+                    });
                         Intent intent = new Intent(getApplicationContext(), Inicio.class);
                         startActivity(intent);
                         dialogInterface.cancel();
-                    }
+                       };
+
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
