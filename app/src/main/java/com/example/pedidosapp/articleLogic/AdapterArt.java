@@ -25,10 +25,10 @@ public class AdapterArt extends RecyclerView.Adapter<AdapterArt.MyViewHolder> {
     Context context;
     DatabaseReference databaseReference;
 
-    ArrayList<Articulo> list;
+    ArrayList<ArticuloDetail> list;
 
     // Constructor
-    public AdapterArt(Context context, ArrayList<Articulo> list) {
+    public AdapterArt(Context context, ArrayList<ArticuloDetail> list) {
         this.context = context;
         this.list = list;
     }
@@ -43,7 +43,7 @@ public class AdapterArt extends RecyclerView.Adapter<AdapterArt.MyViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
-        Articulo articulo = list.get(position);
+        ArticuloDetail articulo = list.get(position);
         holder.nombre.setText(articulo.getNombre());
         holder.stock.setText(articulo.getStock());
         holder.stockMin.setText(articulo.getStockMin());

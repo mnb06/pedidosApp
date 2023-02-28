@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pedidosapp.R;
-import com.example.pedidosapp.articleLogic.Articulo;
+import com.example.pedidosapp.articleLogic.ArticuloDetail;
 
 import java.util.ArrayList;
 

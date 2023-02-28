@@ -1,20 +1,19 @@
-package com.example.pedidosapp.pedidosLogic.articles;
+package com.example.pedidosapp.pedidosLogic.edits;
+
+import android.annotation.SuppressLint;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
-
-import com.example.pedidosapp.Inicio;
 import com.example.pedidosapp.R;
 import com.example.pedidosapp.articleLogic.ArticuloDetail;
+import com.example.pedidosapp.pedidosLogic.articles.ArticlesAdapter;
 import com.example.pedidosapp.tabs.Pedidos;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -26,7 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AddArticle extends AppCompatActivity {
+public class AddEditArticle extends AppCompatActivity {
 
 
     RecyclerView recyclerView;
@@ -36,15 +35,18 @@ public class AddArticle extends AppCompatActivity {
 
     public static ArrayList<ArticuloDetail> list;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_article);
 
+
         String cliente = getIntent().getStringExtra("cliente");
         String fecha = getIntent().getStringExtra("fecha");
+        String path = getIntent().getStringExtra("path");
 
-
+        // Enlace UI
         Button upload = findViewById(R.id.pedidoUpload);
 
 
@@ -76,9 +78,13 @@ public class AddArticle extends AppCompatActivity {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     ArticuloDetail articulo = dataSnapshot.getValue(ArticuloDetail.class);
                     list.add(articulo);
+                    // elimina los articulos que se encuentran cargados
+                    for (int i = 0; i < Articulos.list.size(); i++) {
+                        list.remove(Articulos.list.get(i));
+                    }
+                    articlesAdapter.notifyDataSetChanged();
+                    //return null;
                 }
-                articlesAdapter.notifyDataSetChanged();
-                //return null;
             }
 
             @Override
@@ -91,28 +97,14 @@ public class AddArticle extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String id = cliente + "_" + fecha;
-                uploadData(cliente, fecha, id);
-                for (ArticuloDetail articulo : articlesAdapter.elegidos
-                     ) {
+
+                for (ArticuloDetail articulo : articlesAdapter.elegidos) {
                     uploadArticles(articulo, id);
                 }
                 finish();
             }
         });
     }
-        private void uploadData(String client, String fecha, String id) {
-
-            // Hash donde se almacenan los datos a subir
-            Map<String, Object> datosPedido = new HashMap<>();
-
-            // Insercion de los datos en el hash
-            datosPedido .put("cliente", client);
-            datosPedido.put("fecha", fecha);
-
-            // Se crea un hijo (similar a una tabla) y se ingresan los valores
-            ref.child(id).setValue(datosPedido);
-            Pedidos.list.clear();
-        }
 
         private void uploadArticles(ArticuloDetail articulo, String id) {
             // Hash donde se almacenan los datos a subir
@@ -128,7 +120,6 @@ public class AddArticle extends AppCompatActivity {
 
             Toast.makeText(getApplicationContext(), "Pedido cargado correctamente",
                     Toast.LENGTH_LONG).show();
-            list.clear();
             finish();
         }
 

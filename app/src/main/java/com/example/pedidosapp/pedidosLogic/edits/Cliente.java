@@ -3,22 +3,16 @@ package com.example.pedidosapp.pedidosLogic.edits;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.view.Gravity;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.pedidosapp.R;
-import com.example.pedidosapp.articleLogic.Articulo;
-import com.example.pedidosapp.pedidosLogic.ArticuloDetail;
-import com.example.pedidosapp.pedidosLogic.Pedido;
+import com.example.pedidosapp.articleLogic.ArticuloDetail;
 import com.example.pedidosapp.tabs.Pedidos;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,7 +24,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public class Cliente extends AppCompatActivity {
 

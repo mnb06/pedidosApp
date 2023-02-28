@@ -30,7 +30,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.pedidosapp.R;
-import com.example.pedidosapp.articleLogic.Articulo;
+import com.example.pedidosapp.articleLogic.ArticuloDetail;
 import com.example.pedidosapp.pedidosLogic.Pedido;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
@@ -110,8 +110,8 @@ public class Resumen extends Fragment {
                            ArrayList<String> arts = new ArrayList<>();
                            Iterable<DataSnapshot> articulos = snapshot.child("Articulos").getChildren();
                            for (DataSnapshot ds : articulos) {
-                               Articulo a = ds.getValue(Articulo.class);
-                               Articulo art = new Articulo();
+                               ArticuloDetail a = ds.getValue(ArticuloDetail.class);
+                               ArticuloDetail art = new ArticuloDetail();
                                art.setStock(a.getStock());
                                art.setStockMin(a.getStockMin());
                                art.setNombre(a.getNombre());
@@ -165,13 +165,13 @@ public class Resumen extends Fragment {
                                         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                             @Override
                                             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                                ArrayList<Articulo> encargue = new ArrayList<>();
+                                                ArrayList<ArticuloDetail> encargue = new ArrayList<>();
                                                 if (!listPedido.isEmpty()) {
                                                     Pedido ped = listPedido.get(i);
                                                     Iterable<DataSnapshot> articulos = dataSnapshot.child(ped.getCliente() + "_" + ped.getFecha()).child("Articulos").getChildren();
                                                     for (DataSnapshot ds : articulos) {
-                                                        Articulo a = ds.getValue(Articulo.class);
-                                                        Articulo art = new Articulo();
+                                                        ArticuloDetail a = ds.getValue(ArticuloDetail.class);
+                                                        ArticuloDetail art = new ArticuloDetail();
                                                         art.setCantidad(a.getCantidad());
                                                         art.setNombre(a.getNombre());
                                                         encargue.add(a);
@@ -222,11 +222,11 @@ public class Resumen extends Fragment {
             }
 
             //Crea la lista de articulos del pedido seleccionado
-            private static String mostrarArticulos(@NonNull ArrayList<Articulo> lista) {
+            private static String mostrarArticulos(@NonNull ArrayList<ArticuloDetail> lista) {
                 String nombre;
                 String cantidad;
                 String linea = "";
-                for (Articulo art : lista) {
+                for (ArticuloDetail art : lista) {
                     nombre = art.getNombre();
                     cantidad = art.getCantidad();
                     linea = linea + "\n" + nombre + " " + cantidad;
@@ -235,7 +235,7 @@ public class Resumen extends Fragment {
             }
 
             //Metodo validador de permisos
-            private void verificarPermisos(View v, Pedido p, ArrayList<Articulo> art) {
+            private void verificarPermisos(View v, Pedido p, ArrayList<ArticuloDetail> art) {
                 if (ContextCompat.checkSelfPermission(this.getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                     crearPDF(p, art);
                 } else if (ActivityCompat.shouldShowRequestPermissionRationale(this.getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
@@ -251,7 +251,7 @@ public class Resumen extends Fragment {
             }
 
             //Creacion del PDF
-            private void crearPDF(Pedido p, ArrayList<Articulo> art) {
+            private void crearPDF(Pedido p, ArrayList<ArticuloDetail> art) {
                 try {
                     String carpeta = "/Pedidos";
                     String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + carpeta;

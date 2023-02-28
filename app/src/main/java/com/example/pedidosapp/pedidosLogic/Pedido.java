@@ -1,7 +1,6 @@
 package com.example.pedidosapp.pedidosLogic;
 
-import com.example.pedidosapp.articleLogic.Articulo;
-import com.google.firebase.database.DataSnapshot;
+import com.example.pedidosapp.articleLogic.ArticuloDetail;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -9,7 +8,7 @@ import java.util.ArrayList;
 public class Pedido implements Serializable {
 
     private String cliente, fecha;
-    private ArrayList<Articulo> listArticulos;
+    private ArrayList<ArticuloDetail> listArticulos;
 
 
     public Pedido() {
@@ -31,15 +30,15 @@ public class Pedido implements Serializable {
         this.fecha = fecha;
     }
 
-    public void addArticulo(Articulo art){
+    public void addArticulo(ArticuloDetail art){
         this.listArticulos.add(art);
     }
 
-    public ArrayList<Articulo> getListArticulos() {
+    public ArrayList<ArticuloDetail> getListArticulos() {
         return listArticulos;
     }
 
-    public void setListArticulos(ArrayList<Articulo> listArticulos) {
+    public void setListArticulos(ArrayList<ArticuloDetail> listArticulos) {
         this.listArticulos = listArticulos;
     }
 

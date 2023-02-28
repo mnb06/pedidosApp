@@ -2,7 +2,6 @@ package com.example.pedidosapp.pedidosLogic;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
@@ -17,10 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.pedidosapp.R;
-import com.example.pedidosapp.articleLogic.Articulo;
 import com.example.pedidosapp.pedidosLogic.articles.AddArticle;
-import com.example.pedidosapp.pedidosLogic.articles.ArticlesAdapter;
-import com.example.pedidosapp.tabs.Pedidos;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,9 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class PedidoCreation extends AppCompatActivity {
 
@@ -95,6 +89,7 @@ public class PedidoCreation extends AppCompatActivity {
                     intent.putExtra("cliente", cliente.getSelectedItem().toString());
                     intent.putExtra("fecha", fechaElegida.getText().toString());
                     startActivity(intent);
+                    finish();
 
                 }
             }

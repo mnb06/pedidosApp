@@ -1,9 +1,4 @@
-package com.example.pedidosapp.pedidosLogic.articles;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+package com.example.pedidosapp.pedidosLogic.edits;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -12,48 +7,57 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.pedidosapp.Inicio;
 import com.example.pedidosapp.R;
 import com.example.pedidosapp.articleLogic.ArticuloDetail;
 import com.example.pedidosapp.tabs.Pedidos;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AddArticle extends AppCompatActivity {
+public class Articulos extends AppCompatActivity implements Serializable{
 
 
     RecyclerView recyclerView;
-    DatabaseReference database;
     DatabaseReference ref;
-    ArticlesAdapter articlesAdapter;
+    ArticlesEditAdapter articlesEditAdapter;
 
     public static ArrayList<ArticuloDetail> list;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_article);
+        setContentView(R.layout.activity_edit_article);
 
         String cliente = getIntent().getStringExtra("cliente");
-        String fecha = getIntent().getStringExtra("fecha");
+        String fecha = getIntent().getStringExtra("date");
+        String path = getIntent().getStringExtra("path");
 
 
-        Button upload = findViewById(R.id.pedidoUpload);
+        Button upload = findViewById(R.id.pedidoEditArticlesConfirm);
+        FloatingActionButton add = findViewById(R.id.editAddArticle);
 
 
         // Lista dinamica
-        recyclerView = findViewById(R.id.addArticleList);
+        recyclerView = findViewById(R.id.editArticleList);
 
-        // Database instance
-        database = FirebaseDatabase.getInstance().getReference("Articulos");
-        ref = FirebaseDatabase.getInstance().getReference("Pedidos");
+        // Database reference instance
+        ref = FirebaseDatabase.getInstance().getReference(path);
+
 
         // Configuracion de la lista
         recyclerView.setHasFixedSize(true);
@@ -61,13 +65,13 @@ public class AddArticle extends AppCompatActivity {
 
 
         list = new ArrayList<>();
-        articlesAdapter = new ArticlesAdapter(getApplicationContext(), list);
-        recyclerView.setAdapter(articlesAdapter);
+        articlesEditAdapter = new ArticlesEditAdapter(getApplicationContext(), list, path);
+        recyclerView.setAdapter(articlesEditAdapter);
 
 
 
         // Añade a la lista los elementos cargados en la bd
-        database.addValueEventListener(new ValueEventListener() {
+        ref.addValueEventListener(new ValueEventListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -77,7 +81,7 @@ public class AddArticle extends AppCompatActivity {
                     ArticuloDetail articulo = dataSnapshot.getValue(ArticuloDetail.class);
                     list.add(articulo);
                 }
-                articlesAdapter.notifyDataSetChanged();
+                articlesEditAdapter.notifyDataSetChanged();
                 //return null;
             }
 
@@ -86,16 +90,24 @@ public class AddArticle extends AppCompatActivity {
             }
         });
 
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), AddEditArticle.class);
+                intent.putExtra("cliente", cliente);
+                intent.putExtra("fecha", fecha);
+                intent.putExtra("path", path);
+                startActivity(intent);
+                finish();
+            }
+        });
+
 
         upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String id = cliente + "_" + fecha;
-                uploadData(cliente, fecha, id);
-                for (ArticuloDetail articulo : articlesAdapter.elegidos
-                     ) {
-                    uploadArticles(articulo, id);
-                }
+                Toast.makeText(getApplicationContext(), "Pedido modificado correctamente",
+                        Toast.LENGTH_LONG).show();
                 finish();
             }
         });
@@ -112,6 +124,9 @@ public class AddArticle extends AppCompatActivity {
             // Se crea un hijo (similar a una tabla) y se ingresan los valores
             ref.child(id).setValue(datosPedido);
             Pedidos.list.clear();
+            Intent intent = new Intent(getApplicationContext(), Inicio.class);
+            startActivity(intent);
+            finish();
         }
 
         private void uploadArticles(ArticuloDetail articulo, String id) {
@@ -128,7 +143,6 @@ public class AddArticle extends AppCompatActivity {
 
             Toast.makeText(getApplicationContext(), "Pedido cargado correctamente",
                     Toast.LENGTH_LONG).show();
-            list.clear();
             finish();
         }
 

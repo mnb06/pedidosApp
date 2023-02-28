@@ -1,12 +1,12 @@
 package com.example.pedidosapp.articleLogic;
 
-import java.util.ArrayList;
-
-public class Articulo {
+public class ArticuloDetail {
 
     private String nombre;
     private String stock;
     private String stockMin;
+
+    private String cantidad;
 
     public String getCantidad() {
         return cantidad;
@@ -16,13 +16,12 @@ public class Articulo {
         this.cantidad = cantidad;
     }
 
-    private String cantidad;
 
 
-    public Articulo() {
+    public ArticuloDetail() {
     }
 
-    public Articulo(String nombre, String stock){
+    public ArticuloDetail(String nombre, String stock){
         this.nombre = nombre;
         this.stock = stock;
     }

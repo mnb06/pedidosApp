@@ -1,7 +1,6 @@
 package com.example.pedidosapp.tabs;
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -10,7 +9,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,7 +38,7 @@ public class Articulos extends Fragment {
     RecyclerView recyclerView;
     DatabaseReference database;
     AdapterArt adapterArt;
-    public static ArrayList<Articulo> list;
+    public static ArrayList<ArticuloDetail> list;
 
 
     @SuppressLint("MissingInflatedId")
@@ -78,7 +76,7 @@ public class Articulos extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                    Articulo articulo = dataSnapshot.getValue(Articulo.class);
+                    ArticuloDetail articulo = dataSnapshot.getValue(ArticuloDetail.class);
                     list.add(articulo);
                 }
                 adapterArt.notifyDataSetChanged();

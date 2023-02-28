@@ -5,13 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.pedidosapp.R;
-import com.example.pedidosapp.articleLogic.AdapterArt;
-import com.example.pedidosapp.articleLogic.Articulo;
+import com.example.pedidosapp.articleLogic.ArticuloDetail;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

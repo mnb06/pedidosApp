@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.pedidosapp.R;
+import com.example.pedidosapp.pedidosLogic.edits.Articulos;
 import com.example.pedidosapp.pedidosLogic.edits.Cliente;
 import com.example.pedidosapp.pedidosLogic.edits.Fecha;
 import com.google.firebase.database.DatabaseReference;
@@ -67,6 +68,17 @@ public class PedidoEdit extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(PedidoEdit.this, Fecha.class);
+                intent.putExtra("date", date);
+                intent.putExtra("path", path);
+                intent.putExtra("cliente", client);
+                startActivity(intent);
+            }
+        });
+
+        articlesChange.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PedidoEdit.this, Articulos.class);
                 intent.putExtra("date", date);
                 intent.putExtra("path", path);
                 intent.putExtra("cliente", client);

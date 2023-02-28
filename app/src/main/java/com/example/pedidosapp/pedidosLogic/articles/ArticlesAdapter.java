@@ -14,8 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pedidosapp.R;
-import com.example.pedidosapp.articleLogic.Articulo;
-import com.example.pedidosapp.pedidosLogic.Pedido;
+import com.example.pedidosapp.articleLogic.ArticuloDetail;
 
 import java.util.ArrayList;
 
@@ -23,13 +22,13 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.MyView
 
     Context context;
 
-    ArrayList<Articulo> list;
-    public ArrayList<Articulo> elegidos;
+    ArrayList<ArticuloDetail> list;
+    public ArrayList<ArticuloDetail> elegidos;
 
 
 
     // Constructor
-    public ArticlesAdapter(Context context, ArrayList<Articulo> list) {
+    public ArticlesAdapter(Context context, ArrayList<ArticuloDetail> list) {
         this.context = context;
         this.list = list;
     }
@@ -46,7 +45,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.MyView
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
         // Traer el articulo
-        Articulo articulo = list.get(position);
+        ArticuloDetail articulo = list.get(position);
         holder.nombre.setText(articulo.getNombre());
 
         // Control para que no se pueda seleccionar mayor cantidad que el stock actual
@@ -59,7 +58,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.MyView
         holder.add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Articulo elegido = new Articulo(articulo.getNombre(),holder.stock.getText().toString());
+                ArticuloDetail elegido = new ArticuloDetail(articulo.getNombre(),holder.stock.getText().toString());
 
                 elegidos.add(elegido);
 

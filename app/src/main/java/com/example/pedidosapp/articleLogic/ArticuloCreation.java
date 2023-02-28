@@ -20,7 +20,6 @@ import java.util.Map;
 
 public class ArticuloCreation extends AppCompatActivity {
 
-    private Button upload, cancel;
     private EditText nombre, stock, stockMin;
 
     static DatabaseReference mRootReference;
@@ -37,8 +36,8 @@ public class ArticuloCreation extends AppCompatActivity {
         nombre = findViewById(R.id.artName);
         stock = findViewById(R.id.artStock);
         stockMin = findViewById(R.id.artStockMin);
-        upload = findViewById(R.id.artUpload);
-        cancel = findViewById(R.id.artCancel);
+        Button upload = findViewById(R.id.artUpload);
+        Button cancel = findViewById(R.id.artCancel);
 
         upload.setOnClickListener(new View.OnClickListener() {
             @Override
