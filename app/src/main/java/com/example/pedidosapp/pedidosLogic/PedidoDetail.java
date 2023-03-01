@@ -9,7 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.pedidosapp.R;
-import com.example.pedidosapp.articleLogic.ArticuloDetail;
+import com.example.pedidosapp.articleLogic.Articulo;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,7 +23,7 @@ public class PedidoDetail extends AppCompatActivity {
     RecyclerView recyclerView;
     DatabaseReference database;
     AdapterDetail adapterDetail;
-    public static ArrayList<ArticuloDetail> list;
+    public static ArrayList<Articulo> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +56,7 @@ public class PedidoDetail extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                    ArticuloDetail articulo = dataSnapshot.getValue(ArticuloDetail.class);
+                    Articulo articulo = dataSnapshot.getValue(Articulo.class);
                     list.add(articulo);
                 }
                 adapterDetail.notifyDataSetChanged();

@@ -78,6 +78,7 @@ public class ArticuloCreation extends AppCompatActivity {
         datosArticulo .put("nombre", name);
         datosArticulo.put("stock", s);
         datosArticulo.put("stockMin", sM);
+        datosArticulo.put("stockReservado", "0");
 
         // Se crea un hijo (similar a una tabla) y se ingresan los valores
         mRootReference.child("Articulos").child(name).setValue(datosArticulo);

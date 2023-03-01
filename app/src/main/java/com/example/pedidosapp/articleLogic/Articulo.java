@@ -1,30 +1,22 @@
 package com.example.pedidosapp.articleLogic;
 
-public class ArticuloDetail {
+public class Articulo {
 
     private String nombre;
     private String stock;
     private String stockMin;
 
     private String cantidad;
+    private String stockReservado;
 
-    public String getCantidad() {
-        return cantidad;
-    }
-
-    public void setCantidad(String cantidad) {
-        this.cantidad = cantidad;
-    }
+    public Articulo(){}
 
 
-
-    public ArticuloDetail() {
-    }
-
-    public ArticuloDetail(String nombre, String stock){
+    public Articulo(String nombre, String stock){
         this.nombre = nombre;
         this.stock = stock;
     }
+
     public String getNombre() {
         return nombre;
     }
@@ -48,4 +40,22 @@ public class ArticuloDetail {
     public void setStockMin(String stockMin) {
         this.stockMin = stockMin;
     }
+
+    public String getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(String cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public String getStockReservado() {
+        return stockReservado;
+    }
+
+    public void setStockReservado(String stockReservado) {
+        this.stockReservado = stockReservado;
+    }
 }
+
+

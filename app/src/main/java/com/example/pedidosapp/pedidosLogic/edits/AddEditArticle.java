@@ -12,9 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pedidosapp.R;
-import com.example.pedidosapp.articleLogic.ArticuloDetail;
+import com.example.pedidosapp.articleLogic.Articulo;
 import com.example.pedidosapp.pedidosLogic.articles.ArticlesAdapter;
-import com.example.pedidosapp.tabs.Pedidos;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -33,7 +32,7 @@ public class AddEditArticle extends AppCompatActivity {
     DatabaseReference ref;
     ArticlesAdapter articlesAdapter;
 
-    public static ArrayList<ArticuloDetail> list;
+    public static ArrayList<Articulo> list;
 
 
     @Override
@@ -76,7 +75,7 @@ public class AddEditArticle extends AppCompatActivity {
 
                 // Bucle que carga todos los pedidos en la lista
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    ArticuloDetail articulo = dataSnapshot.getValue(ArticuloDetail.class);
+                    Articulo articulo = dataSnapshot.getValue(Articulo.class);
                     list.add(articulo);
                     // elimina los articulos que se encuentran cargados
                     for (int i = 0; i < Articulos.list.size(); i++) {
@@ -98,7 +97,7 @@ public class AddEditArticle extends AppCompatActivity {
             public void onClick(View view) {
                 String id = cliente + "_" + fecha;
 
-                for (ArticuloDetail articulo : articlesAdapter.elegidos) {
+                for (Articulo articulo : articlesAdapter.elegidos) {
                     uploadArticles(articulo, id);
                 }
                 finish();
@@ -106,7 +105,7 @@ public class AddEditArticle extends AppCompatActivity {
         });
     }
 
-        private void uploadArticles(ArticuloDetail articulo, String id) {
+        private void uploadArticles(Articulo articulo, String id) {
             // Hash donde se almacenan los datos a subir
             Map<String, Object> articulosSeleccionados = new HashMap<>();
 

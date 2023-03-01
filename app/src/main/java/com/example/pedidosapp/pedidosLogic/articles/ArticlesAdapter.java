@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pedidosapp.R;
-import com.example.pedidosapp.articleLogic.ArticuloDetail;
+import com.example.pedidosapp.articleLogic.Articulo;
 
 import java.util.ArrayList;
 
@@ -22,16 +22,15 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.MyView
 
     Context context;
 
-    ArrayList<ArticuloDetail> list;
-    public ArrayList<ArticuloDetail> elegidos;
-
-
+    ArrayList<Articulo> list;
+    public ArrayList<Articulo> elegidos;
 
     // Constructor
-    public ArticlesAdapter(Context context, ArrayList<ArticuloDetail> list) {
+    public ArticlesAdapter(Context context, ArrayList<Articulo> list){
         this.context = context;
         this.list = list;
     }
+
 
     @NonNull
     @Override
@@ -45,31 +44,25 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.MyView
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
         // Traer el articulo
-        ArticuloDetail articulo = list.get(position);
+        Articulo articulo = list.get(position);
         holder.nombre.setText(articulo.getNombre());
-
-        // Control para que no se pueda seleccionar mayor cantidad que el stock actual
-        holder.stock.setFilters(new InputFilter[]{ new MaxStockControl("1", articulo.getStock())});
 
         holder.setIsRecyclable(false);
 
 
         // Agrega el articulo al pedido
-        holder.add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ArticuloDetail elegido = new ArticuloDetail(articulo.getNombre(),holder.stock.getText().toString());
+        holder.add.setOnClickListener(view -> {
+            Articulo selected = new Articulo(articulo.getNombre(),holder.stock.getText().toString());
+            elegidos.add(selected);
 
-                elegidos.add(elegido);
+            // Notificacion Toast para mostrar si el articulo fue cargado
+            Toast.makeText(context, "Articulo agregado a la lista",
+                    Toast.LENGTH_SHORT).show();
 
-                // Notificacion Toast para mostrar si el articulo fue cargado
-                Toast.makeText(context, "Articulo cargado correctamente",
-                        Toast.LENGTH_SHORT).show();
-
-            }
         });
 
     }
+
 
     @Override
     public int getItemCount() {

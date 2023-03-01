@@ -22,7 +22,7 @@ import android.widget.Toast;
 
 import com.example.pedidosapp.Inicio;
 import com.example.pedidosapp.R;
-import com.example.pedidosapp.articleLogic.ArticuloDetail;
+import com.example.pedidosapp.articleLogic.Articulo;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -88,11 +88,11 @@ public class Completar extends AppCompatActivity {
         ref1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot datosPedido) {
-                ArrayList<ArticuloDetail> encargue = new ArrayList<>();
+                ArrayList<Articulo> encargue = new ArrayList<>();
                 Iterable<DataSnapshot> articulos = datosPedido.child("Pedidos").child(pedido.getCliente() + "_" + pedido.getFecha()).child("Articulos").getChildren();
                 for (DataSnapshot ds : articulos) {
-                    ArticuloDetail a = ds.getValue(ArticuloDetail.class);
-                    ArticuloDetail art = new ArticuloDetail();
+                    Articulo a = ds.getValue(Articulo.class);
+                    Articulo art = new Articulo();
                     art.setCantidad(a.getCantidad());
                     art.setNombre(a.getNombre());
                     encargue.add(a);
@@ -113,11 +113,11 @@ public class Completar extends AppCompatActivity {
                 ref1.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot datosPedido) {
-                        ArrayList<ArticuloDetail> encargue = new ArrayList<>();
+                        ArrayList<Articulo> encargue = new ArrayList<>();
                         Iterable<DataSnapshot> articulos = datosPedido.child(pedido.getCliente() + "_" + pedido.getFecha()).child("Articulos").getChildren();
                         for (DataSnapshot ds : articulos) {
-                            ArticuloDetail a = ds.getValue(ArticuloDetail.class);
-                            ArticuloDetail art = new ArticuloDetail();
+                            Articulo a = ds.getValue(Articulo.class);
+                            Articulo art = new Articulo();
                             art.setCantidad(a.getCantidad());
                             art.setNombre(a.getNombre());
                             encargue.add(a);
@@ -150,11 +150,11 @@ public class Completar extends AppCompatActivity {
     }
 
     //Metodos de la clase
-    private static String mostrarArticulos(@NonNull ArrayList<ArticuloDetail> lista) {
+    private static String mostrarArticulos(@NonNull ArrayList<Articulo> lista) {
         String nombre;
         String cantidad;
         String linea = "";
-        for (ArticuloDetail art : lista) {
+        for (Articulo art : lista) {
             nombre = art.getNombre();
             cantidad = art.getCantidad();
             linea = linea + "\n" + nombre + " " + cantidad;
@@ -163,7 +163,7 @@ public class Completar extends AppCompatActivity {
     }
 
     //Metodo validador de permisos
-    private void verificarPermisos(View v, Pedido p, ArrayList<ArticuloDetail> art) {
+    private void verificarPermisos(View v, Pedido p, ArrayList<Articulo> art) {
         if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             crearPDF(p, art);
         } else if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
@@ -179,7 +179,7 @@ public class Completar extends AppCompatActivity {
     }
 
     //Creacion del PDF
-    private void crearPDF(Pedido p, ArrayList<ArticuloDetail> art) {
+    private void crearPDF(Pedido p, ArrayList<Articulo> art) {
         try {
             String carpeta = "/Pedidos";
             String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + carpeta;
@@ -251,22 +251,22 @@ public class Completar extends AppCompatActivity {
                             //Carga articulos del pedido
                            @Override
                            public void onDataChange(@NonNull DataSnapshot datosDB) {
-                               ArrayList<ArticuloDetail> encargue = new ArrayList<>();
+                               ArrayList<Articulo> encargue = new ArrayList<>();
                                Iterable<DataSnapshot> articulos = datosDB.child("Pedidos").child(path).child("Articulos").getChildren();
                                for (DataSnapshot ds : articulos) {
-                                   ArticuloDetail a = ds.getValue(ArticuloDetail.class);
-                                   ArticuloDetail art = new ArticuloDetail();
+                                   Articulo a = ds.getValue(Articulo.class);
+                                   Articulo art = new Articulo();
                                    art.setCantidad(a.getCantidad());
                                    art.setNombre(a.getNombre());
                                    encargue.add(a);
                                }
 
                                //Carga articulos de la db
-                               ArrayList<ArticuloDetail> almacenados = new ArrayList<>();
+                               ArrayList<Articulo> almacenados = new ArrayList<>();
                                Iterable<DataSnapshot> articulosAlmacenados = datosDB.child("Articulos").getChildren();
                                for (DataSnapshot ds : articulosAlmacenados) {
-                                   ArticuloDetail a = ds.getValue(ArticuloDetail.class);
-                                   ArticuloDetail art = new ArticuloDetail();
+                                   Articulo a = ds.getValue(Articulo.class);
+                                   Articulo art = new Articulo();
                                    art.setCantidad(a.getCantidad());
                                    art.setNombre(a.getNombre());
                                    almacenados.add(a);

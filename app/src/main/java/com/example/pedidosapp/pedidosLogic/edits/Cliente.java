@@ -12,7 +12,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.pedidosapp.R;
-import com.example.pedidosapp.articleLogic.ArticuloDetail;
+import com.example.pedidosapp.articleLogic.Articulo;
 import com.example.pedidosapp.tabs.Pedidos;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,7 +30,7 @@ public class Cliente extends AppCompatActivity {
     Spinner spinner;
     Button uploadClient;
     DatabaseReference ref, ref2, ref3;
-    ArrayList<ArticuloDetail> list;
+    ArrayList<Articulo> list;
 
 
     @Override
@@ -64,7 +64,7 @@ public class Cliente extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                    ArticuloDetail articulo = dataSnapshot.getValue(ArticuloDetail.class);
+                    Articulo articulo = dataSnapshot.getValue(Articulo.class);
                     list.add(articulo);
                 }
                 //adapterDetail.notifyDataSetChanged();
@@ -82,7 +82,7 @@ public class Cliente extends AppCompatActivity {
             public void onClick(View view) {
                 String id = spinner.getSelectedItem() + "_" + date;
                 uploadData(spinner.getSelectedItem().toString(), date, id);
-                for (ArticuloDetail articulo: list) {
+                for (Articulo articulo: list) {
                     uploadArticles(articulo,id);
 
                 }
@@ -112,7 +112,7 @@ public class Cliente extends AppCompatActivity {
 
 
     // Metodo para subir los articulos al nuevo pedido
-    private void uploadArticles(ArticuloDetail articulo, String id) {
+    private void uploadArticles(Articulo articulo, String id) {
 
         Map<String, Object> articulosSeleccionados = new HashMap<>();
 

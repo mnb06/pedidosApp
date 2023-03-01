@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pedidosapp.Inicio;
 import com.example.pedidosapp.R;
-import com.example.pedidosapp.articleLogic.ArticuloDetail;
+import com.example.pedidosapp.articleLogic.Articulo;
 import com.example.pedidosapp.tabs.Pedidos;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
@@ -35,7 +35,7 @@ public class Articulos extends AppCompatActivity implements Serializable{
     DatabaseReference ref;
     ArticlesEditAdapter articlesEditAdapter;
 
-    public static ArrayList<ArticuloDetail> list;
+    public static ArrayList<Articulo> list;
 
 
     @Override
@@ -78,7 +78,7 @@ public class Articulos extends AppCompatActivity implements Serializable{
 
                 // Bucle que carga todos los pedidos en la lista
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    ArticuloDetail articulo = dataSnapshot.getValue(ArticuloDetail.class);
+                    Articulo articulo = dataSnapshot.getValue(Articulo.class);
                     list.add(articulo);
                 }
                 articlesEditAdapter.notifyDataSetChanged();
@@ -129,7 +129,7 @@ public class Articulos extends AppCompatActivity implements Serializable{
             finish();
         }
 
-        private void uploadArticles(ArticuloDetail articulo, String id) {
+        private void uploadArticles(Articulo articulo, String id) {
             // Hash donde se almacenan los datos a subir
             Map<String, Object> articulosSeleccionados = new HashMap<>();
 

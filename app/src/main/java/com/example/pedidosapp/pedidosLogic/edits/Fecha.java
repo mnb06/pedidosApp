@@ -13,8 +13,7 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 
 import com.example.pedidosapp.R;
-import com.example.pedidosapp.pedidosLogic.ArticuloDetail;
-import com.example.pedidosapp.pedidosLogic.PedidoCreation;
+import com.example.pedidosapp.articleLogic.Articulo;
 import com.example.pedidosapp.tabs.Pedidos;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,7 +30,7 @@ public class Fecha extends AppCompatActivity {
 
     Button uploadFecha, elegirFecha;
     DatabaseReference ref, ref2, ref3;
-    ArrayList<ArticuloDetail> list;
+    ArrayList<Articulo> list;
     TextView nuevaFecha;
     Calendar calendar;
     DatePickerDialog dpd;
@@ -84,7 +83,7 @@ public class Fecha extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                    ArticuloDetail articulo = dataSnapshot.getValue(ArticuloDetail.class);
+                    Articulo articulo = dataSnapshot.getValue(Articulo.class);
                     list.add(articulo);
                 }
                 //adapterDetail.notifyDataSetChanged();
@@ -98,7 +97,7 @@ public class Fecha extends AppCompatActivity {
             public void onClick(View view) {
                 String id = client + "_" + nuevaFecha.getText().toString();
                 uploadData(client, nuevaFecha.getText().toString(), id);
-                for (ArticuloDetail articulo: list) {
+                for (Articulo articulo: list) {
                     uploadArticles(articulo,id);
                 }
                 deleteOldOrder(path);
@@ -122,7 +121,7 @@ public class Fecha extends AppCompatActivity {
 
 
     // Metodo para subir los articulos al nuevo pedido
-    private void uploadArticles(ArticuloDetail articulo, String id) {
+    private void uploadArticles(Articulo articulo, String id) {
 
         Map<String, Object> articulosSeleccionados = new HashMap<>();
 

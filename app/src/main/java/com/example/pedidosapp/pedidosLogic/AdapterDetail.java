@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pedidosapp.R;
-import com.example.pedidosapp.articleLogic.ArticuloDetail;
+import com.example.pedidosapp.articleLogic.Articulo;
 
 import java.util.ArrayList;
 
@@ -18,10 +18,10 @@ public class AdapterDetail extends RecyclerView.Adapter<AdapterDetail.MyViewHold
 
     Context context;
 
-    ArrayList<ArticuloDetail> list;
+    ArrayList<Articulo> list;
 
     // Constructor
-    public AdapterDetail(Context context, ArrayList<ArticuloDetail> list) {
+    public AdapterDetail(Context context, ArrayList<Articulo> list) {
         this.context = context;
         this.list = list;
     }
@@ -36,7 +36,7 @@ public class AdapterDetail extends RecyclerView.Adapter<AdapterDetail.MyViewHold
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
-        ArticuloDetail articulo = list.get(position);
+        Articulo articulo = list.get(position);
         holder.nombre.setText(articulo.getNombre());
         holder.cant.setText(articulo.getCantidad() + " KG");
         holder.setIsRecyclable(false);

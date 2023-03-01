@@ -15,7 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pedidosapp.R;
-import com.example.pedidosapp.articleLogic.ArticuloDetail;
+import com.example.pedidosapp.articleLogic.Articulo;
 import com.example.pedidosapp.pedidosLogic.articles.MaxStockControl;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -30,15 +30,15 @@ import java.util.Map;
 public class ArticlesEditAdapter extends RecyclerView.Adapter<ArticlesEditAdapter.MyViewHolder> {
 
     Context context;
-    ArrayList<ArticuloDetail> list;
-    public ArrayList<ArticuloDetail> elegidos;
+    ArrayList<Articulo> list;
+    public ArrayList<Articulo> elegidos;
 
     // path del pedido correspondiente
     String path;
 
 
     // Constructor
-    public ArticlesEditAdapter(Context context, ArrayList<ArticuloDetail> list, String path) {
+    public ArticlesEditAdapter(Context context, ArrayList<Articulo> list, String path) {
         this.context = context;
         this.list = list;
         this.path = path;
@@ -56,28 +56,9 @@ public class ArticlesEditAdapter extends RecyclerView.Adapter<ArticlesEditAdapte
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
         // Traer el articulo
-        ArticuloDetail articulo = list.get(position);
+        Articulo articulo = list.get(position);
         holder.nombre.setText(articulo.getNombre());
         holder.stock.setText(articulo.getCantidad());
-
-
-        // Control para que no se pueda seleccionar mayor cantidad que el stock actual
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(path + articulo.getNombre());
-        ref.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if (!task.isSuccessful()) {
-                    Log.e("firebase", "Error getting data", task.getException());
-                }
-                else {
-                    Log.d("firebase", String.valueOf(task.getResult().getValue()));
-                }
-            }
-        });
-        holder.stock.setFilters(new InputFilter[]{ new MaxStockControl("1", "50")});
-
-
-
         holder.setIsRecyclable(false);
 
 
@@ -85,7 +66,7 @@ public class ArticlesEditAdapter extends RecyclerView.Adapter<ArticlesEditAdapte
         holder.save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ArticuloDetail elegido = new ArticuloDetail(articulo.getNombre(),holder.stock.getText().toString());
+                Articulo elegido = new Articulo(articulo.getNombre(),holder.stock.getText().toString());
                 uploadArticles(elegido, path);
 
             }
@@ -105,7 +86,7 @@ public class ArticlesEditAdapter extends RecyclerView.Adapter<ArticlesEditAdapte
     }
 
 
-    private void uploadArticles(ArticuloDetail articulo, String id) {
+    private void uploadArticles(Articulo articulo, String id) {
         // Hash donde se almacenan los datos a subir
         Map<String, Object> articulosSeleccionados = new HashMap<>();
 

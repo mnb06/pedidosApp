@@ -1,6 +1,6 @@
 package com.example.pedidosapp.pedidosLogic;
 
-import com.example.pedidosapp.articleLogic.ArticuloDetail;
+import com.example.pedidosapp.articleLogic.Articulo;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class Pedido implements Serializable {
 
     private String cliente, fecha;
-    private ArrayList<ArticuloDetail> listArticulos;
+    private ArrayList<Articulo> listArticulos;
 
 
     public Pedido() {
@@ -30,15 +30,15 @@ public class Pedido implements Serializable {
         this.fecha = fecha;
     }
 
-    public void addArticulo(ArticuloDetail art){
+    public void addArticulo(Articulo art){
         this.listArticulos.add(art);
     }
 
-    public ArrayList<ArticuloDetail> getListArticulos() {
+    public ArrayList<Articulo> getListArticulos() {
         return listArticulos;
     }
 
-    public void setListArticulos(ArrayList<ArticuloDetail> listArticulos) {
+    public void setListArticulos(ArrayList<Articulo> listArticulos) {
         this.listArticulos = listArticulos;
     }
 

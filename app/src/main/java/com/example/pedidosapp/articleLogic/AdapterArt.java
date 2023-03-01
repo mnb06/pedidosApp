@@ -25,10 +25,10 @@ public class AdapterArt extends RecyclerView.Adapter<AdapterArt.MyViewHolder> {
     Context context;
     DatabaseReference databaseReference;
 
-    ArrayList<ArticuloDetail> list;
+    ArrayList<Articulo> list;
 
     // Constructor
-    public AdapterArt(Context context, ArrayList<ArticuloDetail> list) {
+    public AdapterArt(Context context, ArrayList<Articulo> list) {
         this.context = context;
         this.list = list;
     }
@@ -43,10 +43,11 @@ public class AdapterArt extends RecyclerView.Adapter<AdapterArt.MyViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
-        ArticuloDetail articulo = list.get(position);
+        Articulo articulo = list.get(position);
         holder.nombre.setText(articulo.getNombre());
         holder.stock.setText(articulo.getStock());
         holder.stockMin.setText(articulo.getStockMin());
+        holder.reservado.setText(articulo.getStockReservado());
         holder.setIsRecyclable(false);
 
         holder.delete.setOnClickListener(new View.OnClickListener() {
@@ -84,7 +85,7 @@ public class AdapterArt extends RecyclerView.Adapter<AdapterArt.MyViewHolder> {
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView nombre, stock, stockMin;
+        TextView nombre, stock, stockMin, reservado;
         Button delete, edit;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -92,8 +93,10 @@ public class AdapterArt extends RecyclerView.Adapter<AdapterArt.MyViewHolder> {
             nombre = itemView.findViewById(R.id.artName);
             stock = itemView.findViewById(R.id.artStock);
             stockMin = itemView.findViewById(R.id.artStockMin);
+            reservado = itemView.findViewById(R.id.artReservado);
             delete = itemView.findViewById(R.id.artDelete);
             edit = itemView.findViewById(R.id.artEdit);
+
 
 
         }

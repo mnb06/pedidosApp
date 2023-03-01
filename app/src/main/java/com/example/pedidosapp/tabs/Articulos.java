@@ -38,7 +38,7 @@ public class Articulos extends Fragment {
     RecyclerView recyclerView;
     DatabaseReference database;
     AdapterArt adapterArt;
-    public static ArrayList<ArticuloDetail> list;
+    public static ArrayList<Articulo> list;
 
 
     @SuppressLint("MissingInflatedId")
@@ -76,7 +76,7 @@ public class Articulos extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                    ArticuloDetail articulo = dataSnapshot.getValue(ArticuloDetail.class);
+                    Articulo articulo = dataSnapshot.getValue(Articulo.class);
                     list.add(articulo);
                 }
                 adapterArt.notifyDataSetChanged();
