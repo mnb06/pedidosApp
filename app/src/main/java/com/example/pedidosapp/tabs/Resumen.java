@@ -58,7 +58,7 @@ public class Resumen extends Fragment {
     private CalendarView calendario;
     private TextView fecha;
 
-    private Button alertas;
+    private Button bajo, sobre;
 
     private FirebaseDatabase database;
     private DatabaseReference myRef;
@@ -87,7 +87,8 @@ public class Resumen extends Fragment {
         calendario = view.findViewById(R.id.calendarView);
         fecha = view.findViewById(R.id.textFecha);
 
-        alertas = view.findViewById(R.id.alertas);
+        bajo = view.findViewById(R.id.bajo);
+        sobre = view.findViewById(R.id.sobre);
 
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference("Pedidos");
@@ -100,48 +101,96 @@ public class Resumen extends Fragment {
 
         //Alertas de stock
 
-        alertas.setOnClickListener(new View.OnClickListener() {
-               @Override
-               public void onClick(View view) {
-                   DatabaseReference ref = database.getReference();
-                   ref.addValueEventListener(new ValueEventListener() {
-                       @Override
-                       public void onDataChange(@NonNull DataSnapshot snapshot) {
-                           ArrayList<String> arts = new ArrayList<>();
-                           Iterable<DataSnapshot> articulos = snapshot.child("Articulos").getChildren();
-                           for (DataSnapshot ds : articulos) {
-                               Articulo a = ds.getValue(Articulo.class);
-                               Articulo art = new Articulo();
-                               art.setStock(a.getStock());
-                               art.setStockMin(a.getStockMin());
-                               art.setNombre(a.getNombre());
-                               int stock = Integer.parseInt(art.getStock());
-                               int stockMin = Integer.parseInt(art.getStockMin());
-                               if (stock < stockMin) {
-                                   arts.add(art.getNombre());
-                               }
-                           }
+        //Alertas de stock
 
-                           AlertDialog.Builder alerta = new AlertDialog.Builder(getContext());
-                           alerta.setMessage(articulosBajoStock(arts))
-                                   .setCancelable(false)
-                                   .setPositiveButton("Volver", new DialogInterface.OnClickListener() {
-                                       @Override
-                                       public void onClick(DialogInterface dialogInterface, int i) {
+        bajo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DatabaseReference ref = database.getReference();
+                ref.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        ArrayList<String> artSinStock = new ArrayList<>();
+                        Iterable<DataSnapshot> articulos = snapshot.child("Articulos").getChildren();
+                        for (DataSnapshot ds : articulos) {
+                            Articulo a = ds.getValue(Articulo.class);
+                            Articulo art = new Articulo();
+                            art.setStock(a.getStock());
+                            art.setStockMin(a.getStockMin());
+                            art.setNombre(a.getNombre());
+                            art.setStockReservado(a.getStockReservado());
+                            int stock = Integer.parseInt(art.getStock());
+                            int stockMin = Integer.parseInt(art.getStockMin());
+                            if (stock < stockMin) {
+                                artSinStock.add(art.getNombre());
+                            }
+
+                        }
+
+                        AlertDialog.Builder alerta = new AlertDialog.Builder(getContext());
+                        alerta.setMessage(listarArticulos(artSinStock))
+                                .setCancelable(false)
+                                .setPositiveButton("Volver", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
                                         dialogInterface.cancel();
-                                       }
-                                   });
-                           AlertDialog verFaltantes = alerta.create();
-                           verFaltantes.setTitle("Articulos con bajo Stock");
-                           verFaltantes.show();
-                       }
+                                    }
+                                });
+                        AlertDialog verFaltantes = alerta.create();
+                        verFaltantes.setTitle("Artículos con bajo stock:");
+                        verFaltantes.show();
+                    }
 
-                       @Override
-                       public void onCancelled(@NonNull DatabaseError error) {
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
 
-                       }
-                   });
-               }
+                    }
+                });
+            }
+        });
+
+        sobre.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DatabaseReference ref = database.getReference();
+                ref.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        ArrayList<String> artSobreReservado = new ArrayList<>();
+                        Iterable<DataSnapshot> articulos = snapshot.child("Articulos").getChildren();
+                        for (DataSnapshot ds : articulos) {
+                            Articulo a = ds.getValue(Articulo.class);
+                            Articulo art = new Articulo();
+                            art.setStock(a.getStock());
+                            art.setNombre(a.getNombre());
+                            art.setStockReservado(a.getStockReservado());
+                            int stock = Integer.parseInt(art.getStock());
+                            int stockReservado = Integer.parseInt(art.getStockReservado());
+                            if (stock < stockReservado) {
+                                artSobreReservado.add(art.getNombre());
+                            }
+                        }
+
+                        AlertDialog.Builder alerta = new AlertDialog.Builder(getContext());
+                        alerta.setMessage(listarArticulos(artSobreReservado))
+                                .setCancelable(false)
+                                .setPositiveButton("Volver", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        dialogInterface.cancel();
+                                    }
+                                });
+                        AlertDialog verFaltantes = alerta.create();
+                        verFaltantes.setTitle("Artículos Sobrerreservados");
+                        verFaltantes.show();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            }
         });
 
                 // Método que setea la fecha de consulta
@@ -310,7 +359,7 @@ public class Resumen extends Fragment {
                 }
             }
 
-            private String articulosBajoStock(ArrayList<String> arts) {
+            private String listarArticulos(ArrayList<String> arts) {
                 String linea = "";
                 for (String nombre : arts) {
                     linea = linea + nombre + "\n";

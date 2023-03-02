@@ -17,10 +17,21 @@
         android:gravity="center"/>
 
     <Button
-        android:id="@+id/alertas"
-        android:layout_width="wrap_content"
+        android:id="@+id/bajo"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Ver alertas de Stock"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:text="Ver artículos con bajo stock"
+        android:layout_gravity="center"/>
+
+    <Button
+        android:id="@+id/sobre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:text="Ver artículos sobrerreservados"
         android:layout_gravity="center"/>
 
     <CalendarView
