@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.pedidosapp.R;
+import com.example.pedidosapp.articleLogic.Articulo;
 import com.example.pedidosapp.pedidosLogic.AdapterPedido;
 import com.example.pedidosapp.pedidosLogic.Pedido;
 import com.example.pedidosapp.pedidosLogic.PedidoCreation;
@@ -40,10 +41,11 @@ public class Pedidos extends Fragment {
 
     Dialog createDialog;
     RecyclerView recyclerView;
-    DatabaseReference database;
+    DatabaseReference database, articulosRef;
     AdapterPedido adapterPedido;
 
     public static ArrayList<Pedido> list;
+    public static ArrayList<Articulo> articulos;
 
 
     @SuppressLint("MissingInflatedId")
@@ -64,14 +66,15 @@ public class Pedidos extends Fragment {
 
         // Database instance
         database = FirebaseDatabase.getInstance().getReference("Pedidos");
-
+        articulosRef = FirebaseDatabase.getInstance().getReference("Articulos");
         // Configuracion de la lista
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
 
         list = new ArrayList<>();
-        adapterPedido = new AdapterPedido(getContext(), list);
+        articulos = new ArrayList<>();
+        adapterPedido = new AdapterPedido(getContext(), list, articulos);
         recyclerView.setAdapter(adapterPedido);
 
 
@@ -96,6 +99,21 @@ public class Pedidos extends Fragment {
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}
+        });
+
+        articulosRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Articulo articulo = dataSnapshot.getValue(Articulo.class);
+                    articulos.add(articulo);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
         });
 
 

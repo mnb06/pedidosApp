@@ -56,7 +56,8 @@
                 android:layout_height="wrap_content"
                 android:text="1"
                 android:textAlignment="center"
-                android:textSize="23sp" />
+                android:textSize="23sp"
+                android:inputType="number"/>
 
             <TextView
                 android:layout_marginLeft="10dp"
