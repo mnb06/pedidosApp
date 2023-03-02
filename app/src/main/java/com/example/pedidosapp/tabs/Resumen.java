@@ -359,13 +359,17 @@ public class Resumen extends Fragment {
                 }
             }
 
-            private String listarArticulos(ArrayList<String> arts) {
-                String linea = "";
-                for (String nombre : arts) {
-                    linea = linea + nombre + "\n";
-                }
-                return linea;
+    private String listarArticulos(ArrayList<String> arts) {
+        String linea = "";
+        if(arts.isEmpty()){
+            linea = "No hay artículos en alerta";
+        }else {
+            for (String nombre : arts) {
+                linea = linea + nombre + "\n";
             }
+        }
+        return linea;
+    }
     }
 
 

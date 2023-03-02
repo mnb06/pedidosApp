@@ -69,6 +69,7 @@ public class AdapterArt extends RecyclerView.Adapter<AdapterArt.MyViewHolder> {
                 intent.putExtra("name", articulo.getNombre());
                 intent.putExtra("stock", articulo.getStock());
                 intent.putExtra("stockMin", articulo.getStockMin());
+                intent.putExtra("stockReservado", articulo.getStockReservado());
                 context.startActivity(intent);
             }
         });

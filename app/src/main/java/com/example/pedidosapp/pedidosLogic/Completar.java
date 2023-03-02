@@ -99,7 +99,7 @@ public class Completar extends AppCompatActivity {
                 }
                 String info = "Pedido de " + client + " para el " + date + ": \n" + mostrarArticulos(encargue);
                 informacion.setText(info);
-            };
+            }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -123,7 +123,7 @@ public class Completar extends AppCompatActivity {
                             encargue.add(a);
                         }
                         verificarPermisos(view, pedido, encargue);
-                    };
+                    }
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
 
@@ -269,36 +269,57 @@ public class Completar extends AppCompatActivity {
                                    Articulo art = new Articulo();
                                    art.setCantidad(a.getCantidad());
                                    art.setNombre(a.getNombre());
+                                   art.setStockReservado(a.getStockReservado());
                                    almacenados.add(a);
                                    }
 
-                            //Resta stock vinculando lo cargado en el encargue con lo almacenado en la db
-
+                               //Comprueba que haya stock de todos los articulos del pedido
+                               ArrayList<Boolean> existencias = new ArrayList<>();
                                for (int i = 0; i < almacenados.size(); i++) {
-                                   for(int j = 0; j < encargue.size(); j++){
-                                      if(almacenados.get(i).getNombre().equals(encargue.get(j).getNombre())) {
-                                          int cantidad = Integer.parseInt(encargue.get(j).getCantidad());
-                                          int stock = Integer.parseInt(almacenados.get(i).getStock());
-                                          if (stock < cantidad) {
-                                              Toast.makeText(Completar.this, "Falta stock de " + almacenados.get(i).getNombre() + " para completar el pedido", Toast.LENGTH_SHORT).show();
-                                          } else {
-                                              stock = stock - cantidad;
-                                              ref2.child("Articulos").child(almacenados.get(i).getNombre()).child("stock").setValue(String.valueOf(stock));
-                                              deleteCompletedOrder(path);
-                                          }
-                                      }
+                                   for (int j = 0; j < encargue.size(); j++) {
+                                       if (almacenados.get(i).getNombre().equals(encargue.get(j).getNombre())) {
+                                           int cantidad = Integer.parseInt(encargue.get(j).getCantidad());
+                                           int stock = Integer.parseInt(almacenados.get(i).getStock());
+                                           Boolean caso;
+                                           if (stock < cantidad) {
+                                               caso = false;
+                                           } else {
+                                               caso = true;
+                                           }
+                                           existencias.add(caso);
+                                       }
                                    }
-                                }
-                           }
-                           @Override
-                           public void onCancelled(@NonNull DatabaseError error) {
+                               }
 
+                               //Resta stock vinculando lo cargado en el encargue con lo almacenado en la db si hay stock, si no emite mensaje de error
+                               if (checkStock(existencias)) {
+                                   for (int i = 0; i < almacenados.size(); i++) {
+                                       for (int j = 0; j < encargue.size(); j++) {
+                                           if (almacenados.get(i).getNombre().equals(encargue.get(j).getNombre())) {
+                                               int cantidad = Integer.parseInt(encargue.get(j).getCantidad());
+                                               int stock = Integer.parseInt(almacenados.get(i).getStock());
+                                               int reservado = Integer.parseInt(almacenados.get(i).getStockReservado());
+                                               stock = stock - cantidad;
+                                               reservado = reservado - cantidad;
+                                               ref2.child("Articulos").child(almacenados.get(i).getNombre()).child("stock").setValue(String.valueOf(stock));
+                                               ref2.child("Articulos").child(almacenados.get(i).getNombre()).child("stockReservado").setValue(String.valueOf(reservado));
+                                               deleteCompletedOrder(path);
+                                           }
+                                       }
+                                   }
+                               }else{
+                                   Toast.makeText(Completar.this, "Falta stock de algunos artículos para completar el pedido. No se puede completar", Toast.LENGTH_SHORT).show();
+                               }
                            }
-                    });
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
                         Intent intent = new Intent(getApplicationContext(), Inicio.class);
                         startActivity(intent);
                         dialogInterface.cancel();
-                       };
+                    }
 
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -315,5 +336,14 @@ public class Completar extends AppCompatActivity {
     private void deleteCompletedOrder(String path){
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         ref.child("Pedidos").child(path).setValue(null);
+        Toast.makeText(Completar.this, "Pedido completo!", Toast.LENGTH_SHORT).show();
+    }
+
+    private Boolean checkStock(ArrayList<Boolean> existencias){
+        Boolean check = true;
+        for(Boolean caso: existencias){
+            check = true & caso;
+        }
+        return check;
     }
 }
