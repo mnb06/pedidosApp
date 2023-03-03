@@ -1,7 +1,6 @@
 package com.example.pedidosapp.pedidosLogic.edits;
 
 import android.content.Context;
-import android.text.InputFilter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,10 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pedidosapp.R;
 import com.example.pedidosapp.articleLogic.Articulo;
-import com.example.pedidosapp.pedidosLogic.articles.MaxStockControl;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -31,25 +26,28 @@ public class ArticlesEditAdapter extends RecyclerView.Adapter<ArticlesEditAdapte
 
     Context context;
     ArrayList<Articulo> list;
-    public ArrayList<Articulo> elegidos;
+    ArrayList<Articulo> cargados;
 
     // path del pedido correspondiente
     String path;
 
 
     // Constructor
-    public ArticlesEditAdapter(Context context, ArrayList<Articulo> list, String path) {
+    public ArticlesEditAdapter(Context context, ArrayList<Articulo> list, String path, ArrayList<Articulo> cargados) {
         this.context = context;
         this.list = list;
         this.path = path;
+        this.cargados = cargados;
     }
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(context).inflate(R.layout.item_edit_article, parent, false);
-        elegidos = new ArrayList<>();
         return new MyViewHolder(v);
+
+
+
     }
 
     @Override
@@ -58,6 +56,7 @@ public class ArticlesEditAdapter extends RecyclerView.Adapter<ArticlesEditAdapte
         // Traer el articulo
         Articulo articulo = list.get(position);
         holder.nombre.setText(articulo.getNombre());
+        String oldCant = articulo.getCantidad();
         holder.stock.setText(articulo.getCantidad());
         holder.setIsRecyclable(false);
 
@@ -68,6 +67,7 @@ public class ArticlesEditAdapter extends RecyclerView.Adapter<ArticlesEditAdapte
             public void onClick(View view) {
                 Articulo elegido = new Articulo(articulo.getNombre(),holder.stock.getText().toString());
                 uploadArticles(elegido, path);
+                changeReserved(cargados, elegido, oldCant);
 
             }
         });
@@ -102,6 +102,20 @@ public class ArticlesEditAdapter extends RecyclerView.Adapter<ArticlesEditAdapte
         Toast.makeText(context, "Articulo Modificado exitosamente",
                 Toast.LENGTH_LONG).show();
         list.clear();
+    }
+
+    private void changeReserved(ArrayList<Articulo> cargados, Articulo elegido, String oldCant) {
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference("Articulos");
+        Log.e("AAAAAAAAAAAAAAAA", Integer.toString(cargados.size()));
+        for (Articulo cargado : cargados) {
+            if (elegido.getNombre().equals(cargado.getNombre())) {
+                int a = Integer.parseInt(elegido.getStock());
+                int b = Integer.parseInt(cargado.getStockReservado());
+                int c = Integer.parseInt(oldCant);
+                int d = (b - c) + a;
+                database.child(elegido.getNombre()).child("stockReservado").setValue(Integer.toString(d));
+            }
+        }
     }
 
 
