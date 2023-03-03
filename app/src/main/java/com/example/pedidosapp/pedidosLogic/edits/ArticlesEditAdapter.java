@@ -1,5 +1,6 @@
 package com.example.pedidosapp.pedidosLogic.edits;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,8 +16,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pedidosapp.R;
 import com.example.pedidosapp.articleLogic.Articulo;
+import com.example.pedidosapp.pedidosLogic.Pedido;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -78,6 +83,7 @@ public class ArticlesEditAdapter extends RecyclerView.Adapter<ArticlesEditAdapte
                 FirebaseDatabase db = FirebaseDatabase.getInstance();
                 DatabaseReference ref = db.getReference(path);
                 ref.child(articulo.getNombre()).setValue(null);
+                undoStockReservado(articulo, cargados);
                 Toast.makeText(context.getApplicationContext(), "Eliminado satisfactoriamente.",
                         Toast.LENGTH_LONG).show();
                 list.clear();
@@ -118,6 +124,30 @@ public class ArticlesEditAdapter extends RecyclerView.Adapter<ArticlesEditAdapte
         }
     }
 
+    private void undoStockReservado(Articulo toDelete, ArrayList<Articulo> cargados){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Articulos");
+        for (Articulo cargado: cargados) {
+            if (toDelete.getNombre().equals(cargado.getNombre())){
+                int a = Integer.parseInt(toDelete.getCantidad());
+                int b = Integer.parseInt(cargado.getStockReservado());
+                reference.child(toDelete.getNombre()).child("stockReservado").setValue(Integer.toString(b-a));
+            }
+        }
+    }
+
+    private void compare(ArrayList<Articulo> cargados, ArrayList<Articulo> articulos){
+        for (Articulo cargado: cargados) {
+            for (Articulo articulo : articulos) {
+                // chequeo si el nombre coincide
+                if (cargado.getNombre().equals(articulo.getNombre())){
+                    int a = Integer.parseInt(articulo.getStockReservado());
+                    int b = Integer.parseInt(cargado.getCantidad());
+                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Articulos");
+                    ref.child(articulo.getNombre()).child("stockReservado").setValue(Integer.toString(a-b));
+                }
+            }
+        }
+    }
 
     @Override
     public int getItemCount() {
