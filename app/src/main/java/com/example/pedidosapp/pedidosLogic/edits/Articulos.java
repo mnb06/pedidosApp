@@ -32,10 +32,10 @@ public class Articulos extends AppCompatActivity implements Serializable{
 
 
     RecyclerView recyclerView;
-    DatabaseReference ref;
+    DatabaseReference ref, database;
     ArticlesEditAdapter articlesEditAdapter;
 
-    public static ArrayList<Articulo> list;
+    public static ArrayList<Articulo> list, cargados;
 
 
     @Override
@@ -57,6 +57,7 @@ public class Articulos extends AppCompatActivity implements Serializable{
 
         // Database reference instance
         ref = FirebaseDatabase.getInstance().getReference(path);
+        database = FirebaseDatabase.getInstance().getReference("Articulos");
 
 
         // Configuracion de la lista
@@ -65,7 +66,8 @@ public class Articulos extends AppCompatActivity implements Serializable{
 
 
         list = new ArrayList<>();
-        articlesEditAdapter = new ArticlesEditAdapter(getApplicationContext(), list, path);
+        cargados = new ArrayList<>();
+        articlesEditAdapter = new ArticlesEditAdapter(getApplicationContext(), list, path, cargados);
         recyclerView.setAdapter(articlesEditAdapter);
 
 
@@ -90,29 +92,38 @@ public class Articulos extends AppCompatActivity implements Serializable{
             }
         });
 
-        add.setOnClickListener(new View.OnClickListener() {
+        database.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), AddEditArticle.class);
-                intent.putExtra("cliente", cliente);
-                intent.putExtra("fecha", fecha);
-                intent.putExtra("path", path);
-                startActivity(intent);
-                finish();
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    Articulo articulo = dataSnapshot.getValue(Articulo.class);
+                    cargados.add(articulo);
+                }
+                //articlesEditAdapter.notifyDataSetChanged();
             }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
         });
 
 
-        upload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "Pedido modificado correctamente",
-                        Toast.LENGTH_LONG).show();
-                finish();
-            }
+        add.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), AddEditArticle.class);
+            intent.putExtra("cliente", cliente);
+            intent.putExtra("fecha", fecha);
+            intent.putExtra("path", path);
+            startActivity(intent);
+            finish();
+        });
+
+
+        upload.setOnClickListener(view -> {
+            Toast.makeText(getApplicationContext(), "Pedido modificado correctamente",
+                    Toast.LENGTH_LONG).show();
+            finish();
         });
     }
-        private void uploadData(String client, String fecha, String id) {
+        private void uplodData(String client, String fecha, String id) {
 
             // Hash donde se almacenan los datos a subir
             Map<String, Object> datosPedido = new HashMap<>();

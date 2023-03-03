@@ -73,7 +73,7 @@ public class AddEditArticle extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                // Bucle que carga todos los pedidos en la lista
+                // Bucle que carga todos los articulos en la lista
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Articulo articulo = dataSnapshot.getValue(Articulo.class);
                     list.add(articulo);
@@ -100,6 +100,7 @@ public class AddEditArticle extends AppCompatActivity {
                 for (Articulo articulo : articlesAdapter.elegidos) {
                     uploadArticles(articulo, id);
                 }
+                loadReserved(list, articlesAdapter.elegidos);
                 finish();
             }
         });
@@ -121,5 +122,17 @@ public class AddEditArticle extends AppCompatActivity {
                     Toast.LENGTH_LONG).show();
             finish();
         }
+
+    private void loadReserved(ArrayList<Articulo> list, ArrayList<Articulo> elegidos) {
+        for (Articulo elegido: elegidos) {
+            for (Articulo cargado: list) {
+                if (elegido.getNombre().equals(cargado.getNombre())){
+                    int a = Integer.parseInt(elegido.getStock());
+                    int b = Integer.parseInt(cargado.getStockReservado());
+                    database.child(elegido.getNombre()).child("stockReservado").setValue(Integer.toString(a+b));
+                }
+            }
+        }
+    }
 
 }
