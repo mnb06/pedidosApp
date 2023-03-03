@@ -74,6 +74,84 @@ public class Resumen extends Fragment {
                 else Toast.makeText(this.getContext(), "Permisos denegados", Toast.LENGTH_SHORT).show();
             }
     );
+
+    ValueEventListener detectarSobre = new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot snapshot) {
+            ArrayList<String> artSobreReservado = new ArrayList<>();
+            Iterable<DataSnapshot> articulos = snapshot.child("Articulos").getChildren();
+            for (DataSnapshot ds : articulos) {
+                Articulo a = ds.getValue(Articulo.class);
+                Articulo art = new Articulo();
+                art.setStock(a.getStock());
+                art.setNombre(a.getNombre());
+                art.setStockReservado(a.getStockReservado());
+                int stock = Integer.parseInt(art.getStock());
+                int stockReservado = Integer.parseInt(art.getStockReservado());
+                if (stock < stockReservado) {
+                    artSobreReservado.add(art.getNombre());
+                }
+            }
+
+            AlertDialog.Builder alerta = new AlertDialog.Builder(getContext());
+            alerta.setMessage(listarArticulos(artSobreReservado))
+                    .setCancelable(false)
+                    .setPositiveButton("Volver", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                        }
+                    });
+            AlertDialog verFaltantes = alerta.create();
+            verFaltantes.setTitle("Artículos Sobrerreservados");
+            verFaltantes.show();
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError error) {
+
+        }
+    };
+
+    ValueEventListener detectarBajo = new ValueEventListener(){
+        @Override
+        public void onDataChange(@NonNull DataSnapshot snapshot) {
+            ArrayList<String> artSinStock = new ArrayList<>();
+            Iterable<DataSnapshot> articulos = snapshot.child("Articulos").getChildren();
+            for (DataSnapshot ds : articulos) {
+                Articulo a = ds.getValue(Articulo.class);
+                Articulo art = new Articulo();
+                art.setStock(a.getStock());
+                art.setStockMin(a.getStockMin());
+                art.setNombre(a.getNombre());
+                art.setStockReservado(a.getStockReservado());
+                int stock = Integer.parseInt(art.getStock());
+                int stockMin = Integer.parseInt(art.getStockMin());
+                if (stock < stockMin) {
+                    artSinStock.add(art.getNombre());
+                }
+
+            }
+
+            AlertDialog.Builder alerta = new AlertDialog.Builder(getContext());
+            alerta.setMessage(listarArticulos(artSinStock))
+                    .setCancelable(false)
+                    .setPositiveButton("Volver", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                        }
+                    });
+            AlertDialog verFaltantes = alerta.create();
+            verFaltantes.setTitle("Artículos con bajo stock:");
+            verFaltantes.show();
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError error) {
+
+        }
+    };
     @SuppressLint("MissingInflatedId")
     @Nullable
     @Override
@@ -91,7 +169,7 @@ public class Resumen extends Fragment {
         sobre = view.findViewById(R.id.sobre);
 
         database = FirebaseDatabase.getInstance();
-        myRef = database.getReference("Pedidos");
+        myRef = database.getReference();
 
         listView = view.findViewById(R.id.listaPedidos);
         list = new ArrayList<>();
@@ -100,265 +178,182 @@ public class Resumen extends Fragment {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, list);
 
         //Alertas de stock
-
-        //Alertas de stock
-
         bajo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DatabaseReference ref = database.getReference();
-                ref.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        ArrayList<String> artSinStock = new ArrayList<>();
-                        Iterable<DataSnapshot> articulos = snapshot.child("Articulos").getChildren();
-                        for (DataSnapshot ds : articulos) {
-                            Articulo a = ds.getValue(Articulo.class);
-                            Articulo art = new Articulo();
-                            art.setStock(a.getStock());
-                            art.setStockMin(a.getStockMin());
-                            art.setNombre(a.getNombre());
-                            art.setStockReservado(a.getStockReservado());
-                            int stock = Integer.parseInt(art.getStock());
-                            int stockMin = Integer.parseInt(art.getStockMin());
-                            if (stock < stockMin) {
-                                artSinStock.add(art.getNombre());
-                            }
-
-                        }
-
-                        AlertDialog.Builder alerta = new AlertDialog.Builder(getContext());
-                        alerta.setMessage(listarArticulos(artSinStock))
-                                .setCancelable(false)
-                                .setPositiveButton("Volver", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        dialogInterface.cancel();
-                                    }
-                                });
-                        AlertDialog verFaltantes = alerta.create();
-                        verFaltantes.setTitle("Artículos con bajo stock:");
-                        verFaltantes.show();
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
+                myRef.addValueEventListener(detectarBajo);
             }
         });
-
-        sobre.setOnClickListener(new View.OnClickListener() {
+       sobre.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DatabaseReference ref = database.getReference();
-                ref.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        ArrayList<String> artSobreReservado = new ArrayList<>();
-                        Iterable<DataSnapshot> articulos = snapshot.child("Articulos").getChildren();
-                        for (DataSnapshot ds : articulos) {
-                            Articulo a = ds.getValue(Articulo.class);
-                            Articulo art = new Articulo();
-                            art.setStock(a.getStock());
-                            art.setNombre(a.getNombre());
-                            art.setStockReservado(a.getStockReservado());
-                            int stock = Integer.parseInt(art.getStock());
-                            int stockReservado = Integer.parseInt(art.getStockReservado());
-                            if (stock < stockReservado) {
-                                artSobreReservado.add(art.getNombre());
-                            }
-                        }
+                myRef.addValueEventListener(detectarSobre);
+            }
+        });
 
-                        AlertDialog.Builder alerta = new AlertDialog.Builder(getContext());
-                        alerta.setMessage(listarArticulos(artSobreReservado))
-                                .setCancelable(false)
-                                .setPositiveButton("Volver", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        dialogInterface.cancel();
+        //Meétodo que setea la fecha de consulta
+        calendario.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+        @Override
+        public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int day) {
+            month++;
+            String fechaSeleccionada = day + "-" + month + "-" + year;
+            fecha.setText(fechaSeleccionada);
+            myRef.child("Pedidos").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Iterable<DataSnapshot> pedidos = dataSnapshot.getChildren();
+                    list.clear();
+                    listPedido.clear();
+                    for (DataSnapshot ds : pedidos) {
+                        Pedido pedido = ds.getValue(Pedido.class);
+                        if ((pedido.getFecha()).equals(fechaSeleccionada)) {
+                            list.add("Pedido de " + pedido.getCliente());
+                            listPedido.add(pedido);
+                            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                    ArrayList<Articulo> encargue = new ArrayList<>();
+                                    if (!listPedido.isEmpty()) {
+                                        Pedido ped = listPedido.get(i);
+                                        Iterable<DataSnapshot> articulos = dataSnapshot.child(ped.getCliente() + "_" + ped.getFecha()).child("Articulos").getChildren();
+                                        for (DataSnapshot ds : articulos) {
+                                            Articulo a = ds.getValue(Articulo.class);
+                                            Articulo art = new Articulo();
+                                            art.setCantidad(a.getCantidad());
+                                            art.setNombre(a.getNombre());
+                                            encargue.add(a);
+                                        }
+                                        AlertDialog.Builder alerta = new AlertDialog.Builder(getContext());
+                                        alerta.setMessage("Pedido de " + listPedido.get(i).getCliente() + " para la fecha " + listPedido.get(i).getFecha() + ": \n"
+                                                        + mostrarArticulos(encargue))
+                                                .setCancelable(false)
+                                                .setPositiveButton("Descargar PDF", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                                        verificarPermisos(view, ped, encargue);
+                                                        dialogInterface.cancel();
+                                                    }
+                                                })
+                                                .setNegativeButton("Volver", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                                        dialogInterface.cancel();
+                                                    }
+                                                });
+                                        AlertDialog verResumen = alerta.create();
+                                        verResumen.setTitle("Información del Pedido");
+                                        verResumen.show();
                                     }
-                                });
-                        AlertDialog verFaltantes = alerta.create();
-                        verFaltantes.setTitle("Artículos Sobrerreservados");
-                        verFaltantes.show();
+                                }
+                            });
+                        }
                     }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
+                    if (list.isEmpty()) {
+                        list.add("No hay pedidos para la fecha");
+                    }
+                    listView.setAdapter(adapter);
+                    //return null;
+                }
+            @Override
+                public void onCancelled(DatabaseError error) {
+                    // Failed to read value
+                    Log.w(TAG, "Error al cargar los pedidos.", error.toException());
                     }
                 });
             }
         });
+        return view;
+        }
 
-                // Método que setea la fecha de consulta
-                calendario.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-                    @Override
-                    public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int day) {
-                        month++;
-                        String fechaSeleccionada = day + "-" + month + "-" + year;
-                        fecha.setText(fechaSeleccionada);
-                        myRef.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                Iterable<DataSnapshot> pedidos = dataSnapshot.getChildren();
-                                list.clear();
-                                listPedido.clear();
-                                for (DataSnapshot ds : pedidos) {
-                                    Pedido pedido = ds.getValue(Pedido.class);
-                                    if ((pedido.getFecha()).equals(fechaSeleccionada)) {
-                                        list.add("Pedido de " + pedido.getCliente());
-                                        listPedido.add(pedido);
-                                        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                            @Override
-                                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                                ArrayList<Articulo> encargue = new ArrayList<>();
-                                                if (!listPedido.isEmpty()) {
-                                                    Pedido ped = listPedido.get(i);
-                                                    Iterable<DataSnapshot> articulos = dataSnapshot.child(ped.getCliente() + "_" + ped.getFecha()).child("Articulos").getChildren();
-                                                    for (DataSnapshot ds : articulos) {
-                                                        Articulo a = ds.getValue(Articulo.class);
-                                                        Articulo art = new Articulo();
-                                                        art.setCantidad(a.getCantidad());
-                                                        art.setNombre(a.getNombre());
-                                                        encargue.add(a);
-                                                    }
-                                                    AlertDialog.Builder alerta = new AlertDialog.Builder(getContext());
-                                                    alerta.setMessage("Pedido de " + listPedido.get(i).getCliente() + " para la fecha " + listPedido.get(i).getFecha() + ": \n"
-                                                                    + mostrarArticulos(encargue))
-                                                            .setCancelable(false)
-                                                            .setPositiveButton("Descargar PDF", new DialogInterface.OnClickListener() {
-                                                                @Override
-                                                                public void onClick(DialogInterface dialogInterface, int i) {
-                                                                    verificarPermisos(view, ped, encargue);
-                                                                    dialogInterface.cancel();
-                                                                }
-                                                            })
-                                                            .setNegativeButton("Volver", new DialogInterface.OnClickListener() {
-                                                                @Override
-                                                                public void onClick(DialogInterface dialogInterface, int i) {
-                                                                    dialogInterface.cancel();
-                                                                }
-                                                            });
-                                                    AlertDialog verResumen = alerta.create();
-                                                    verResumen.setTitle("Información del Pedido");
-                                                    verResumen.show();
-                                                }
-                                            }
-                                        });
-                                    }
-                                }
-                                if (list.isEmpty()) {
-                                    list.add("No hay pedidos para la fecha");
-                                }
-                                listView.setAdapter(adapter);
-                                //return null;
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError error) {
-                                // Failed to read value
-                                Log.w(TAG, "Error al cargar los pedidos.", error.toException());
-                            }
-                        });
-                    }
-                });
-
-
-                return view;
-            }
-
-            //Crea la lista de articulos del pedido seleccionado
-            private static String mostrarArticulos(@NonNull ArrayList<Articulo> lista) {
-                String nombre;
-                String cantidad;
-                String linea = "";
-                for (Articulo art : lista) {
-                    nombre = art.getNombre();
-                    cantidad = art.getCantidad();
-                    linea = linea + "\n" + nombre + " " + cantidad;
-                }
-                return linea;
-            }
-
-            //Metodo validador de permisos
-            private void verificarPermisos(View v, Pedido p, ArrayList<Articulo> art) {
-                if (ContextCompat.checkSelfPermission(this.getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                    crearPDF(p, art);
-                } else if (ActivityCompat.shouldShowRequestPermissionRationale(this.getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    Snackbar.make(v, "Permiso necesario para crear el archivo", Snackbar.LENGTH_INDEFINITE).setAction("OK", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-                        }
-                    });
-                } else {
+    @Override
+    public void onStop() {
+        myRef.removeEventListener(detectarBajo);
+        myRef.removeEventListener(detectarSobre);
+        super.onStop();
+    }
+    @Override
+    public void onDestroy() {
+        myRef.removeEventListener(detectarBajo);
+        myRef.removeEventListener(detectarSobre);
+        super.onDestroy();
+    }
+    
+    //Crea la lista de articulos del pedido seleccionado
+    private static String mostrarArticulos(@NonNull ArrayList<Articulo> lista) {
+        String nombre;
+        String cantidad;
+        String linea = "";
+        for (Articulo art : lista) {
+            nombre = art.getNombre();
+            cantidad = art.getCantidad();
+            linea = linea + "\n" + nombre + " " + cantidad;
+        }
+        return linea;
+    }
+    //Metodo validador de permisos
+    private void verificarPermisos(View v, Pedido p, ArrayList<Articulo> art) {
+        if (ContextCompat.checkSelfPermission(this.getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            crearPDF(p, art);
+        } else if (ActivityCompat.shouldShowRequestPermissionRationale(this.getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            Snackbar.make(v, "Permiso necesario para crear el archivo", Snackbar.LENGTH_INDEFINITE).setAction("OK", new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
                     requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE);
                 }
+            });
+        } else {
+            requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+    }
+    //Creacion del PDF
+    private void crearPDF(Pedido p, ArrayList<Articulo> art) {
+        try {
+            String carpeta = "/Pedidos";
+            String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + carpeta;
+            //Si no existe carpeta la crea
+            File dir = new File(path);
+            if (!dir.exists()) {
+                dir.mkdirs();
+                Toast.makeText(this.getContext(), "CARPETA CREADA", Toast.LENGTH_SHORT).show();
             }
-
-            //Creacion del PDF
-            private void crearPDF(Pedido p, ArrayList<Articulo> art) {
-                try {
-                    String carpeta = "/Pedidos";
-                    String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + carpeta;
-
-                    //Si no existe carpeta la crea
-                    File dir = new File(path);
-                    if (!dir.exists()) {
-                        dir.mkdirs();
-                        Toast.makeText(this.getContext(), "CARPETA CREADA", Toast.LENGTH_SHORT).show();
-                    }
-
-                    String nombrePDF = "Pedido de " + p.getCliente() + " (" + p.getFecha() + ").pdf";
-                    File archivo = new File(dir, nombrePDF);
-                    FileOutputStream fos = new FileOutputStream(archivo);
-
-                    //Crea archivo
-                    Document doc = new Document();
-                    PdfWriter.getInstance(doc, fos);
-
-                    //Estructura del documento
-                    doc.open();
-
-                    Paragraph titulo = new Paragraph(
-                            "Información del pedido\n\n\n\n",
-                            FontFactory.getFont("Calibri", 26, Font.BOLDITALIC, BaseColor.BLUE)
-                    );
-                    doc.add(titulo);
-
-                    Paragraph info = new Paragraph(
-                            "Cliente: " + p.getCliente() + "\n" +
-                                    "Fecha: " + p.getFecha() + "\n" +
-                                    "Articulos: " + "\n\n\n",
-                            FontFactory.getFont("Calibri", 20, Font.BOLD, BaseColor.BLACK)
-                    );
-                    doc.add(info);
-
-                    PdfPTable articulos = new PdfPTable(2);
-                    articulos.addCell("Nombre");
-                    articulos.addCell("Cantidad");
-
-                    for (int i = 0; i < art.size(); i++) {
-                        articulos.addCell(art.get(i).getNombre());
-                        articulos.addCell(art.get(i).getCantidad());
-                    }
-                    doc.add(articulos);
-
-                    doc.close();
-                    Toast.makeText(this.getContext(), "Pedido descargado", Toast.LENGTH_LONG).show();
-
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                    Toast.makeText(this.getContext(), "Error en la descarga. Intente nuevamente", Toast.LENGTH_LONG).show();
-                } catch (DocumentException e) {
-                    e.printStackTrace();
-                    Toast.makeText(this.getContext(), "Error en la descarga. Intente nuevamente", Toast.LENGTH_LONG).show();
-                }
+            String nombrePDF = "Pedido de " + p.getCliente() + " (" + p.getFecha() + ").pdf";
+            File archivo = new File(dir, nombrePDF);
+            FileOutputStream fos = new FileOutputStream(archivo);
+            //Crea archivo
+            Document doc = new Document();
+            PdfWriter.getInstance(doc, fos);
+            //Estructura del documento
+            doc.open();
+            Paragraph titulo = new Paragraph(
+                    "Información del pedido\n\n\n\n",
+                    FontFactory.getFont("Calibri", 26, Font.BOLDITALIC, BaseColor.BLUE)
+            );
+            doc.add(titulo);
+            Paragraph info = new Paragraph(
+                    "Cliente: " + p.getCliente() + "\n" +
+                            "Fecha: " + p.getFecha() + "\n" +
+                            "Articulos: " + "\n\n\n",
+                    FontFactory.getFont("Calibri", 20, Font.BOLD, BaseColor.BLACK)
+            );
+            doc.add(info);
+            PdfPTable articulos = new PdfPTable(2);
+            articulos.addCell("Nombre");
+            articulos.addCell("Cantidad");
+            for (int i = 0; i < art.size(); i++) {
+                articulos.addCell(art.get(i).getNombre());
+                articulos.addCell(art.get(i).getCantidad());
             }
-
+            doc.add(articulos);
+            doc.close();
+            Toast.makeText(this.getContext(), "Pedido descargado", Toast.LENGTH_LONG).show();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            Toast.makeText(this.getContext(), "Error en la descarga. Intente nuevamente", Toast.LENGTH_LONG).show();
+        } catch (DocumentException e) {
+            e.printStackTrace();
+            Toast.makeText(this.getContext(), "Error en la descarga. Intente nuevamente", Toast.LENGTH_LONG).show();
+        }
+    }
     private String listarArticulos(ArrayList<String> arts) {
         String linea = "";
         if(arts.isEmpty()){
@@ -370,7 +365,7 @@ public class Resumen extends Fragment {
         }
         return linea;
     }
-    }
+}
 
 
 

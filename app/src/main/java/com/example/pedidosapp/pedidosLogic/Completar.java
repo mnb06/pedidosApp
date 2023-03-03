@@ -244,7 +244,6 @@ public class Completar extends AppCompatActivity {
                 .setCancelable(false)
                 .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
                     @Override
-
                     public void onClick(DialogInterface dialogInterface, int i) {
                        String path = pedido.getCliente() + "_" + pedido.getFecha();
                         ref2.addValueEventListener(new ValueEventListener() {
