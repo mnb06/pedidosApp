@@ -51,6 +51,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 
 public class Resumen extends Fragment {
@@ -58,14 +61,14 @@ public class Resumen extends Fragment {
     private CalendarView calendario;
     private TextView fecha;
 
-    private Button bajo, sobre;
+    private Button bajo, sobre, articulosDelDia;
 
     private FirebaseDatabase database;
     private DatabaseReference myRef;
 
     private ListView listView;
     public static ArrayList<String> list;
-    public static ArrayList<Pedido> listPedido;
+    public static ArrayList<Pedido> listPedido, listPedido2;
 
     //Gestion de permisos para el PDF
     private final ActivityResultLauncher<String> requestPermissionLauncher = registerForActivityResult(
@@ -167,6 +170,7 @@ public class Resumen extends Fragment {
 
         bajo = view.findViewById(R.id.bajo);
         sobre = view.findViewById(R.id.sobre);
+        articulosDelDia = view.findViewById(R.id.articulosDelDia);
 
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
@@ -174,6 +178,7 @@ public class Resumen extends Fragment {
         listView = view.findViewById(R.id.listaPedidos);
         list = new ArrayList<>();
         listPedido = new ArrayList<>();
+        listPedido2 = new ArrayList<>();
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, list);
 
@@ -191,14 +196,14 @@ public class Resumen extends Fragment {
             }
         });
 
-        //Meétodo que setea la fecha de consulta
-        calendario.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-        @Override
-        public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int day) {
-            month++;
-            String fechaSeleccionada = day + "-" + month + "-" + year;
-            fecha.setText(fechaSeleccionada);
-            myRef.child("Pedidos").addValueEventListener(new ValueEventListener() {
+       //Método que setea la fecha de consulta
+       calendario.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+       @Override
+       public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int day) {
+           month++;
+           String fechaSeleccionada = day + "-" + month + "-" + year;
+           fecha.setText(fechaSeleccionada);
+           myRef.child("Pedidos").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     Iterable<DataSnapshot> pedidos = dataSnapshot.getChildren();
@@ -224,7 +229,7 @@ public class Resumen extends Fragment {
                                             encargue.add(a);
                                         }
                                         AlertDialog.Builder alerta = new AlertDialog.Builder(getContext());
-                                        alerta.setMessage("Pedido de " + listPedido.get(i).getCliente() + " para la fecha " + listPedido.get(i).getFecha() + ": \n"
+                                        alerta.setMessage("Pedido de " + listPedido.get(i).getCliente() + " para el " + listPedido.get(i).getFecha() + ": \n"
                                                         + mostrarArticulos(encargue))
                                                 .setCancelable(false)
                                                 .setPositiveButton("Descargar PDF", new DialogInterface.OnClickListener() {
@@ -252,18 +257,85 @@ public class Resumen extends Fragment {
                         list.add("No hay pedidos para la fecha");
                     }
                     listView.setAdapter(adapter);
-                    //return null;
                 }
-            @Override
-                public void onCancelled(DatabaseError error) {
-                    // Failed to read value
-                    Log.w(TAG, "Error al cargar los pedidos.", error.toException());
+                @Override
+                    public void onCancelled(DatabaseError error) {
+                        // Failed to read value
+                        Log.w(TAG, "Error al cargar los pedidos.", error.toException());
                     }
                 });
-            }
-        });
-        return view;
-        }
+           myRef.child("Pedidos").addValueEventListener(new ValueEventListener() {
+               @Override
+               public void onDataChange(@NonNull DataSnapshot snapshot) {
+                   ArrayList<Articulo> encargue = new ArrayList<>();
+                   Iterable<DataSnapshot> pedidos = snapshot.getChildren();
+                   for (DataSnapshot ds : pedidos) {
+                       Pedido pedido = ds.getValue(Pedido.class);
+                       if ((pedido.getFecha()).equals(fechaSeleccionada)) {
+                           listPedido2.add(pedido);
+                       }
+                       if (!listPedido2.isEmpty()) {
+                           for (int i = 0; i < listPedido2.size(); i++) {
+                               Pedido ped = listPedido2.get(i);
+                               Iterable<DataSnapshot> articulo = snapshot.child(ped.getCliente() + "_" + ped.getFecha()).child("Articulos").getChildren();
+                               for (DataSnapshot dsn : articulo) {
+                                   Articulo a = dsn.getValue(Articulo.class);
+                                   Articulo art = new Articulo();
+                                   art.setCantidad(a.getCantidad());
+                                   art.setNombre(a.getNombre());
+                                   encargue.add(a);
+                               }
+                           }
+                       }
+                   }
+                   myRef.child("Articulos").addValueEventListener(new ValueEventListener() {
+                       @Override
+                       public void onDataChange(@NonNull DataSnapshot snapshot) {
+                           ArrayList<Articulo> control = new ArrayList<>();
+                           Iterable<DataSnapshot> articulos = snapshot.getChildren();
+                           for (DataSnapshot ds : articulos) {
+                               Articulo a = ds.getValue(Articulo.class);
+                               Articulo art = new Articulo();
+                               art.setCantidad("0");
+                               art.setNombre(a.getNombre());
+                               control.add(a);
+                           }
+                           articulosDelDia.setOnClickListener(new View.OnClickListener() {
+                               @Override
+                               public void onClick(View view) {
+                                   AlertDialog.Builder alerta = new AlertDialog.Builder(getContext());
+                                   alerta.setMessage("Total de artículos para el " + fechaSeleccionada + ": \n"
+                                                   + totalArticulos(encargue, control))
+                                           .setCancelable(false)
+                                           .setPositiveButton("Volver", new DialogInterface.OnClickListener() {
+                                               @Override
+                                               public void onClick(DialogInterface dialogInterface, int i) {
+                                                   dialogInterface.cancel();
+                                               }
+                                           });
+                                   AlertDialog verResumen = alerta.create();
+                                   verResumen.setTitle("Total");
+                                   verResumen.show();
+                               }
+                           });
+                       }
+
+                       @Override
+                       public void onCancelled(@NonNull DatabaseError error) {
+                       }
+                   });
+               }
+
+               @Override
+               public void onCancelled(@NonNull DatabaseError error) {
+
+               }
+           });
+
+       }
+ });
+    return view;
+    }
 
     @Override
     public void onStop() {
@@ -277,7 +349,7 @@ public class Resumen extends Fragment {
         myRef.removeEventListener(detectarSobre);
         super.onDestroy();
     }
-    
+
     //Crea la lista de articulos del pedido seleccionado
     private static String mostrarArticulos(@NonNull ArrayList<Articulo> lista) {
         String nombre;
@@ -361,6 +433,33 @@ public class Resumen extends Fragment {
         }else {
             for (String nombre : arts) {
                 linea = linea + nombre + "\n";
+            }
+        }
+        return linea;
+    }
+
+    private static String totalArticulos(@NonNull ArrayList<Articulo> lista, ArrayList<Articulo> control) {
+        String nombre;
+        String cantidad;
+        String linea = "";
+
+        if (lista.isEmpty()) {
+            linea = "\n" + "No hay artículos pedidos";
+        } else {
+            for (int i = 0; i < lista.size(); i++) {
+                for (int j = 0; j < control.size(); j++) {
+                    if (lista.get(i).getNombre().equals(control.get(j))) {
+                        int a = Integer.parseInt(control.get(j).getCantidad());
+                        int b = Integer.parseInt(lista.get(i).getCantidad());
+                        int c = a + b;
+                        control.get(j).setCantidad(String.valueOf(c));
+                    }
+                }
+            }
+            for (Articulo a : control) {
+                nombre = a.getNombre();
+                cantidad = a.getCantidad();
+                linea = linea + "\n" + nombre + " " + cantidad;
             }
         }
         return linea;
