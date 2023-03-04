@@ -264,10 +264,10 @@ public class Resumen extends Fragment {
                         Log.w(TAG, "Error al cargar los pedidos.", error.toException());
                     }
                 });
-           myRef.child("Pedidos").addValueEventListener(new ValueEventListener() {
+           myRef.child("Pedidos").addListenerForSingleValueEvent(new ValueEventListener() {
                @Override
                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                   ArrayList<Articulo> encargue = new ArrayList<>();
+                   ArrayList<Articulo> articulosDiarios = new ArrayList<>();
                    Iterable<DataSnapshot> pedidos = snapshot.getChildren();
                    for (DataSnapshot ds : pedidos) {
                        Pedido pedido = ds.getValue(Pedido.class);
@@ -280,24 +280,19 @@ public class Resumen extends Fragment {
                                Iterable<DataSnapshot> articulo = snapshot.child(ped.getCliente() + "_" + ped.getFecha()).child("Articulos").getChildren();
                                for (DataSnapshot dsn : articulo) {
                                    Articulo a = dsn.getValue(Articulo.class);
-                                   Articulo art = new Articulo();
-                                   art.setCantidad(a.getCantidad());
-                                   art.setNombre(a.getNombre());
-                                   encargue.add(a);
+                                   articulosDiarios.add(a);
                                }
                            }
                        }
                    }
-                   myRef.child("Articulos").addValueEventListener(new ValueEventListener() {
+                   myRef.child("Articulos").addListenerForSingleValueEvent(new ValueEventListener() {
                        @Override
                        public void onDataChange(@NonNull DataSnapshot snapshot) {
                            ArrayList<Articulo> control = new ArrayList<>();
                            Iterable<DataSnapshot> articulos = snapshot.getChildren();
                            for (DataSnapshot ds : articulos) {
                                Articulo a = ds.getValue(Articulo.class);
-                               Articulo art = new Articulo();
-                               art.setCantidad("0");
-                               art.setNombre(a.getNombre());
+                               a.setCantidad("0");
                                control.add(a);
                            }
                            articulosDelDia.setOnClickListener(new View.OnClickListener() {
@@ -305,7 +300,7 @@ public class Resumen extends Fragment {
                                public void onClick(View view) {
                                    AlertDialog.Builder alerta = new AlertDialog.Builder(getContext());
                                    alerta.setMessage("Total de artículos para el " + fechaSeleccionada + ": \n"
-                                                   + totalArticulos(encargue, control))
+                                                   + totalArticulos(articulosDiarios, control))
                                            .setCancelable(false)
                                            .setPositiveButton("Volver", new DialogInterface.OnClickListener() {
                                                @Override
@@ -443,12 +438,16 @@ public class Resumen extends Fragment {
         String cantidad;
         String linea = "";
 
+        for (Articulo a : control) {
+            a.setCantidad("0");
+        }
+
         if (lista.isEmpty()) {
             linea = "\n" + "No hay artículos pedidos";
         } else {
             for (int i = 0; i < lista.size(); i++) {
                 for (int j = 0; j < control.size(); j++) {
-                    if (lista.get(i).getNombre().equals(control.get(j))) {
+                    if (lista.get(i).getNombre().equals(control.get(j).getNombre())) {
                         int a = Integer.parseInt(control.get(j).getCantidad());
                         int b = Integer.parseInt(lista.get(i).getCantidad());
                         int c = a + b;
