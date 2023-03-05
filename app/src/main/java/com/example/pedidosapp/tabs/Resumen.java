@@ -186,13 +186,13 @@ public class Resumen extends Fragment {
         bajo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                myRef.addListenerForSingleValueEvent(detectarBajo);
+                myRef.addValueEventListener(detectarBajo);
             }
         });
        sobre.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                myRef.addListenerForSingleValueEvent(detectarSobre);
+                myRef.addValueEventListener(detectarSobre);
             }
         });
 
@@ -203,7 +203,7 @@ public class Resumen extends Fragment {
                 month++;
                 String fechaSeleccionada = day + "-" + month + "-" + year;
                 fecha.setText(fechaSeleccionada);
-                myRef.child("Pedidos").addListenerForSingleValueEvent(new ValueEventListener() {
+                myRef.child("Pedidos").addValueEventListener(new ValueEventListener() {
                      @Override
                      public void onDataChange(DataSnapshot dataSnapshot) {
                          Iterable<DataSnapshot> pedidos = dataSnapshot.getChildren();
@@ -274,8 +274,9 @@ public class Resumen extends Fragment {
                             if ((pedido.getFecha()).equals(fechaSeleccionada)) {
                                 listPedido2.add(pedido);
                             }
+                            articulosDiarios.clear();
                             if (!listPedido2.isEmpty()) {
-                                for (int i = 0; i < listPedido2.size(); i++) {
+                                for(int i = 0; i < listPedido2.size(); i++) {
                                     Pedido ped = listPedido2.get(i);
                                     Iterable<DataSnapshot> articulo = snapshot.child(ped.getCliente() + "_" + ped.getFecha()).child("Articulos").getChildren();
                                     for (DataSnapshot dsn : articulo) {
@@ -303,7 +304,6 @@ public class Resumen extends Fragment {
                                 articulosDelDia.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
-                                        listPedido2.clear();
                                         AlertDialog.Builder alerta = new AlertDialog.Builder(getContext());
                                         alerta.setMessage("Total de artículos para el " + fechaSeleccionada + ": \n"
                                                         + totalArticulos(articulosDiarios, control))
@@ -314,6 +314,7 @@ public class Resumen extends Fragment {
                                                         dialogInterface.cancel();
                                                     }
                                                 });
+                                        control.clear();
                                         AlertDialog verResumen = alerta.create();
                                         verResumen.setTitle("Total");
                                         verResumen.show();
@@ -332,8 +333,8 @@ public class Resumen extends Fragment {
 
                     }
                 });
-
-            }
+           listPedido2.clear();
+           }
        });
     return view;
     }
@@ -448,10 +449,7 @@ public class Resumen extends Fragment {
             for (int i = 0; i < control.size(); i++) {
                 for (int j = 0; j < lista.size(); j++) {
                     if (control.get(i).getNombre().equals(lista.get(j).getNombre())) {
-                        int a = Integer.parseInt(control.get(i).getCantidad());
-                        int b = Integer.parseInt(lista.get(j).getCantidad());
-                        int c = a + b;
-                        control.get(i).setCantidad(String.valueOf(c));
+                        control.get(i).setCantidad(String.valueOf(Integer.parseInt(control.get(i).getCantidad()) + Integer.parseInt(lista.get(j).getCantidad())));
                     }
                 }
             }

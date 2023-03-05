@@ -110,7 +110,7 @@ public class Completar extends AppCompatActivity {
         descargarPDF.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ref1.addValueEventListener(new ValueEventListener() {
+                ref1.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot datosPedido) {
                         ArrayList<Articulo> encargue = new ArrayList<>();
@@ -257,7 +257,7 @@ public class Completar extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                        String path = pedido.getCliente() + "_" + pedido.getFecha();
-                        ref2.addValueEventListener(new ValueEventListener() {
+                        ref2.addListenerForSingleValueEvent(new ValueEventListener() {
                             //Carga articulos del pedido
                            @Override
                            public void onDataChange(@NonNull DataSnapshot datosDB) {
@@ -268,7 +268,7 @@ public class Completar extends AppCompatActivity {
                                    Articulo art = new Articulo();
                                    art.setCantidad(a.getCantidad());
                                    art.setNombre(a.getNombre());
-                                   encargue.add(a);
+                                   encargue.add(art);
                                }
 
                                //Carga articulos de la db
@@ -277,10 +277,10 @@ public class Completar extends AppCompatActivity {
                                for (DataSnapshot ds : articulosAlmacenados) {
                                    Articulo a = ds.getValue(Articulo.class);
                                    Articulo art = new Articulo();
-                                   art.setCantidad(a.getCantidad());
+                                   art.setStock(a.getStock());
                                    art.setNombre(a.getNombre());
                                    art.setStockReservado(a.getStockReservado());
-                                   almacenados.add(a);
+                                   almacenados.add(art);
                                    }
 
                                //Comprueba que haya stock de todos los articulos del pedido
@@ -309,16 +309,20 @@ public class Completar extends AppCompatActivity {
                                                int cantidad = Integer.parseInt(encargue.get(j).getCantidad());
                                                int stock = Integer.parseInt(almacenados.get(i).getStock());
                                                int reservado = Integer.parseInt(almacenados.get(i).getStockReservado());
-                                               stock = stock - cantidad;
-                                               reservado = reservado - cantidad;
-                                               ref2.child("Articulos").child(almacenados.get(i).getNombre()).child("stock").setValue(String.valueOf(stock));
-                                               ref2.child("Articulos").child(almacenados.get(i).getNombre()).child("stockReservado").setValue(String.valueOf(reservado));
+                                               ref2.child("Articulos").child(almacenados.get(i).getNombre()).child("stock").setValue(String.valueOf(stock - cantidad));
+                                               ref2.child("Articulos").child(almacenados.get(i).getNombre()).child("stockReservado").setValue(String.valueOf(reservado - cantidad));
                                                deleteCompletedOrder(path);
+                                               finish();
+                                               Intent intent = new Intent(Completar.this, Inicio.class);
+                                               startActivity(intent);
                                            }
                                        }
                                    }
                                }else{
                                    Toast.makeText(Completar.this, "Falta stock de algunos artículos para completar el pedido. No se puede completar", Toast.LENGTH_SHORT).show();
+                                   finish();
+                                   Intent intent = new Intent(Completar.this, Inicio.class);
+                                   startActivity(intent);
                                }
                            }
                             @Override
@@ -335,6 +339,7 @@ public class Completar extends AppCompatActivity {
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        finish();
                         dialogInterface.cancel();
                     }
                 });
@@ -347,6 +352,7 @@ public class Completar extends AppCompatActivity {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         ref.child("Pedidos").child(path).setValue(null);
         Toast.makeText(Completar.this, "Pedido completo!", Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     private Boolean checkStock(ArrayList<Boolean> existencias){
