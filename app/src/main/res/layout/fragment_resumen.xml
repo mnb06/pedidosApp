@@ -12,27 +12,46 @@
         android:id="@+id/title_activity_resumen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:text="@string/tab_text_1"
-        android:textSize="30dp"
-        android:gravity="center"/>
+        android:textSize="30dp" />
 
-    <Button
-        android:id="@+id/bajo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:text="Ver artículos con bajo stock"
-        android:layout_gravity="center"/>
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
-    <Button
-        android:id="@+id/sobre"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:text="Ver artículos sobrerreservados"
-        android:layout_gravity="center"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/bajo"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="Ver artículos con bajo stock" />
+
+            <Button
+                android:id="@+id/sobre"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="Ver artículos sobrerreservados" />
+
+            <Button
+                android:id="@+id/articulosDelDia"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="Total de artículos del día" />
+        </LinearLayout>
+    </HorizontalScrollView>
 
     <CalendarView
         android:id="@+id/calendarView"
@@ -69,17 +88,8 @@
     </LinearLayout>
 
     <ListView
+        android:id="@+id/listaPedidos"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/listaPedidos"/>
-
-    <Button
-        android:id="@+id/articulosDelDia"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:text="Total de artículos del día"
-        android:layout_gravity="center"/>
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

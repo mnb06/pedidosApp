@@ -186,149 +186,155 @@ public class Resumen extends Fragment {
         bajo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                myRef.addValueEventListener(detectarBajo);
+                myRef.addListenerForSingleValueEvent(detectarBajo);
             }
         });
        sobre.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                myRef.addValueEventListener(detectarSobre);
+                myRef.addListenerForSingleValueEvent(detectarSobre);
             }
         });
 
        //Método que setea la fecha de consulta
        calendario.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
        @Override
-       public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int day) {
-           month++;
-           String fechaSeleccionada = day + "-" + month + "-" + year;
-           fecha.setText(fechaSeleccionada);
-           myRef.child("Pedidos").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    Iterable<DataSnapshot> pedidos = dataSnapshot.getChildren();
-                    list.clear();
-                    listPedido.clear();
-                    for (DataSnapshot ds : pedidos) {
-                        Pedido pedido = ds.getValue(Pedido.class);
-                        if ((pedido.getFecha()).equals(fechaSeleccionada)) {
-                            list.add("Pedido de " + pedido.getCliente());
-                            listPedido.add(pedido);
-                            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                @Override
-                                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                    ArrayList<Articulo> encargue = new ArrayList<>();
-                                    if (!listPedido.isEmpty()) {
-                                        Pedido ped = listPedido.get(i);
-                                        Iterable<DataSnapshot> articulos = dataSnapshot.child(ped.getCliente() + "_" + ped.getFecha()).child("Articulos").getChildren();
-                                        for (DataSnapshot ds : articulos) {
-                                            Articulo a = ds.getValue(Articulo.class);
-                                            Articulo art = new Articulo();
-                                            art.setCantidad(a.getCantidad());
-                                            art.setNombre(a.getNombre());
-                                            encargue.add(a);
-                                        }
+            public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int day) {
+                month++;
+                String fechaSeleccionada = day + "-" + month + "-" + year;
+                fecha.setText(fechaSeleccionada);
+                myRef.child("Pedidos").addListenerForSingleValueEvent(new ValueEventListener() {
+                     @Override
+                     public void onDataChange(DataSnapshot dataSnapshot) {
+                         Iterable<DataSnapshot> pedidos = dataSnapshot.getChildren();
+                         list.clear();
+                         listPedido.clear();
+                         for (DataSnapshot ds : pedidos) {
+                             Pedido pedido = ds.getValue(Pedido.class);
+                             if ((pedido.getFecha()).equals(fechaSeleccionada)) {
+                                 list.add("Pedido de " + pedido.getCliente());
+                                 listPedido.add(pedido);
+                                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                     @Override
+                                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                         ArrayList<Articulo> encargue = new ArrayList<>();
+                                         if (!listPedido.isEmpty()) {
+                                             Pedido ped = listPedido.get(i);
+                                             Iterable<DataSnapshot> articulos = dataSnapshot.child(ped.getCliente() + "_" + ped.getFecha()).child("Articulos").getChildren();
+                                             for (DataSnapshot ds : articulos) {
+                                                 Articulo a = ds.getValue(Articulo.class);
+                                                 Articulo art = new Articulo();
+                                                 art.setCantidad(a.getCantidad());
+                                                 art.setNombre(a.getNombre());
+                                                 encargue.add(a);
+                                             }
+                                             AlertDialog.Builder alerta = new AlertDialog.Builder(getContext());
+                                             alerta.setMessage("Pedido de " + listPedido.get(i).getCliente() + " para el " + listPedido.get(i).getFecha() + ": \n"
+                                                             + mostrarArticulos(encargue))
+                                                     .setCancelable(false)
+                                                     .setPositiveButton("Descargar PDF", new DialogInterface.OnClickListener() {
+                                                         @Override
+                                                         public void onClick(DialogInterface dialogInterface, int i) {
+                                                             verificarPermisos(view, ped, encargue);
+                                                             dialogInterface.cancel();
+                                                         }
+                                                     })
+                                                     .setNegativeButton("Volver", new DialogInterface.OnClickListener() {
+                                                         @Override
+                                                         public void onClick(DialogInterface dialogInterface, int i) {
+                                                             dialogInterface.cancel();
+                                                         }
+                                                     });
+                                             AlertDialog verResumen = alerta.create();
+                                             verResumen.setTitle("Información del Pedido");
+                                             verResumen.show();
+                                         }
+                                     }
+                                 });
+                             }
+                         }
+                         if (list.isEmpty()) {
+                             list.add("No hay pedidos para la fecha");
+                         }
+                         listView.setAdapter(adapter);
+                     }
+                     @Override
+                         public void onCancelled(@NonNull DatabaseError error) {
+                             // Failed to read value
+                             Log.w(TAG, "Error al cargar los pedidos.", error.toException());
+                         }
+                     });
+                myRef.child("Pedidos").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        ArrayList<Articulo> articulosDiarios = new ArrayList<>();
+                        Iterable<DataSnapshot> pedidos = snapshot.getChildren();
+                        for (DataSnapshot ds : pedidos) {
+                            Pedido pedido = ds.getValue(Pedido.class);
+                            if ((pedido.getFecha()).equals(fechaSeleccionada)) {
+                                listPedido2.add(pedido);
+                            }
+                            if (!listPedido2.isEmpty()) {
+                                for (int i = 0; i < listPedido2.size(); i++) {
+                                    Pedido ped = listPedido2.get(i);
+                                    Iterable<DataSnapshot> articulo = snapshot.child(ped.getCliente() + "_" + ped.getFecha()).child("Articulos").getChildren();
+                                    for (DataSnapshot dsn : articulo) {
+                                        Articulo a = dsn.getValue(Articulo.class);
+                                        Articulo art = new Articulo();
+                                        art.setNombre(a.getNombre());
+                                        art.setCantidad(a.getCantidad());
+                                        articulosDiarios.add(art);
+                                    }
+                                }
+                            }
+                        }
+                        myRef.child("Articulos").addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                ArrayList<Articulo> control = new ArrayList<>();
+                                Iterable<DataSnapshot> articulos = snapshot.getChildren();
+                                for (DataSnapshot ds : articulos) {
+                                    Articulo a = ds.getValue(Articulo.class);
+                                    Articulo art = new Articulo();
+                                    art.setNombre(a.getNombre());
+                                    art.setCantidad("0");
+                                    control.add(art);
+                                }
+                                articulosDelDia.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        listPedido2.clear();
                                         AlertDialog.Builder alerta = new AlertDialog.Builder(getContext());
-                                        alerta.setMessage("Pedido de " + listPedido.get(i).getCliente() + " para el " + listPedido.get(i).getFecha() + ": \n"
-                                                        + mostrarArticulos(encargue))
+                                        alerta.setMessage("Total de artículos para el " + fechaSeleccionada + ": \n"
+                                                        + totalArticulos(articulosDiarios, control))
                                                 .setCancelable(false)
-                                                .setPositiveButton("Descargar PDF", new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                                        verificarPermisos(view, ped, encargue);
-                                                        dialogInterface.cancel();
-                                                    }
-                                                })
-                                                .setNegativeButton("Volver", new DialogInterface.OnClickListener() {
+                                                .setPositiveButton("Volver", new DialogInterface.OnClickListener() {
                                                     @Override
                                                     public void onClick(DialogInterface dialogInterface, int i) {
                                                         dialogInterface.cancel();
                                                     }
                                                 });
                                         AlertDialog verResumen = alerta.create();
-                                        verResumen.setTitle("Información del Pedido");
+                                        verResumen.setTitle("Total");
                                         verResumen.show();
                                     }
-                                }
-                            });
-                        }
+                                });
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                            }
+                        });
                     }
-                    if (list.isEmpty()) {
-                        list.add("No hay pedidos para la fecha");
-                    }
-                    listView.setAdapter(adapter);
-                }
-                @Override
-                    public void onCancelled(DatabaseError error) {
-                        // Failed to read value
-                        Log.w(TAG, "Error al cargar los pedidos.", error.toException());
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
                     }
                 });
-           myRef.child("Pedidos").addListenerForSingleValueEvent(new ValueEventListener() {
-               @Override
-               public void onDataChange(@NonNull DataSnapshot snapshot) {
-                   ArrayList<Articulo> articulosDiarios = new ArrayList<>();
-                   Iterable<DataSnapshot> pedidos = snapshot.getChildren();
-                   for (DataSnapshot ds : pedidos) {
-                       Pedido pedido = ds.getValue(Pedido.class);
-                       if ((pedido.getFecha()).equals(fechaSeleccionada)) {
-                           listPedido2.add(pedido);
-                       }
-                       if (!listPedido2.isEmpty()) {
-                           for (int i = 0; i < listPedido2.size(); i++) {
-                               Pedido ped = listPedido2.get(i);
-                               Iterable<DataSnapshot> articulo = snapshot.child(ped.getCliente() + "_" + ped.getFecha()).child("Articulos").getChildren();
-                               for (DataSnapshot dsn : articulo) {
-                                   Articulo a = dsn.getValue(Articulo.class);
-                                   articulosDiarios.add(a);
-                               }
-                           }
-                       }
-                   }
-                   myRef.child("Articulos").addListenerForSingleValueEvent(new ValueEventListener() {
-                       @Override
-                       public void onDataChange(@NonNull DataSnapshot snapshot) {
-                           ArrayList<Articulo> control = new ArrayList<>();
-                           Iterable<DataSnapshot> articulos = snapshot.getChildren();
-                           for (DataSnapshot ds : articulos) {
-                               Articulo a = ds.getValue(Articulo.class);
-                               a.setCantidad("0");
-                               control.add(a);
-                           }
-                           articulosDelDia.setOnClickListener(new View.OnClickListener() {
-                               @Override
-                               public void onClick(View view) {
-                                   AlertDialog.Builder alerta = new AlertDialog.Builder(getContext());
-                                   alerta.setMessage("Total de artículos para el " + fechaSeleccionada + ": \n"
-                                                   + totalArticulos(articulosDiarios, control))
-                                           .setCancelable(false)
-                                           .setPositiveButton("Volver", new DialogInterface.OnClickListener() {
-                                               @Override
-                                               public void onClick(DialogInterface dialogInterface, int i) {
-                                                   dialogInterface.cancel();
-                                               }
-                                           });
-                                   AlertDialog verResumen = alerta.create();
-                                   verResumen.setTitle("Total");
-                                   verResumen.show();
-                               }
-                           });
-                       }
 
-                       @Override
-                       public void onCancelled(@NonNull DatabaseError error) {
-                       }
-                   });
-               }
-
-               @Override
-               public void onCancelled(@NonNull DatabaseError error) {
-
-               }
-           });
-
-       }
- });
+            }
+       });
     return view;
     }
 
@@ -337,12 +343,6 @@ public class Resumen extends Fragment {
         myRef.removeEventListener(detectarBajo);
         myRef.removeEventListener(detectarSobre);
         super.onStop();
-    }
-    @Override
-    public void onDestroy() {
-        myRef.removeEventListener(detectarBajo);
-        myRef.removeEventListener(detectarSobre);
-        super.onDestroy();
     }
 
     //Crea la lista de articulos del pedido seleccionado
@@ -433,7 +433,7 @@ public class Resumen extends Fragment {
         return linea;
     }
 
-    private static String totalArticulos(@NonNull ArrayList<Articulo> lista, ArrayList<Articulo> control) {
+    private String totalArticulos(@NonNull ArrayList<Articulo> lista, ArrayList<Articulo> control) {
         String nombre;
         String cantidad;
         String linea = "";
@@ -445,13 +445,13 @@ public class Resumen extends Fragment {
         if (lista.isEmpty()) {
             linea = "\n" + "No hay artículos pedidos";
         } else {
-            for (int i = 0; i < lista.size(); i++) {
-                for (int j = 0; j < control.size(); j++) {
-                    if (lista.get(i).getNombre().equals(control.get(j).getNombre())) {
-                        int a = Integer.parseInt(control.get(j).getCantidad());
-                        int b = Integer.parseInt(lista.get(i).getCantidad());
+            for (int i = 0; i < control.size(); i++) {
+                for (int j = 0; j < lista.size(); j++) {
+                    if (control.get(i).getNombre().equals(lista.get(j).getNombre())) {
+                        int a = Integer.parseInt(control.get(i).getCantidad());
+                        int b = Integer.parseInt(lista.get(j).getCantidad());
                         int c = a + b;
-                        control.get(j).setCantidad(String.valueOf(c));
+                        control.get(i).setCantidad(String.valueOf(c));
                     }
                 }
             }

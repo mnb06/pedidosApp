@@ -148,6 +148,17 @@ public class Completar extends AppCompatActivity {
         });
 
     }
+    @Override
+    public void onStop(){
+        finish();
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroy(){
+        finish();
+        super.onDestroy();
+    }
 
     //Metodos de la clase
     private static String mostrarArticulos(@NonNull ArrayList<Articulo> lista) {
