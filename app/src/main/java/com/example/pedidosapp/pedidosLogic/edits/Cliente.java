@@ -125,7 +125,6 @@ public class Cliente extends AppCompatActivity {
 
 
     private void deleteOldOrder(String path){
-
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         ref.child(path).setValue(null);
         list.clear();

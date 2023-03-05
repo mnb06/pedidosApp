@@ -8,6 +8,16 @@
     android:padding="10dp">
 
 
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="Nuevo Cliente"
+        android:textSize="38sp"
+        android:layout_marginBottom="150dp"/>
+
+
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -21,7 +31,8 @@
                 android:layout_width="152dp"
                 android:layout_height="match_parent"
                 android:text="Nombre:"
-                android:textSize="18sp"/>
+                android:textSize="18sp"
+                android:gravity="center_vertical"/>
 
             <EditText
                 android:id="@+id/clientName"
@@ -42,7 +53,8 @@
                 android:layout_width="181dp"
                 android:layout_height="match_parent"
                 android:text="Encargado:"
-                android:textSize="18sp"/>
+                android:textSize="18sp"
+                android:gravity="center_vertical"/>
 
             <EditText
                 android:id="@+id/clientEncargado"
@@ -60,8 +72,9 @@
                 android:id="@+id/textView6"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:gravity="center_vertical"
                 android:text="Direccion:"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
 
             <EditText
                 android:id="@+id/clientDireccion"

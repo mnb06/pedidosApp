@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
     android:orientation="vertical"
     tools:context=".pedidosLogic.edits.Fecha">
 
@@ -12,7 +13,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="20dp"
-        android:text="Cambiar fecha de Pedido"
+        android:text="Cambio de Fecha del Pedido"
         android:textSize="25dp"/>
 
     <TableRow
@@ -35,16 +36,17 @@
 
         <Button
             android:id="@+id/elegirFecha"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="20dp"
+            android:padding="10dp"
             android:text="Elegir" />
     </TableRow>
     <Button
+        android:layout_marginTop="20dp"
         android:id="@+id/uploadFecha"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp"
+        android:padding="10dp"
         android:text="Confirmar" />
 
 
