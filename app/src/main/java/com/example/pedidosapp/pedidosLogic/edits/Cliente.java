@@ -72,7 +72,7 @@ public class Cliente extends AppCompatActivity {
                 //return null;
             }
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {}
+            public void onCancelled(@NonNull DatabaseError error) {Toast.makeText(Cliente.this, "Hubo un error intentando. Volver a probar", Toast.LENGTH_SHORT).show();}
         });
 
 

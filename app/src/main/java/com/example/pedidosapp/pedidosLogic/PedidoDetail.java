@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.example.pedidosapp.R;
 import com.example.pedidosapp.articleLogic.Articulo;
@@ -64,7 +65,8 @@ public class PedidoDetail extends AppCompatActivity {
                 //return null;
             }
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {}
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(PedidoDetail.this, "Hubo un error intentando. Volver a probar", Toast.LENGTH_SHORT).show();}
         });
     }
 }

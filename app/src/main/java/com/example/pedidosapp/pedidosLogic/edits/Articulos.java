@@ -89,6 +89,7 @@ public class Articulos extends AppCompatActivity implements Serializable{
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(Articulos.this, "Hubo un error intentando. Volver a probar", Toast.LENGTH_SHORT).show();
             }
         });
 

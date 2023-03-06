@@ -83,6 +83,7 @@ public class AddArticle extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(AddArticle.this, "Hubo un error intentando. Volver a probar", Toast.LENGTH_SHORT).show();
             }
         });
 

@@ -124,7 +124,7 @@ public class PedidoCreation extends AppCompatActivity {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-
+                    Toast.makeText(PedidoCreation.this, "Hubo un error intentando. Volver a probar", Toast.LENGTH_SHORT).show();
                 }
             });
     }

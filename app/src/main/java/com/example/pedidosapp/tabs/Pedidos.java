@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.pedidosapp.R;
 import com.example.pedidosapp.articleLogic.Articulo;
@@ -98,7 +99,8 @@ public class Pedidos extends Fragment {
                // return null;
             }
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {}
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getContext(), "Hubo un error intentando. Volver a probar", Toast.LENGTH_SHORT).show();}
         });
 
         articulosRef.addValueEventListener(new ValueEventListener() {
@@ -112,7 +114,7 @@ public class Pedidos extends Fragment {
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Toast.makeText(getContext(), "Hubo un error intentando. Volver a probar", Toast.LENGTH_SHORT).show();
             }
         });
 
