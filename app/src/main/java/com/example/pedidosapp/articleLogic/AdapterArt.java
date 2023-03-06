@@ -98,8 +98,6 @@ public class AdapterArt extends RecyclerView.Adapter<AdapterArt.MyViewHolder> {
             delete = itemView.findViewById(R.id.artDelete);
             edit = itemView.findViewById(R.id.artEdit);
 
-
-
         }
     }
 }
