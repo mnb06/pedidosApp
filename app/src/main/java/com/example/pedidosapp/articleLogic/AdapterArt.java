@@ -50,9 +50,12 @@ public class AdapterArt extends RecyclerView.Adapter<AdapterArt.MyViewHolder> {
         holder.reservado.setText(articulo.getStockReservado());
         holder.setIsRecyclable(false);
 
-        holder.delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+
+        holder.delete.setOnClickListener(view -> {
+            if(Integer.parseInt(articulo.getStockReservado()) > 0){
+                Toast.makeText(context.getApplicationContext(), "No se pudo eliminar. el articulo esta dentro de un pedido",
+                        Toast.LENGTH_LONG).show();
+            } else {
                 FirebaseDatabase db = FirebaseDatabase.getInstance();
                 DatabaseReference ref = db.getReference("Articulos");
                 ref.child(articulo.getNombre()).setValue(null);
