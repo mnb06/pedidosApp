@@ -90,6 +90,10 @@ public class AddArticle extends AppCompatActivity {
 
         upload.setOnClickListener(view -> {
             String id = cliente + "_" + fecha;
+            if (elegidos.isEmpty()){
+
+            }
+
             uploadData(cliente, fecha, id);
 
             for (Articulo articulo : elegidos) {

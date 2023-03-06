@@ -81,20 +81,36 @@ public class PedidoCreation extends AppCompatActivity {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (cliente.getSelectedItem().toString().isEmpty() || fechaElegida.getText().toString().isEmpty()) {
-                    Toast.makeText(getApplicationContext(), "Ingrese todos los campos.",
+                String client = cliente.getSelectedItem().toString();
+                String date = fechaElegida.getText().toString();
+                if (client.isEmpty() || date.isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "Ingrese todos los campos",
                             Toast.LENGTH_LONG).show();
                 } else {
-                    Intent intent = new Intent(getApplicationContext(), AddArticle.class);
-                    intent.putExtra("cliente", cliente.getSelectedItem().toString());
-                    intent.putExtra("fecha", fechaElegida.getText().toString());
-                    startActivity(intent);
-                    finish();
+                    
+                    DatabaseReference validation = FirebaseDatabase.getInstance().getReference().child("Pedidos").child(client + "_" + date);
+                    ValueEventListener valueEventListener = new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            Toast.makeText(getApplicationContext(), "Ya existe un pedido del cliente para esa fecha",
+                                    Toast.LENGTH_LONG).show();
+                        } else {
+                            Intent intent = new Intent(getApplicationContext(), AddArticle.class);
+                            intent.putExtra("cliente", client);
+                            intent.putExtra("fecha", date);
+                            startActivity(intent);
+                            finish();
+                        }
+                    }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {}
+            };
+            validation.addListenerForSingleValueEvent(valueEventListener);
 
                 }
             }
         });
-
 
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override

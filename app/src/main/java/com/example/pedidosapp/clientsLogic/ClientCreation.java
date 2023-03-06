@@ -1,9 +1,11 @@
 package com.example.pedidosapp.clientsLogic;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,8 +13,12 @@ import android.widget.Toast;
 
 import com.example.pedidosapp.R;
 import com.example.pedidosapp.tabs.Clientes;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -61,11 +67,26 @@ public class ClientCreation extends AppCompatActivity {
         String direction = direccion.getText().toString();
 
         if (name.isEmpty() || employee.isEmpty() || direction.isEmpty()){
-            Toast.makeText(getApplicationContext(), "Ingrese todos los campos.",
+            Toast.makeText(getApplicationContext(), "Ingrese todos los campos",
                     Toast.LENGTH_LONG).show();
         }else {
-            // Llamada al metodo que sube los datos a la db
-            uploadData(name, employee, direction);
+
+            DatabaseReference validation = FirebaseDatabase.getInstance().getReference().child("Clientes").child(name);
+            ValueEventListener valueEventListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        Toast.makeText(getApplicationContext(), "Ya existe un cliente con el mismo nombre",
+                                Toast.LENGTH_LONG).show();
+                    } else {
+                        // Llamada al metodo que sube los datos a la db
+                        uploadData(name, employee, direction);
+                    }
+                }
+                @Override
+                    public void onCancelled(DatabaseError databaseError) {}
+                };
+                validation.addListenerForSingleValueEvent(valueEventListener);
         }
     }
 

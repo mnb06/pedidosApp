@@ -12,8 +12,11 @@ import android.widget.Toast;
 import com.example.pedidosapp.R;
 import com.example.pedidosapp.tabs.Articulos;
 import com.example.pedidosapp.tabs.Clientes;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -65,8 +68,24 @@ public class ArticuloCreation extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Ingrese todos los campos.",
                     Toast.LENGTH_LONG).show();
         }else {
-            // Llamada al metodo que sube los datos a la db
-            uploadData(name, s, sM);
+
+            DatabaseReference validation = FirebaseDatabase.getInstance().getReference().child("Articulos").child(name);
+            ValueEventListener valueEventListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        Toast.makeText(getApplicationContext(), "Ya existe un articulo con el mismo nombre",
+                                Toast.LENGTH_LONG).show();
+                    } else {
+                        // Llamada al metodo que sube los datos a la db
+                        uploadData(name, s, sM);
+                    }
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {}
+            };
+            validation.addListenerForSingleValueEvent(valueEventListener);
+
         }
     }
 
