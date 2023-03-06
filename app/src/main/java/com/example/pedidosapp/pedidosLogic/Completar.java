@@ -110,17 +110,18 @@ public class Completar extends AppCompatActivity {
         descargarPDF.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ArrayList<Articulo> encargue = new ArrayList<>();
                 ref1.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot datosPedido) {
-                        ArrayList<Articulo> encargue = new ArrayList<>();
-                        Iterable<DataSnapshot> articulos = datosPedido.child(pedido.getCliente() + "_" + pedido.getFecha()).child("Articulos").getChildren();
+
+                        Iterable<DataSnapshot> articulos = datosPedido.child("Pedidos").child(pedido.getCliente() + "_" + pedido.getFecha()).child("Articulos").getChildren();
                         for (DataSnapshot ds : articulos) {
                             Articulo a = ds.getValue(Articulo.class);
                             Articulo art = new Articulo();
                             art.setCantidad(a.getCantidad());
                             art.setNombre(a.getNombre());
-                            encargue.add(a);
+                            encargue.add(art);
                         }
                         verificarPermisos(view, pedido, encargue);
                     }
