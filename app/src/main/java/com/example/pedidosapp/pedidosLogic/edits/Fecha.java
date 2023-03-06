@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.pedidosapp.R;
 import com.example.pedidosapp.articleLogic.Articulo;
@@ -89,7 +90,8 @@ public class Fecha extends AppCompatActivity {
                 //adapterDetail.notifyDataSetChanged();
             }
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {}
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(Fecha.this, "Hubo un error intentando. Volver a probar", Toast.LENGTH_SHORT).show();}
         });
 
         uploadFecha.setOnClickListener(new View.OnClickListener() {

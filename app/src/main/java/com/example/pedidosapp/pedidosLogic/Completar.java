@@ -103,7 +103,7 @@ public class Completar extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Toast.makeText(Completar.this, "Hubo un error intentando. Volver a probar", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -126,7 +126,7 @@ public class Completar extends AppCompatActivity {
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-
+                        Toast.makeText(Completar.this, "Hubo un error intentando. Volver a probar", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -327,7 +327,7 @@ public class Completar extends AppCompatActivity {
                            }
                             @Override
                             public void onCancelled(@NonNull DatabaseError error) {
-
+                                Toast.makeText(Completar.this, "Hubo un error intentando. Volver a probar", Toast.LENGTH_SHORT).show();
                             }
                         });
                         Intent intent = new Intent(getApplicationContext(), Inicio.class);

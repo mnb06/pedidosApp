@@ -115,6 +115,7 @@ public class AdapterPedido extends RecyclerView.Adapter<AdapterPedido.MyViewHold
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(context.getApplicationContext(), "Hubo un error intentando. Volver a probar", Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -31,6 +31,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.pedidosapp.R;
 import com.example.pedidosapp.articleLogic.Articulo;
+import com.example.pedidosapp.pedidosLogic.Completar;
 import com.example.pedidosapp.pedidosLogic.Pedido;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
@@ -112,7 +113,7 @@ public class Resumen extends Fragment {
 
         @Override
         public void onCancelled(@NonNull DatabaseError error) {
-
+            Toast.makeText(getContext(), "Hubo un error intentando. Volver a probar", Toast.LENGTH_SHORT).show();
         }
     };
 
@@ -152,7 +153,7 @@ public class Resumen extends Fragment {
 
         @Override
         public void onCancelled(@NonNull DatabaseError error) {
-
+            Toast.makeText(getContext(), "Hubo un error intentando. Volver a probar", Toast.LENGTH_SHORT).show();
         }
     };
     @SuppressLint("MissingInflatedId")
@@ -261,7 +262,8 @@ public class Resumen extends Fragment {
                      @Override
                          public void onCancelled(@NonNull DatabaseError error) {
                              // Failed to read value
-                             Log.w(TAG, "Error al cargar los pedidos.", error.toException());
+                            Toast.makeText(getContext(), "Hubo un error intentando. Volver a probar", Toast.LENGTH_SHORT).show();
+                            Log.w(TAG, "Error al cargar los pedidos.", error.toException());
                          }
                      });
                 myRef.child("Pedidos").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -324,13 +326,14 @@ public class Resumen extends Fragment {
 
                             @Override
                             public void onCancelled(@NonNull DatabaseError error) {
+                                Toast.makeText(getContext(), "Hubo un error intentando. Volver a probar", Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-
+                        Toast.makeText(getContext(), "Hubo un error intentando. Volver a probar", Toast.LENGTH_SHORT).show();
                     }
                 });
            listPedido2.clear();
