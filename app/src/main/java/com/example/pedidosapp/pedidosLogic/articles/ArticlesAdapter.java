@@ -2,6 +2,7 @@ package com.example.pedidosapp.pedidosLogic.articles;
 
 import android.content.Context;
 import android.text.InputFilter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,9 +27,10 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.MyView
     public ArrayList<Articulo> elegidos;
 
     // Constructor
-    public ArticlesAdapter(Context context, ArrayList<Articulo> list){
+    public ArticlesAdapter(Context context, ArrayList<Articulo> list, ArrayList<Articulo> elegidos){
         this.context = context;
         this.list = list;
+        this.elegidos = elegidos;
     }
 
 
@@ -36,7 +38,6 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.MyView
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(context).inflate(R.layout.item_add_article, parent, false);
-        elegidos = new ArrayList<>();
         return new MyViewHolder(v);
     }
 
@@ -60,6 +61,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.MyView
             }else {
                 Articulo selected = new Articulo(articulo.getNombre(), holder.stock.getText().toString());
                 elegidos.add(selected);
+                Log.e("Total cargados: ", Integer.toString(elegidos.size()));
 
                 // Notificacion Toast para mostrar si el articulo fue cargado
                 Toast.makeText(context, "Articulo agregado a la lista",

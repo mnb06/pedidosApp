@@ -33,7 +33,7 @@ public class AddArticle extends AppCompatActivity {
     DatabaseReference ref;
     ArticlesAdapter articlesAdapter;
 
-    public static ArrayList<Articulo> list;
+    public static ArrayList<Articulo> list, elegidos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +60,8 @@ public class AddArticle extends AppCompatActivity {
 
 
         list = new ArrayList<>();
-        articlesAdapter = new ArticlesAdapter(getApplicationContext(), list);
+        elegidos = new ArrayList<>();
+        articlesAdapter = new ArticlesAdapter(getApplicationContext(), list, elegidos);
         recyclerView.setAdapter(articlesAdapter);
 
 
@@ -90,10 +91,10 @@ public class AddArticle extends AppCompatActivity {
             String id = cliente + "_" + fecha;
             uploadData(cliente, fecha, id);
 
-            for (Articulo articulo : articlesAdapter.elegidos) {
+            for (Articulo articulo : elegidos) {
                 uploadArticles(articulo, id);
             }
-            loadReserved(list, articlesAdapter.elegidos);
+            loadReserved(list, elegidos);
 
             Toast.makeText(getApplicationContext(), "Pedido cargado correctamente",
                     Toast.LENGTH_LONG).show();
