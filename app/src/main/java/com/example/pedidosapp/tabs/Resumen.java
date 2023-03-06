@@ -62,7 +62,7 @@ public class Resumen extends Fragment {
     private CalendarView calendario;
     private TextView fecha;
 
-    private Button bajo, sobre, articulosDelDia;
+    private Button bajo, sobre, articulosDelDia, totalReservados;
 
     private FirebaseDatabase database;
     private DatabaseReference myRef;
@@ -156,6 +156,34 @@ public class Resumen extends Fragment {
             Toast.makeText(getContext(), "Hubo un error intentando. Volver a probar", Toast.LENGTH_SHORT).show();
         }
     };
+
+    ValueEventListener totalRes = new ValueEventListener(){
+        @Override
+        public void onDataChange(@NonNull DataSnapshot snapshot) {
+            ArrayList<Articulo> reservados = new ArrayList<>();
+            Iterable<DataSnapshot> articulos = snapshot.child("Articulos").getChildren();
+            for (DataSnapshot ds : articulos) {
+                Articulo a = ds.getValue(Articulo.class);
+                reservados.add(a);
+                }
+            AlertDialog.Builder alerta = new AlertDialog.Builder(getContext());
+            alerta.setMessage(totalReservados(reservados))
+                    .setCancelable(false)
+                    .setPositiveButton("Volver", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                        }
+                    });
+            AlertDialog verReservados = alerta.create();
+            verReservados.setTitle("Total de artículos encargados:");
+            verReservados.show();
+        }
+        @Override
+        public void onCancelled(@NonNull DatabaseError error) {
+
+        }
+    };
     @SuppressLint("MissingInflatedId")
     @Nullable
     @Override
@@ -172,6 +200,7 @@ public class Resumen extends Fragment {
         bajo = view.findViewById(R.id.bajo);
         sobre = view.findViewById(R.id.sobre);
         articulosDelDia = view.findViewById(R.id.articulosDelDia);
+        totalReservados = view.findViewById(R.id.totalReservados);
 
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
@@ -196,6 +225,11 @@ public class Resumen extends Fragment {
                 myRef.addValueEventListener(detectarSobre);
             }
         });
+
+       totalReservados.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {myRef.addValueEventListener(totalRes);}
+       });
 
        //Método que setea la fecha de consulta
        calendario.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
@@ -266,7 +300,7 @@ public class Resumen extends Fragment {
                             Log.w(TAG, "Error al cargar los pedidos.", error.toException());
                          }
                      });
-                myRef.child("Pedidos").addListenerForSingleValueEvent(new ValueEventListener() {
+                myRef.child("Pedidos").addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         ArrayList<Articulo> articulosDiarios = new ArrayList<>();
@@ -346,6 +380,7 @@ public class Resumen extends Fragment {
     public void onStop() {
         myRef.removeEventListener(detectarBajo);
         myRef.removeEventListener(detectarSobre);
+        myRef.removeEventListener(totalRes);
         super.onStop();
     }
 
@@ -357,6 +392,19 @@ public class Resumen extends Fragment {
         for (Articulo art : lista) {
             nombre = art.getNombre();
             cantidad = art.getCantidad();
+            linea = linea + "\n" + nombre + " " + cantidad;
+        }
+        return linea;
+    }
+
+    //Metodo para mostar total reservados
+    private static String totalReservados(@NonNull ArrayList<Articulo> lista) {
+        String nombre;
+        String cantidad;
+        String linea = "";
+        for (Articulo art : lista) {
+            nombre = art.getNombre();
+            cantidad = art.getStockReservado();
             linea = linea + "\n" + nombre + " " + cantidad;
         }
         return linea;

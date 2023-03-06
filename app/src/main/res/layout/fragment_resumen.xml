@@ -51,6 +51,13 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:text="Total de artículos del día" />
+
+            <Button
+                android:id="@+id/totalReservados"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:text="Total artículos encargados" />
         </LinearLayout>
     </HorizontalScrollView>
 
