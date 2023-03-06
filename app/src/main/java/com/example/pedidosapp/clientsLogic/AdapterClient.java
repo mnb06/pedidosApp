@@ -1,7 +1,9 @@
 package com.example.pedidosapp.clientsLogic;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +18,13 @@ import com.example.pedidosapp.R;
 
 import java.util.ArrayList;
 
+import com.example.pedidosapp.pedidosLogic.Pedido;
+import com.example.pedidosapp.tabs.Pedidos;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 public class AdapterClient extends RecyclerView.Adapter<AdapterClient.MyViewHolder> {
@@ -26,6 +33,7 @@ public class AdapterClient extends RecyclerView.Adapter<AdapterClient.MyViewHold
     DatabaseReference databaseReference;
 
     ArrayList<Client> list;
+    ArrayList<Pedido> pedidos;
 
     // Constructor
     public AdapterClient(Context context, ArrayList<Client> list) {
@@ -44,16 +52,24 @@ public class AdapterClient extends RecyclerView.Adapter<AdapterClient.MyViewHold
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
         Client client = list.get(position);
+
         holder.nombre.setText(client.getNombre());
         holder.encargado.setText(client.getEncargado());
         holder.direccion.setText(client.getDireccion());
         holder.setIsRecyclable(false);
 
-        holder.delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        holder.delete.setOnClickListener(view -> {
+
+            pedidos = Pedidos.list;
+            Log.e("AAAAAAAAAAAAAAAAAAAAA", String.valueOf(pedidos.size()));
+
+            if (check(client.getNombre())) {
+                Toast.makeText(context.getApplicationContext(), "El cliente tiene pedidos activos, no se pudo eliminar",
+                        Toast.LENGTH_LONG).show();
+            } else {
                 FirebaseDatabase db = FirebaseDatabase.getInstance();
                 DatabaseReference ref = db.getReference("Clientes");
+
                 ref.child(client.getNombre()).setValue(null);
                 Toast.makeText(context.getApplicationContext(), "Eliminado satisfactoriamente.",
                         Toast.LENGTH_LONG).show();
@@ -74,11 +90,24 @@ public class AdapterClient extends RecyclerView.Adapter<AdapterClient.MyViewHold
     }
 
 
+
+    private boolean check(String name){
+        boolean isTrue = false;
+        Log.e("BBBBBBBBBBBBBBBBBBBBBBBBBB", String.valueOf(pedidos.size()));
+        for (Pedido pedido : pedidos) {
+            if (name.equals(pedido.getCliente())) {
+                 isTrue = true;
+                 break;
+            }
+        }
+        return isTrue;
+    }
+
+
     @Override
     public int getItemCount() {
         return list.size();
     }
-
 
 
 

@@ -23,6 +23,7 @@ import com.example.pedidosapp.R;
 import com.example.pedidosapp.clientsLogic.AdapterClient;
 import com.example.pedidosapp.clientsLogic.Client;
 import com.example.pedidosapp.clientsLogic.ClientCreation;
+import com.example.pedidosapp.pedidosLogic.Pedido;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
