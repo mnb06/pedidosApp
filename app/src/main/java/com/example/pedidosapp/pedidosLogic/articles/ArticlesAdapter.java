@@ -24,13 +24,19 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.MyView
     Context context;
 
     ArrayList<Articulo> list;
-    public ArrayList<Articulo> elegidos;
+    public ArrayList<Articulo> elegidos, cargados;
 
     // Constructor
     public ArticlesAdapter(Context context, ArrayList<Articulo> list, ArrayList<Articulo> elegidos){
         this.context = context;
         this.list = list;
         this.elegidos = elegidos;
+    }
+    public ArticlesAdapter(Context context, ArrayList<Articulo> list, ArrayList<Articulo> elegidos, ArrayList<Articulo> cargados){
+        this.context = context;
+        this.list = list;
+        this.elegidos = elegidos;
+        this.cargados = cargados;
     }
 
 
@@ -55,20 +61,34 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.MyView
         // Agrega el articulo al pedido
         holder.add.setOnClickListener(view -> {
             // Verifica que no se agreguen articulos con 0kg
-            if(holder.stock.getText().toString().equals("0")){
+            if (holder.stock.getText().toString().equals("0")) {
                 Toast.makeText(context, "Ingrese un valor mayor a 0",
                         Toast.LENGTH_SHORT).show();
-            }else {
+            } else if (check(articulo.getNombre())) {
+                Toast.makeText(context, "El articulo ya se encuentra añadido en el pedido",
+                        Toast.LENGTH_LONG).show();
+            } else {
                 Articulo selected = new Articulo(articulo.getNombre(), holder.stock.getText().toString());
                 elegidos.add(selected);
-                Log.e("Total cargados: ", Integer.toString(elegidos.size()));
 
                 // Notificacion Toast para mostrar si el articulo fue cargado
                 Toast.makeText(context, "Articulo agregado a la lista",
                         Toast.LENGTH_SHORT).show();
             }
+
         });
 
+    }
+
+    private boolean check(String name){
+        boolean isTrue = false;
+        for (Articulo articulo : cargados) {
+            if (name.equals(articulo.getNombre())) {
+                isTrue = true;
+                break;
+            }
+        }
+        return isTrue;
     }
 
 

@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.pedidosapp.R;
 import com.example.pedidosapp.articleLogic.Articulo;
 import com.example.pedidosapp.pedidosLogic.Pedido;
+import com.example.pedidosapp.pedidosLogic.PedidoDetail;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -51,9 +52,8 @@ public class ArticlesEditAdapter extends RecyclerView.Adapter<ArticlesEditAdapte
         View v = LayoutInflater.from(context).inflate(R.layout.item_edit_article, parent, false);
         return new MyViewHolder(v);
 
-
-
     }
+
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
@@ -67,14 +67,10 @@ public class ArticlesEditAdapter extends RecyclerView.Adapter<ArticlesEditAdapte
 
 
         // Agrega el articulo al pedido
-        holder.save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Articulo elegido = new Articulo(articulo.getNombre(),holder.stock.getText().toString());
+        holder.save.setOnClickListener(view -> {
+            Articulo elegido = new Articulo(articulo.getNombre(),holder.stock.getText().toString());
                 uploadArticles(elegido, path);
                 changeReserved(cargados, elegido, oldCant);
-
-            }
         });
 
         holder.delete.setOnClickListener(new View.OnClickListener() {
@@ -112,7 +108,6 @@ public class ArticlesEditAdapter extends RecyclerView.Adapter<ArticlesEditAdapte
 
     private void changeReserved(ArrayList<Articulo> cargados, Articulo elegido, String oldCant) {
         DatabaseReference database = FirebaseDatabase.getInstance().getReference("Articulos");
-        Log.e("AAAAAAAAAAAAAAAA", Integer.toString(cargados.size()));
         for (Articulo cargado : cargados) {
             if (elegido.getNombre().equals(cargado.getNombre())) {
                 int a = Integer.parseInt(elegido.getStock());
@@ -144,10 +139,14 @@ public class ArticlesEditAdapter extends RecyclerView.Adapter<ArticlesEditAdapte
                     int b = Integer.parseInt(cargado.getCantidad());
                     DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Articulos");
                     ref.child(articulo.getNombre()).child("stockReservado").setValue(Integer.toString(a-b));
+                    break;
                 }
             }
         }
     }
+
+
+
 
     @Override
     public int getItemCount() {

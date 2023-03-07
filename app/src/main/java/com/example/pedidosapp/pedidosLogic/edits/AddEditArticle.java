@@ -32,7 +32,7 @@ public class AddEditArticle extends AppCompatActivity {
     DatabaseReference ref;
     ArticlesAdapter articlesAdapter;
 
-    public static ArrayList<Articulo> list, elegidos;
+    public static ArrayList<Articulo> list, elegidos, cargados;
 
 
     @Override
@@ -63,7 +63,8 @@ public class AddEditArticle extends AppCompatActivity {
 
         list = new ArrayList<>();
         elegidos = new ArrayList<>();
-        articlesAdapter = new ArticlesAdapter(getApplicationContext(), list, elegidos);
+        cargados = Articulos.list;
+        articlesAdapter = new ArticlesAdapter(getApplicationContext(), list, elegidos, cargados);
         recyclerView.setAdapter(articlesAdapter);
 
 

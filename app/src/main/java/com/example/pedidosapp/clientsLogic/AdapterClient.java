@@ -61,7 +61,6 @@ public class AdapterClient extends RecyclerView.Adapter<AdapterClient.MyViewHold
         holder.delete.setOnClickListener(view -> {
 
             pedidos = Pedidos.list;
-            Log.e("AAAAAAAAAAAAAAAAAAAAA", String.valueOf(pedidos.size()));
 
             if (check(client.getNombre())) {
                 Toast.makeText(context.getApplicationContext(), "El cliente tiene pedidos activos, no se pudo eliminar",
@@ -93,7 +92,6 @@ public class AdapterClient extends RecyclerView.Adapter<AdapterClient.MyViewHold
 
     private boolean check(String name){
         boolean isTrue = false;
-        Log.e("BBBBBBBBBBBBBBBBBBBBBBBBBB", String.valueOf(pedidos.size()));
         for (Pedido pedido : pedidos) {
             if (name.equals(pedido.getCliente())) {
                  isTrue = true;
