@@ -2,6 +2,7 @@ package com.example.pedidosapp.clientsLogic;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,12 +13,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pedidosapp.Inicio;
 import com.example.pedidosapp.R;
 
 import java.util.ArrayList;
 
+import com.example.pedidosapp.articleLogic.Articulo;
+import com.example.pedidosapp.pedidosLogic.Completar;
 import com.example.pedidosapp.pedidosLogic.Pedido;
 import com.example.pedidosapp.tabs.Clientes;
 import com.example.pedidosapp.tabs.Pedidos;
@@ -66,15 +71,7 @@ public class AdapterClient extends RecyclerView.Adapter<AdapterClient.MyViewHold
                 Toast.makeText(context.getApplicationContext(), "El cliente tiene pedidos activos, no se pudo eliminar",
                         Toast.LENGTH_LONG).show();
             } else {
-                FirebaseDatabase db = FirebaseDatabase.getInstance();
-                DatabaseReference ref = db.getReference("Clientes");
-
-                ref.child(client.getNombre()).setValue(null);
-                Toast.makeText(context.getApplicationContext(), "Eliminado satisfactoriamente.",
-                        Toast.LENGTH_LONG).show();
-                list.clear();
-
-
+                deleteClient(client);
             }
         });
 
@@ -86,6 +83,28 @@ public class AdapterClient extends RecyclerView.Adapter<AdapterClient.MyViewHold
             context.startActivity(intent);
         });
     }
+
+    private void deleteClient(Client client) {
+
+        AlertDialog.Builder alerta = new AlertDialog.Builder(context);
+
+        alerta.setMessage("Esta seguro que desea eliminar al cliente?")
+                .setCancelable(false)
+                .setPositiveButton("Sí", (DialogInterface.OnClickListener) (dialogInterface, i) -> {
+                    FirebaseDatabase db = FirebaseDatabase.getInstance();
+                    DatabaseReference ref = db.getReference("Clientes");
+
+                    ref.child(client.getNombre()).setValue(null);
+                    Toast.makeText(context.getApplicationContext(), "Eliminado satisfactoriamente.",
+                            Toast.LENGTH_LONG).show();
+                    list.clear();
+                })
+                .setNegativeButton("No", (DialogInterface.OnClickListener) (dialogInterface, i) -> dialogInterface.cancel());
+        AlertDialog completar = alerta.create();
+                    completar.setTitle("Eliminar Cliente");
+                    completar.show();
+    }
+
 
 
 

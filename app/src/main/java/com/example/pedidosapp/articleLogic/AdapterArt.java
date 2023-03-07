@@ -1,6 +1,7 @@
 package com.example.pedidosapp.articleLogic;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,12 +11,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pedidosapp.R;
 
 import java.util.ArrayList;
 
+import com.example.pedidosapp.clientsLogic.Client;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -56,12 +59,7 @@ public class AdapterArt extends RecyclerView.Adapter<AdapterArt.MyViewHolder> {
                 Toast.makeText(context.getApplicationContext(), "No se pudo eliminar. el articulo esta dentro de un pedido",
                         Toast.LENGTH_LONG).show();
             } else {
-                FirebaseDatabase db = FirebaseDatabase.getInstance();
-                DatabaseReference ref = db.getReference("Articulos");
-                ref.child(articulo.getNombre()).setValue(null);
-                Toast.makeText(context.getApplicationContext(), "Eliminado satisfactoriamente.",
-                        Toast.LENGTH_LONG).show();
-                list.clear();
+                deleteArticle(articulo);
             }
         });
 
@@ -77,6 +75,28 @@ public class AdapterArt extends RecyclerView.Adapter<AdapterArt.MyViewHolder> {
             }
         });
     }
+
+
+    private void deleteArticle(Articulo articulo) {
+
+        AlertDialog.Builder alerta = new AlertDialog.Builder(context);
+
+        alerta.setMessage("Esta seguro que desea eliminar al articulo?")
+                .setCancelable(false)
+                .setPositiveButton("Sí", (DialogInterface.OnClickListener) (dialogInterface, i) -> {
+                    FirebaseDatabase db = FirebaseDatabase.getInstance();
+                    DatabaseReference ref = db.getReference("Articulos");
+                    ref.child(articulo.getNombre()).setValue(null);
+                    Toast.makeText(context.getApplicationContext(), "Eliminado satisfactoriamente.",
+                            Toast.LENGTH_LONG).show();
+                    list.clear();
+                })
+                .setNegativeButton("No", (DialogInterface.OnClickListener) (dialogInterface, i) -> dialogInterface.cancel());
+        AlertDialog completar = alerta.create();
+        completar.setTitle("Eliminar Articulo");
+        completar.show();
+    }
+
 
 
     @Override

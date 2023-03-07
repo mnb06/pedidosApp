@@ -1,7 +1,6 @@
 package com.example.pedidosapp.pedidosLogic;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -17,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pedidosapp.R;
@@ -83,10 +83,8 @@ public class AdapterPedido extends RecyclerView.Adapter<AdapterPedido.MyViewHold
              });
 
             holder.delete.setOnClickListener(view -> {
-                undoStockReservado(path, articulos, cargados);
-                deleteAll(pedido);
-                list.clear();
-                notifyDataSetChanged();
+                deleteOrder(pedido, path, articulos, cargados);
+
             });
 
             holder.complete.setOnClickListener(view -> {
@@ -97,6 +95,26 @@ public class AdapterPedido extends RecyclerView.Adapter<AdapterPedido.MyViewHold
                 context.startActivity(intent);
             });
         }
+
+
+    private void deleteOrder(Pedido pedido, String path, ArrayList<Articulo> articulos, ArrayList<Articulo> cargados) {
+
+        androidx.appcompat.app.AlertDialog.Builder alerta = new androidx.appcompat.app.AlertDialog.Builder(context);
+
+        alerta.setMessage("Esta seguro que desea eliminar el pedido?")
+                .setCancelable(false)
+                .setPositiveButton("Sí", (DialogInterface.OnClickListener) (dialogInterface, i) -> {
+                    undoStockReservado(path, articulos, cargados);
+                    deleteAll(pedido);
+                    list.clear();
+                    notifyDataSetChanged();
+                })
+                .setNegativeButton("No", (DialogInterface.OnClickListener) (dialogInterface, i) -> dialogInterface.cancel());
+        AlertDialog completar = alerta.create();
+        completar.setTitle("Eliminar Pedido");
+        completar.show();
+    }
+
     private void undoStockReservado(String pedidosArtPath, ArrayList<Articulo> articulos, ArrayList<Articulo> cargados){
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
 
