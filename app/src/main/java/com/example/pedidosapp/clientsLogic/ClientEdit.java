@@ -50,19 +50,8 @@ public class ClientEdit extends AppCompatActivity {
 
         upload = findViewById(R.id.clientUpload);
         cancel = findViewById(R.id.clientCancel);
-        upload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                uploadClient(id);
-            }
-        });
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        upload.setOnClickListener(view -> uploadClient(id));
+        cancel.setOnClickListener(view -> finish());
 
     }
 
@@ -78,6 +67,8 @@ public class ClientEdit extends AppCompatActivity {
         }else {
             // Llamada al metodo que sube los datos a la db
             uploadData(nombre,employee, direction);
+            Clientes.list.clear();
+            finish();
         }
     }
 
@@ -96,7 +87,5 @@ public class ClientEdit extends AppCompatActivity {
         // Notificacion Toast para mostrar si el cliente fue cargado
         Toast.makeText(getApplicationContext(), "Cliente editado exitosamente.",
                 Toast.LENGTH_LONG).show();
-        Clientes.list.clear();
-        finish();
     }
 }

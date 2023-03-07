@@ -25,7 +25,6 @@ import java.util.Map;
 
 public class ClientCreation extends AppCompatActivity {
 
-    private Button upload, cancel;
     private EditText nombre, encargado, direccion;
 
     static DatabaseReference mRootReference;
@@ -42,21 +41,12 @@ public class ClientCreation extends AppCompatActivity {
         nombre = findViewById(R.id.clientName);
         encargado = findViewById(R.id.clientEncargado);
         direccion = findViewById(R.id.clientDireccion);
-        upload = findViewById(R.id.clientUpload);
-        cancel = findViewById(R.id.clientCancel);
-        upload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                uploadClient();
-            }
-        });
+        Button upload = findViewById(R.id.clientUpload);
+        Button cancel = findViewById(R.id.clientCancel);
 
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        upload.setOnClickListener(view -> uploadClient());
+
+        cancel.setOnClickListener(view -> finish());
 
     }
 
@@ -81,6 +71,8 @@ public class ClientCreation extends AppCompatActivity {
                     } else {
                         // Llamada al metodo que sube los datos a la db
                         uploadData(name, employee, direction);
+                        Clientes.list.clear();
+                        finish();
                     }
                 }
                 @Override
@@ -105,7 +97,5 @@ public class ClientCreation extends AppCompatActivity {
         // Notificacion Toast para mostrar si el cliente fue cargado
         Toast.makeText(getApplicationContext(), "Cliente cargado exitosamente.",
                 Toast.LENGTH_LONG).show();
-        Clientes.list.clear();
-        finish();
     }
 }

@@ -92,7 +92,6 @@ public class Clientes extends Fragment {
                     list.add(client);
                 }
                 adapterClient.notifyDataSetChanged();
-
                 //return null;
             }
             @Override

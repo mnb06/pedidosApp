@@ -82,6 +82,8 @@ public class ArticuloEdit extends AppCompatActivity {
             }else {
                 // Llamada al metodo que sube los datos a la db
                 uploadData(nombre, s, sM, stockRes);
+                Articulos.list.clear();
+                finish();
             }
         }
 
@@ -101,7 +103,5 @@ public class ArticuloEdit extends AppCompatActivity {
             // Notificacion Toast para mostrar si el articulo fue editado
             Toast.makeText(getApplicationContext(), "Articulo editado exitosamente.",
                     Toast.LENGTH_LONG).show();
-            Articulos.list.clear();
-            finish();
         }
     }

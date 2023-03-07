@@ -31,6 +31,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.MyView
         this.context = context;
         this.list = list;
         this.elegidos = elegidos;
+        this.cargados = new ArrayList<>();
     }
     public ArticlesAdapter(Context context, ArrayList<Articulo> list, ArrayList<Articulo> elegidos, ArrayList<Articulo> cargados){
         this.context = context;
@@ -96,6 +97,17 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.MyView
     public int getItemCount() {
         return list.size();
     }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
 
 
 

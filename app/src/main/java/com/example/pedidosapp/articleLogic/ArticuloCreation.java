@@ -42,19 +42,9 @@ public class ArticuloCreation extends AppCompatActivity {
         Button upload = findViewById(R.id.artUpload);
         Button cancel = findViewById(R.id.artCancel);
 
-        upload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                uploadClient();
-            }
-        });
+        upload.setOnClickListener(view -> uploadClient());
 
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        cancel.setOnClickListener(view -> finish());
 
     }
 
@@ -79,6 +69,8 @@ public class ArticuloCreation extends AppCompatActivity {
                     } else {
                         // Llamada al metodo que sube los datos a la db
                         uploadData(name, s, sM);
+                        Articulos.list.clear();
+                        finish();
                     }
                 }
                 @Override
@@ -105,7 +97,5 @@ public class ArticuloCreation extends AppCompatActivity {
         // Notificacion Toast para mostrar si el cliente fue cargado
         Toast.makeText(getApplicationContext(), "Articulo cargado exitosamente.",
                 Toast.LENGTH_LONG).show();
-        Articulos.list.clear();
-        finish();
     }
 }

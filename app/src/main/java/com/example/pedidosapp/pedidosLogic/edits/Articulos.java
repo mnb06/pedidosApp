@@ -124,38 +124,5 @@ public class Articulos extends AppCompatActivity implements Serializable{
             finish();
         });
     }
-        private void uplodData(String client, String fecha, String id) {
-
-            // Hash donde se almacenan los datos a subir
-            Map<String, Object> datosPedido = new HashMap<>();
-
-            // Insercion de los datos en el hash
-            datosPedido .put("cliente", client);
-            datosPedido.put("fecha", fecha);
-
-            // Se crea un hijo (similar a una tabla) y se ingresan los valores
-            ref.child(id).setValue(datosPedido);
-            Pedidos.list.clear();
-            Intent intent = new Intent(getApplicationContext(), Inicio.class);
-            startActivity(intent);
-            finish();
-        }
-
-        private void uploadArticles(Articulo articulo, String id) {
-            // Hash donde se almacenan los datos a subir
-            Map<String, Object> articulosSeleccionados = new HashMap<>();
-
-            // Insercion de los datos en el hash
-            articulosSeleccionados .put("nombre", articulo.getNombre());
-            articulosSeleccionados.put("cantidad", articulo.getStock());
-
-
-            // Se crea un hijo (similar a una tabla) y se ingresan los valores
-            ref.child(id).child("Articulos").child(articulo.getNombre()).setValue(articulosSeleccionados);
-
-            Toast.makeText(getApplicationContext(), "Pedido cargado correctamente",
-                    Toast.LENGTH_LONG).show();
-            finish();
-        }
 
 }

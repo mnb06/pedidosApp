@@ -80,10 +80,11 @@ public class AdapterPedido extends RecyclerView.Adapter<AdapterPedido.MyViewHold
                 intent.putExtra("cliente", pedido.getCliente());
                 intent.putExtra("fecha", pedido.getFecha());
                 context.startActivity(intent);
+                list.clear();
              });
 
             holder.delete.setOnClickListener(view -> {
-                undoStockReservado(pedido, path, articulos, cargados);
+                undoStockReservado(path, articulos, cargados);
                 deleteAll(pedido);
                 Pedidos.list.clear();
             });
@@ -96,7 +97,7 @@ public class AdapterPedido extends RecyclerView.Adapter<AdapterPedido.MyViewHold
                 context.startActivity(intent);
             });
         }
-    private void undoStockReservado(Pedido pedido, String pedidosArtPath, ArrayList<Articulo> articulos, ArrayList<Articulo> cargados){
+    private void undoStockReservado(String pedidosArtPath, ArrayList<Articulo> articulos, ArrayList<Articulo> cargados){
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
 
         // Carga de los articulos del pedido
@@ -109,7 +110,6 @@ public class AdapterPedido extends RecyclerView.Adapter<AdapterPedido.MyViewHold
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Articulo articulo = dataSnapshot.getValue(Articulo.class);
                     cargados.add(articulo);
-                    Log.i("Carga","carga del articulo: " + articulo.getNombre() + " " + articulo.getStockReservado());
                 }
                 compare(cargados, articulos);
             }
@@ -151,6 +151,17 @@ public class AdapterPedido extends RecyclerView.Adapter<AdapterPedido.MyViewHold
     public int getItemCount() {
         return list.size();
     }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
 
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {

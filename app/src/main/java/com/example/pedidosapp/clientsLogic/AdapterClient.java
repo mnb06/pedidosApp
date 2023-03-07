@@ -19,6 +19,7 @@ import com.example.pedidosapp.R;
 import java.util.ArrayList;
 
 import com.example.pedidosapp.pedidosLogic.Pedido;
+import com.example.pedidosapp.tabs.Clientes;
 import com.example.pedidosapp.tabs.Pedidos;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -73,6 +74,8 @@ public class AdapterClient extends RecyclerView.Adapter<AdapterClient.MyViewHold
                 Toast.makeText(context.getApplicationContext(), "Eliminado satisfactoriamente.",
                         Toast.LENGTH_LONG).show();
                 list.clear();
+
+
             }
         });
 

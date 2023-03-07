@@ -41,7 +41,6 @@ public class Cliente extends AppCompatActivity {
         list = new ArrayList<>();
 
         Intent intent = getIntent();
-        String pathArticulos = intent.getStringExtra("path");
         String date = intent.getStringExtra("date");
 
         // Enlace UI
@@ -67,9 +66,6 @@ public class Cliente extends AppCompatActivity {
                     Articulo articulo = dataSnapshot.getValue(Articulo.class);
                     list.add(articulo);
                 }
-                //adapterDetail.notifyDataSetChanged();
-
-                //return null;
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {Toast.makeText(Cliente.this, "Hubo un error intentando. Volver a probar", Toast.LENGTH_SHORT).show();}
@@ -77,17 +73,15 @@ public class Cliente extends AppCompatActivity {
 
 
 
-        uploadClient.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String id = spinner.getSelectedItem() + "_" + date;
-                uploadData(spinner.getSelectedItem().toString(), date, id);
-                for (Articulo articulo: list) {
-                    uploadArticles(articulo,id);
-
-                }
-                deleteOldOrder(path);
+        uploadClient.setOnClickListener(view -> {
+            String id = spinner.getSelectedItem() + "_" + date;
+            uploadData(spinner.getSelectedItem().toString(), date, id);
+            for (Articulo articulo: list) {
+                uploadArticles(articulo,id);
             }
+            deleteOldOrder(path);
+            Pedidos.list.clear();
+            finish();
         });
     }
 
@@ -104,8 +98,6 @@ public class Cliente extends AppCompatActivity {
 
         // Se crea un hijo (similar a una tabla) y se ingresan los valores
         ref.child("Pedidos").child(id).setValue(datosPedido);
-        Pedidos.list.clear();
-        finish();
     }
 
 
@@ -127,7 +119,6 @@ public class Cliente extends AppCompatActivity {
     private void deleteOldOrder(String path){
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         ref.child(path).setValue(null);
-        list.clear();
     }
 
 

@@ -91,20 +91,19 @@ public class AddArticle extends AppCompatActivity {
         upload.setOnClickListener(view -> {
             String id = cliente + "_" + fecha;
             if (elegidos.isEmpty()){
+                Toast.makeText(getApplicationContext(), "Seleccione al menos 1 articulo",
+                        Toast.LENGTH_LONG).show();
+            } else {
 
+                uploadData(cliente, fecha, id);
+                for (Articulo articulo : elegidos) {uploadArticles(articulo, id);}
+                loadReserved(list, elegidos);
+
+                Toast.makeText(getApplicationContext(), "Pedido cargado correctamente",
+                        Toast.LENGTH_LONG).show();
+                Pedidos.list.clear();
+                finish();
             }
-
-            uploadData(cliente, fecha, id);
-
-            for (Articulo articulo : elegidos) {
-                uploadArticles(articulo, id);
-            }
-            loadReserved(list, elegidos);
-
-            Toast.makeText(getApplicationContext(), "Pedido cargado correctamente",
-                    Toast.LENGTH_LONG).show();
-            Pedidos.list.clear();
-            finish();
         });
     }
 

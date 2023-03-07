@@ -103,6 +103,7 @@ public class Fecha extends AppCompatActivity {
                     uploadArticles(articulo,id);
                 }
                 deleteOldOrder(path);
+                finish();
             }
         });
 
@@ -117,8 +118,6 @@ public class Fecha extends AppCompatActivity {
         datosPedido.put("fecha", fecha);
         // Se crea un hijo (similar a una tabla) y se ingresan los valores
         ref.child("Pedidos").child(id).setValue(datosPedido);
-        Pedidos.list.clear();
-        finish();
     }
 
 
@@ -138,6 +137,5 @@ public class Fecha extends AppCompatActivity {
     private void deleteOldOrder(String path) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         ref.child(path).setValue(null);
-        list.clear();
     }
 }

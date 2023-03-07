@@ -61,6 +61,7 @@ public class PedidoEdit extends AppCompatActivity {
                 intent.putExtra("path", path);
                 intent.putExtra("cliente", client);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -72,6 +73,7 @@ public class PedidoEdit extends AppCompatActivity {
                 intent.putExtra("path", path);
                 intent.putExtra("cliente", client);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -83,6 +85,7 @@ public class PedidoEdit extends AppCompatActivity {
                 intent.putExtra("path", path);
                 intent.putExtra("cliente", client);
                 startActivity(intent);
+                finish();
             }
         });
 
