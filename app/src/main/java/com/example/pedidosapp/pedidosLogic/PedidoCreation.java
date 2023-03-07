@@ -78,48 +78,42 @@ public class PedidoCreation extends AppCompatActivity {
             }
         });
 
-        next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String client = cliente.getSelectedItem().toString();
-                String date = fechaElegida.getText().toString();
-                if (client.isEmpty() || date.isEmpty()) {
-                    Toast.makeText(getApplicationContext(), "Ingrese todos los campos",
-                            Toast.LENGTH_LONG).show();
-                } else {
-                    
-                    DatabaseReference validation = FirebaseDatabase.getInstance().getReference().child("Pedidos").child(client + "_" + date);
-                    ValueEventListener valueEventListener = new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()) {
-                            Toast.makeText(getApplicationContext(), "Ya existe un pedido del cliente para esa fecha",
-                                    Toast.LENGTH_LONG).show();
-                        } else {
-                            Intent intent = new Intent(getApplicationContext(), AddArticle.class);
-                            intent.putExtra("cliente", client);
-                            intent.putExtra("fecha", date);
-                            startActivity(intent);
-                            finish();
-                        }
-                    }
+        next.setOnClickListener(view -> {
+            String client = cliente.getSelectedItem().toString();
+            String date = fechaElegida.getText().toString();
+            if (client.isEmpty() || date.isEmpty()) {
+                Toast.makeText(getApplicationContext(), "Ingrese todos los campos",
+                        Toast.LENGTH_LONG).show();
+            } else {
+                DatabaseReference validation = FirebaseDatabase.getInstance().getReference().child("Pedidos").child(client + "_" + date);
+                ValueEventListener valueEventListener = new ValueEventListener() {
                 @Override
-                public void onCancelled(DatabaseError databaseError) {}
-            };
-            validation.addListenerForSingleValueEvent(valueEventListener);
-
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        Toast.makeText(getApplicationContext(), "Ya existe un pedido del cliente para esa fecha",
+                                Toast.LENGTH_LONG).show();
+                    } else {
+                        Intent intent = new Intent(getApplicationContext(), AddArticle.class);
+                        intent.putExtra("cliente", client);
+                        intent.putExtra("fecha", date);
+                        startActivity(intent);
+                        finish();
+                    }
                 }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        };
+        validation.addListenerForSingleValueEvent(valueEventListener);
             }
         });
-
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
-
     }
+
         // Carga los clientes en el spinner de la creacion de pedidos
         public void loadSpinnerClientes() {
             List<String> clientes = new ArrayList<>();
@@ -131,13 +125,10 @@ public class PedidoCreation extends AppCompatActivity {
                             String nombre = (String) ds.child("nombre").getValue();
                             clientes.add(nombre);
                         }
-
                         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(PedidoCreation.this, android.R.layout.simple_dropdown_item_1line, clientes);
                         cliente.setAdapter(arrayAdapter);
                     }
-                    //return null;
                 }
-
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
                     Toast.makeText(PedidoCreation.this, "Hubo un error intentando. Volver a probar", Toast.LENGTH_SHORT).show();

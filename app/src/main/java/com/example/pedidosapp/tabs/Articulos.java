@@ -75,7 +75,7 @@ public class Articulos extends Fragment {
         database.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
+                list.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()){
                     Articulo articulo = dataSnapshot.getValue(Articulo.class);
                     list.add(articulo);

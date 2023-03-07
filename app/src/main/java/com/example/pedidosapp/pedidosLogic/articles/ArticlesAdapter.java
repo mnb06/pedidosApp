@@ -71,7 +71,6 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.MyView
             } else {
                 Articulo selected = new Articulo(articulo.getNombre(), holder.stock.getText().toString());
                 elegidos.add(selected);
-
                 // Notificacion Toast para mostrar si el articulo fue cargado
                 Toast.makeText(context, "Articulo agregado a la lista",
                         Toast.LENGTH_SHORT).show();

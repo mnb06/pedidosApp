@@ -87,14 +87,14 @@ public class Pedidos extends Fragment {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
+                list.clear();
                 // Bucle que carga todos los pedidos en la lista
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()){
                     Pedido pedido = dataSnapshot.getValue(Pedido.class);
                     list.add(pedido);
-
                 }
                 adapterPedido.notifyDataSetChanged();
+
 
                // return null;
             }

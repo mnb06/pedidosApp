@@ -18,6 +18,7 @@ import com.example.pedidosapp.R;
 import com.example.pedidosapp.articleLogic.Articulo;
 import com.example.pedidosapp.pedidosLogic.Pedido;
 import com.example.pedidosapp.pedidosLogic.PedidoDetail;
+import com.example.pedidosapp.tabs.Pedidos;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -69,26 +70,24 @@ public class ArticlesEditAdapter extends RecyclerView.Adapter<ArticlesEditAdapte
         // Agrega el articulo al pedido
         holder.save.setOnClickListener(view -> {
             Articulo elegido = new Articulo(articulo.getNombre(),holder.stock.getText().toString());
-                uploadArticles(elegido, path);
+                uploadArticles(elegido);
                 changeReserved(cargados, elegido, oldCant);
+            list.clear();
         });
 
-        holder.delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FirebaseDatabase db = FirebaseDatabase.getInstance();
-                DatabaseReference ref = db.getReference(path);
-                ref.child(articulo.getNombre()).setValue(null);
-                undoStockReservado(articulo, cargados);
-                Toast.makeText(context.getApplicationContext(), "Eliminado satisfactoriamente.",
-                        Toast.LENGTH_LONG).show();
-                list.clear();
-            }
+        holder.delete.setOnClickListener(view -> {
+            FirebaseDatabase db = FirebaseDatabase.getInstance();
+            DatabaseReference ref = db.getReference(path);
+            ref.child(articulo.getNombre()).setValue(null);
+            undoStockReservado(articulo, cargados);
+            Toast.makeText(context.getApplicationContext(), "Eliminado satisfactoriamente.",
+                    Toast.LENGTH_LONG).show();
+            list.clear();
         });
     }
 
 
-    private void uploadArticles(Articulo articulo, String id) {
+    private void uploadArticles(Articulo articulo) {
         // Hash donde se almacenan los datos a subir
         Map<String, Object> articulosSeleccionados = new HashMap<>();
 
@@ -130,29 +129,12 @@ public class ArticlesEditAdapter extends RecyclerView.Adapter<ArticlesEditAdapte
         }
     }
 
-    private void compare(ArrayList<Articulo> cargados, ArrayList<Articulo> articulos){
-        for (Articulo cargado: cargados) {
-            for (Articulo articulo : articulos) {
-                // chequeo si el nombre coincide
-                if (cargado.getNombre().equals(articulo.getNombre())){
-                    int a = Integer.parseInt(articulo.getStockReservado());
-                    int b = Integer.parseInt(cargado.getCantidad());
-                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Articulos");
-                    ref.child(articulo.getNombre()).child("stockReservado").setValue(Integer.toString(a-b));
-                    break;
-                }
-            }
-        }
-    }
-
-
 
 
     @Override
     public int getItemCount() {
         return list.size();
     }
-
 
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {

@@ -70,8 +70,8 @@ public class ClientCreation extends AppCompatActivity {
                                 Toast.LENGTH_LONG).show();
                     } else {
                         // Llamada al metodo que sube los datos a la db
-                        uploadData(name, employee, direction);
                         Clientes.list.clear();
+                        uploadData(name, employee, direction);
                         finish();
                     }
                 }

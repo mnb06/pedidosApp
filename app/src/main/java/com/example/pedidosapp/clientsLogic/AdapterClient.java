@@ -60,7 +60,6 @@ public class AdapterClient extends RecyclerView.Adapter<AdapterClient.MyViewHold
         holder.setIsRecyclable(false);
 
         holder.delete.setOnClickListener(view -> {
-
             pedidos = Pedidos.list;
 
             if (check(client.getNombre())) {
@@ -79,15 +78,12 @@ public class AdapterClient extends RecyclerView.Adapter<AdapterClient.MyViewHold
             }
         });
 
-        holder.edit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, ClientEdit.class);
-                intent.putExtra("name", client.getNombre());
-                intent.putExtra("encargado", client.getEncargado());
-                intent.putExtra("direccion", client.getDireccion());
-                context.startActivity(intent);
-            }
+        holder.edit.setOnClickListener(view -> {
+            Intent intent = new Intent(context, ClientEdit.class);
+            intent.putExtra("name", client.getNombre());
+            intent.putExtra("encargado", client.getEncargado());
+            intent.putExtra("direccion", client.getDireccion());
+            context.startActivity(intent);
         });
     }
 

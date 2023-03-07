@@ -80,13 +80,13 @@ public class AdapterPedido extends RecyclerView.Adapter<AdapterPedido.MyViewHold
                 intent.putExtra("cliente", pedido.getCliente());
                 intent.putExtra("fecha", pedido.getFecha());
                 context.startActivity(intent);
-                list.clear();
              });
 
             holder.delete.setOnClickListener(view -> {
                 undoStockReservado(path, articulos, cargados);
                 deleteAll(pedido);
-                Pedidos.list.clear();
+                list.clear();
+                notifyDataSetChanged();
             });
 
             holder.complete.setOnClickListener(view -> {
@@ -102,7 +102,8 @@ public class AdapterPedido extends RecyclerView.Adapter<AdapterPedido.MyViewHold
 
         // Carga de los articulos del pedido
         ref.child(pedidosArtPath).addValueEventListener(new ValueEventListener() {
-            @SuppressLint("NotifyDataSetChanged")
+
+
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
@@ -110,7 +111,7 @@ public class AdapterPedido extends RecyclerView.Adapter<AdapterPedido.MyViewHold
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Articulo articulo = dataSnapshot.getValue(Articulo.class);
                     cargados.add(articulo);
-                }
+                };
                 compare(cargados, articulos);
             }
             @Override
@@ -141,9 +142,7 @@ public class AdapterPedido extends RecyclerView.Adapter<AdapterPedido.MyViewHold
         ref.child(id).setValue(null);
         Toast.makeText(context.getApplicationContext(), "Eliminado satisfactoriamente.",
                 Toast.LENGTH_LONG).show();
-        list.clear();
     }
-
 
 
 
@@ -151,17 +150,6 @@ public class AdapterPedido extends RecyclerView.Adapter<AdapterPedido.MyViewHold
     public int getItemCount() {
         return list.size();
     }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        return position;
-    }
-
 
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
