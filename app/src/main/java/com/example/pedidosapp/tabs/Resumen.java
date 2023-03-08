@@ -107,7 +107,7 @@ public class Resumen extends Fragment {
                         }
                     });
             AlertDialog verFaltantes = alerta.create();
-            verFaltantes.setTitle("Artículos Sobrerreservados");
+            verFaltantes.setTitle("Artículos Sobrereservados");
             verFaltantes.show();
         }
 
@@ -399,7 +399,7 @@ public class Resumen extends Fragment {
         for (Articulo art : lista) {
             nombre = art.getNombre();
             cantidad = art.getCantidad();
-            linea = linea + "\n" + nombre + " " + cantidad;
+            linea = linea + "\n" + nombre + " " + cantidad + " kg.";
         }
         return linea;
     }
@@ -412,7 +412,7 @@ public class Resumen extends Fragment {
         for (Articulo art : lista) {
             nombre = art.getNombre();
             cantidad = art.getStockReservado();
-            linea = linea + "\n" + nombre + " " + cantidad;
+            linea = linea + "\n" + nombre + " " + cantidad + " kg.";
         }
         return linea;
     }
@@ -467,7 +467,7 @@ public class Resumen extends Fragment {
             articulos.addCell("Cantidad");
             for (int i = 0; i < art.size(); i++) {
                 articulos.addCell(art.get(i).getNombre());
-                articulos.addCell(art.get(i).getCantidad());
+                articulos.addCell(art.get(i).getCantidad() + " kg.");
             }
             doc.add(articulos);
             doc.close();
@@ -514,7 +514,7 @@ public class Resumen extends Fragment {
             for (Articulo a : control) {
                 nombre = a.getNombre();
                 cantidad = a.getCantidad();
-                linea = linea + "\n" + nombre + " " + cantidad;
+                linea = linea + "\n" + nombre + " " + cantidad + " kg.";
             }
         }
         return linea;

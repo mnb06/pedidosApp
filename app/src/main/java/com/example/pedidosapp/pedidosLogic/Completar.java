@@ -234,7 +234,7 @@ public class Completar extends AppCompatActivity {
 
             for (int i = 0; i < art.size(); i++) {
                 articulos.addCell(art.get(i).getNombre());
-                articulos.addCell(art.get(i).getCantidad());
+                articulos.addCell(art.get(i).getCantidad() + " kg.");
             }
             doc.add(articulos);
 
@@ -359,8 +359,8 @@ public class Completar extends AppCompatActivity {
 
     private Boolean checkStock(ArrayList<Boolean> existencias){
         Boolean check = true;
-        for(Boolean caso: existencias){
-            check = true & caso;
+        for(int i = 0; i < existencias.size(); i++){
+            check = check & existencias.get(i);
         }
         return check;
     }
