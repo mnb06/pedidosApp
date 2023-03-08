@@ -300,18 +300,17 @@ public class Resumen extends Fragment {
                             Log.w(TAG, "Error al cargar los pedidos.", error.toException());
                          }
                      });
-                myRef.child("Pedidos").addValueEventListener(new ValueEventListener() {
+                myRef.child("Pedidos").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         ArrayList<Articulo> articulosDiarios = new ArrayList<>();
-                        articulosDiarios.clear();
                         Iterable<DataSnapshot> pedidos = snapshot.getChildren();
                         for (DataSnapshot ds : pedidos) {
                             Pedido pedido = ds.getValue(Pedido.class);
                             if ((pedido.getFecha()).equals(fechaSeleccionada)) {
                                 listPedido2.add(pedido);
                             }
-                            //articulosDiarios.clear();
+                            articulosDiarios.clear();
                             if (!listPedido2.isEmpty()) {
                                 for(int i = 0; i < listPedido2.size(); i++) {
                                     Pedido ped = listPedido2.get(i);
