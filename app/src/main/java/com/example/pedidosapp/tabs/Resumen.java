@@ -216,19 +216,19 @@ public class Resumen extends Fragment {
         bajo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                myRef.addValueEventListener(detectarBajo);
+                myRef.addListenerForSingleValueEvent(detectarBajo);
             }
         });
        sobre.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                myRef.addValueEventListener(detectarSobre);
+                myRef.addListenerForSingleValueEvent(detectarSobre);
             }
         });
 
        totalReservados.setOnClickListener(new View.OnClickListener() {
            @Override
-           public void onClick(View view) {myRef.addValueEventListener(totalRes);}
+           public void onClick(View view) {myRef.addListenerForSingleValueEvent(totalRes);}
        });
 
        //Método que setea la fecha de consulta
@@ -304,13 +304,14 @@ public class Resumen extends Fragment {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         ArrayList<Articulo> articulosDiarios = new ArrayList<>();
+                        articulosDiarios.clear();
                         Iterable<DataSnapshot> pedidos = snapshot.getChildren();
                         for (DataSnapshot ds : pedidos) {
                             Pedido pedido = ds.getValue(Pedido.class);
                             if ((pedido.getFecha()).equals(fechaSeleccionada)) {
                                 listPedido2.add(pedido);
                             }
-                            articulosDiarios.clear();
+                            //articulosDiarios.clear();
                             if (!listPedido2.isEmpty()) {
                                 for(int i = 0; i < listPedido2.size(); i++) {
                                     Pedido ped = listPedido2.get(i);
@@ -382,6 +383,13 @@ public class Resumen extends Fragment {
         myRef.removeEventListener(detectarSobre);
         myRef.removeEventListener(totalRes);
         super.onStop();
+    }
+
+    public void onCancel(){
+        myRef.removeEventListener(detectarBajo);
+        myRef.removeEventListener(detectarSobre);
+        myRef.removeEventListener(totalRes);
+        super.onDestroy();
     }
 
     //Crea la lista de articulos del pedido seleccionado

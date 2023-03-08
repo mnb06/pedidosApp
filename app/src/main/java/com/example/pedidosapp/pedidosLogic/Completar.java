@@ -263,6 +263,7 @@ public class Completar extends AppCompatActivity {
                            @Override
                            public void onDataChange(@NonNull DataSnapshot datosDB) {
                                ArrayList<Articulo> encargue = new ArrayList<>();
+                               ArrayList<Boolean> existencias = new ArrayList<>();
                                Iterable<DataSnapshot> articulos = datosDB.child("Pedidos").child(path).child("Articulos").getChildren();
                                for (DataSnapshot ds : articulos) {
                                    Articulo a = ds.getValue(Articulo.class);
@@ -285,7 +286,7 @@ public class Completar extends AppCompatActivity {
                                    }
 
                                //Comprueba que haya stock de todos los articulos del pedido
-                               ArrayList<Boolean> existencias = new ArrayList<>();
+
                                for (int i = 0; i < almacenados.size(); i++) {
                                    for (int j = 0; j < encargue.size(); j++) {
                                        if (almacenados.get(i).getNombre().equals(encargue.get(j).getNombre())) {
