@@ -55,7 +55,7 @@
                 android:id="@+id/articleStock"
                 android:layout_width="106dp"
                 android:layout_height="wrap_content"
-                android:text="1"
+                android:hint="0"
                 android:textAlignment="center"
                 android:textSize="23sp"
                 android:inputType="number"/>

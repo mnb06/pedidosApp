@@ -54,15 +54,20 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.MyView
         // Traer el articulo
         Articulo articulo = list.get(position);
         holder.nombre.setText(articulo.getNombre());
-        holder.stock.setText("0");
+        //holder.stock.setText("0");
 
         holder.setIsRecyclable(false);
 
 
         // Agrega el articulo al pedido
         holder.add.setOnClickListener(view -> {
-            // Verifica que no se agreguen articulos con 0kg
-            if (holder.stock.getText().toString().equals("0")) {
+            // Verifica que no se agreguen articulos con 0kg o vacios
+            String validation = holder.stock.getText().toString();
+            if(validation.isEmpty()){
+                Toast.makeText(context, "Ingrese un valor",
+                        Toast.LENGTH_SHORT).show();
+            }
+            else if (holder.stock.getText().toString().equals("0")) {
                 Toast.makeText(context, "Ingrese un valor mayor a 0",
                         Toast.LENGTH_SHORT).show();
             } else if (check(articulo.getNombre())) {
