@@ -86,6 +86,7 @@ public class Clientes extends Fragment {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                list.clear();
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()){
                     Client client = dataSnapshot.getValue(Client.class);
